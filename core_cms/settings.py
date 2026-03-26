@@ -140,6 +140,17 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Used as From: when sending contact form emails (set real SMTP in production).
+DEFAULT_FROM_EMAIL = "webmaster@localhost"
+
+# عنوان المتصفح عندما يكون اسم الموقع في الأدمن فاضياً (لا يظهر IP/المضيف كعنوان).
+SITE_TITLE_FALLBACK = "بيوتات التميز"
+
+# خريطة صفحة الاتصال عندما يكون حقل «Google Maps embed URL» في إعدادات الموقع فاضياً (جدة، السعودية).
+DEFAULT_MAP_EMBED_URL = (
+    "https://maps.google.com/maps?q=Jeddah%2C+Saudi+Arabia&z=11&hl=ar&ie=UTF8&output=embed"
+)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/

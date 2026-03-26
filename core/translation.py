@@ -1,10 +1,10 @@
 from modeltranslation.translator import translator, TranslationOptions
 
-from .models import AboutPage, FooterSettings, FooterLink, HomeCTA, SiteSettings
+from .models import AboutPage, ContactPage, FooterSettings, FooterLink, HomeCTA, SiteSettings
 
 
 class SiteSettingsTranslationOptions(TranslationOptions):
-    fields = ('site_name', 'address')
+    fields = ('site_name', 'address', 'phone', 'email')
 
 translator.register(SiteSettings, SiteSettingsTranslationOptions)
 
@@ -82,4 +82,20 @@ class AboutPageTranslationOptions(TranslationOptions):
 
 
 translator.register(AboutPage, AboutPageTranslationOptions)
+
+
+class ContactPageTranslationOptions(TranslationOptions):
+    fields = (
+        "hero_title_main",
+        "hero_title_span",
+        "hero_breadcrumb_parent_label",
+        "sidebar_title_main",
+        "sidebar_title_span",
+        "sidebar_intro",
+        "form_heading_main",
+        "form_heading_span",
+    )
+
+
+translator.register(ContactPage, ContactPageTranslationOptions)
 

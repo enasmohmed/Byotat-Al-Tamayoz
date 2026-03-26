@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+
+{% if messages %}
+<div class="container pt-4">
+  {% for message in messages %}
+    <div
+      class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %}"
+      role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<section class="page-title overflow-hidden text-center parallaxie"
+  data-overlay="{% if contact_page %}{{ contact_page.hero_overlay }}{% else %}7{% endif %}"
+  data-bg-img="{% if contact_page and contact_page.hero_background %}{{ contact_page.hero_background.url }}{% elif LANGUAGE_BIDI %}{% static 'rtl/images/bg/02.jpg' %}{% else %}{% static 'ltr/images/bg/02.jpg' %}{% endif %}">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 mx-auto">
+        <h1 class="title mb-0">
+          {% if contact_page %}
+            {% if contact_page.hero_title_main or contact_page.hero_title_span %}
+              {{ contact_page.hero_title_main }}{% if contact_page.hero_title_span %} <span>{{ contact_page.hero_title_span }}</span>{% endif %}
+            {% else %}
+              {% trans "Contact us" %}
+            {% endif %}
+          {% else %}
+            {% trans "Contact us" %}
+          {% endif %}
+        </h1>
+      </div>
+    </div>
+    <nav aria-label="breadcrumb" class="page-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+        {% if contact_page.hero_breadcrumb_parent_label %}
+          <li class="breadcrumb-item"><a href="#">{{ contact_page.hero_breadcrumb_parent_label }}</a></li>
+        {% else %}
+          <li class="breadcrumb-item"><a href="#">{% trans "Contact" %}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">
+          {% if contact_page and contact_page.hero_title_main %}
+            {{ contact_page.hero_title_main }}{% if contact_page.hero_title_span %} {{ contact_page.hero_title_span }}{% endif %}
+          {% else %}
+            {% trans "Contact us" %}
+          {% endif %}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<div class="page-content">
+
+<section class="contact-2">
+  <div class="container">
+    <div class="row align-items-center g-0">
+      <div class="col-lg-5">
+        <div class="p-5 theme-bg text-white z-index-1">
+          <h2 class="title">
+            {% if contact_page %}
+              {% if contact_page.sidebar_title_main or contact_page.sidebar_title_span %}
+                {{ contact_page.sidebar_title_main }}{% if contact_page.sidebar_title_span %} <span>{{ contact_page.sidebar_title_span }}</span>{% endif %}
+              {% else %}
+                {% trans "Get in" %} <span>{% trans "touch" %}</span>
+              {% endif %}
+            {% else %}
+              {% trans "Get in" %} <span>{% trans "touch" %}</span>
+            {% endif %}
+          </h2>
+          {% if contact_page.sidebar_intro %}
+            <p class="mb-0">{{ contact_page.sidebar_intro|linebreaksbr }}</p>
+          {% else %}
+            <p>{% trans "Reach us by email, phone, WhatsApp, or send a message using the form." %}</p>
+          {% endif %}
+
+          {# نفس أيقونات عمود «تواصل» في الفوتر؛ الأفضلية للفوتر ثم إعدادات الموقع #}
+          <ul class="contact-info list-unstyled mt-4">
+            {% if footer %}
+              {% if footer.address or site.address %}
+                <li class="mb-4"><i class="flaticon-paper-plane"></i><span>{% trans "Address" %}:</span>
+                  <p class="mb-0">{{ footer.address|default:site.address|linebreaksbr }}</p>
+                </li>
+              {% endif %}
+              {% if footer.phone or site.phone %}
+                <li class="mb-4"><i class="flaticon-phone-call"></i><span>{% trans "Phone" %}:</span>
+                  {% with p=footer.phone|default:site.phone %}
+                    <a href="tel:{{ p|cut:' '|cut:'-' }}">{{ p }}</a>
+                  {% endwith %}
+                </li>
+              {% endif %}
+              {% if footer.email or site.email %}
+                <li class="mb-4"><i class="flaticon-message"></i><span>{% trans "Email" %}:</span>
+                  <a href="mailto:{{ footer.email|default:site.email }}">{{ footer.email|default:site.email }}</a>
+                </li>
+              {% endif %}
+            {% else %}
+              {% if site.address %}
+                <li class="mb-4"><i class="flaticon-paper-plane"></i><span>{% trans "Address" %}:</span>
+                  <p class="mb-0">{{ site.address|linebreaksbr }}</p>
+                </li>
+              {% endif %}
+              {% if site.phone %}
+                <li class="mb-4"><i class="flaticon-phone-call"></i><span>{% trans "Phone" %}:</span>
+                  <a href="tel:{{ site.phone|cut:' '|cut:'-' }}">{{ site.phone }}</a>
+                </li>
+              {% endif %}
+              {% if site.email %}
+                <li class="mb-4"><i class="flaticon-message"></i><span>{% trans "Email" %}:</span>
+                  <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+                </li>
+              {% endif %}
+            {% endif %}
+          </ul>
+
+          {% if footer %}
+            {% if footer.facebook_url or footer.twitter_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url %}
+              <p class="small mb-2 mt-4 opacity-75">{% trans "Social media" %}</p>
+              <div class="social-icons social-colored">
+                <ul class="list-inline mb-0">
+                  {% if footer.facebook_url %}
+                    <li class="social-facebook">
+                      <a href="{{ footer.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.twitter_url %}
+                    <li class="social-twitter">
+                      <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.linkedin_url %}
+                    <li class="social-linkedin">
+                      <a href="{{ footer.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.instagram_url %}
+                    <li class="social-instagram">
+                      <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.youtube_url %}
+                    <li class="social-youtube">
+                      <a href="{{ footer.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if site.whatsapp_digits %}
+            <ul class="contact-info list-unstyled mt-4 mb-0">
+              <li class="mb-0">
+                <i class="fab fa-whatsapp"></i><span>{% trans "WhatsApp" %}:</span>
+                {% trans "Hello, I would like to get in touch." as wa_prefill %}
+                <a href="https://wa.me/{{ site.whatsapp_digits }}?text={{ wa_prefill|urlencode }}" target="_blank" rel="noopener noreferrer">
+                  {% trans "Chat on WhatsApp" %}
+                </a>
+              </li>
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="contact-main white-bg p-5 ps-lg-11 ms-lg-n6 border-bottom-0">
+          <h2 class="title mb-4">
+            {% if contact_page %}
+              {% if contact_page.form_heading_main or contact_page.form_heading_span %}
+                {{ contact_page.form_heading_main }}{% if contact_page.form_heading_span %} <span>{{ contact_page.form_heading_span }}</span>{% endif %}
+              {% else %}
+                {% trans "Send us a" %} <span>{% trans "message" %}</span>
+              {% endif %}
+            {% else %}
+              {% trans "Send us a" %} <span>{% trans "message" %}</span>
+            {% endif %}
+          </h2>
+
+          <form id="site-contact-form" method="post" action="{% url 'contact_form' %}" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <div class="form-group mb-3">
+              <label class="form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+              {{ form.name }}
+              {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+              {{ form.email }}
+              {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+              {{ form.phone }}
+              {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label" for="{{ form.subject.id_for_label }}">{{ form.subject.label }} <span class="text-danger">*</span></label>
+              {{ form.subject }}
+              {% if form.subject.errors %}<div class="text-danger small">{{ form.subject.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+              {{ form.message }}
+              {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mb-3">
+              {% if not form.send_via.field.widget.is_hidden %}
+                <span class="form-label d-block mb-2">{{ form.send_via.label }}</span>
+              {% endif %}
+              {% if form.send_via.errors %}<div class="text-danger small mb-2">{{ form.send_via.errors }}</div>{% endif %}
+              {% if form.send_via.field.widget.is_hidden %}
+                {{ form.send_via }}
+              {% else %}
+                {# {{ w }} يتضمّن الـ input والـ label — بدون تسمية ثانية لتفادي التكرار #}
+                <div class="contact-send-via-options">
+                  {% for w in form.send_via.subwidgets %}
+                    <div class="form-check mb-2">
+                      {{ w }}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <button type="submit" class="btn btn-border btn-radius"><span>{% trans "Submit" %}</span></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% firstof site.map_embed_url map_embed_default as contact_map_src %}
+{% if contact_map_src %}
+<section class="overflow-hidden p-0">
+  <div class="container-fluid p-0">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="map iframe-h">
+          <iframe src="{{ contact_map_src }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{% trans 'Company location map' %}"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+</div>
+
+{% endblock %}

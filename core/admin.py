@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 
-from .models import AboutPage, FooterLink, FooterSettings, HomeCTA, PartnerBrand, SiteSettings
+from .models import AboutPage, ContactPage, FooterLink, FooterSettings, HomeCTA, PartnerBrand, SiteSettings
 
 
 @admin.register(AboutPage)
@@ -106,8 +106,48 @@ class AboutPageAdmin(TranslationAdmin):
         return False
 
 
+@admin.register(ContactPage)
+class ContactPageAdmin(TranslationAdmin):
+    fieldsets = (
+        (
+            _("Hero (page title / parallax)"),
+            {
+                "fields": (
+                    "hero_background",
+                    "hero_overlay",
+                    "hero_title_main",
+                    "hero_title_span",
+                    "hero_breadcrumb_parent_label",
+                ),
+            },
+        ),
+        (
+            _("Left column (sidebar)"),
+            {
+                "fields": (
+                    "sidebar_title_main",
+                    "sidebar_title_span",
+                    "sidebar_intro",
+                ),
+            },
+        ),
+        (
+            _("Form area heading"),
+            {
+                "fields": ("form_heading_main", "form_heading_span"),
+            },
+        ),
+    )
+
+    def has_add_permission(self, request):
+        return not ContactPage.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(admin.ModelAdmin):
+class SiteSettingsAdmin(TranslationAdmin):
     list_display = ('site_name', 'email', 'phone', 'default_language')
     fieldsets = (
         (
@@ -119,7 +159,9 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     'favicon',
                     'phone',
                     'email',
+                    'whatsapp_number',
                     'address',
+                    'map_embed_url',
                     'facebook',
                     'linkedin',
                     'instagram',

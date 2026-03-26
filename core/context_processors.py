@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils import translation
 
 from blog.models import Post
@@ -69,8 +70,12 @@ def site_settings(request):
     if footer:
         footer_links = list(footer.links.filter(is_active=True).order_by('sort_order', 'id'))
 
+    site_display_name = _site_name_for_language(site, lang)
+    if not (site_display_name or "").strip():
+        site_display_name = (getattr(settings, "SITE_TITLE_FALLBACK", None) or "").strip() or "Site"
+
     data = {
-        'site_name': _site_name_for_language(site, lang),
+        'site_name': site_display_name,
         'primary_color': _hex_color(site, 'primary_color', '#cc9955'),
         'secondary_color': _hex_color(site, 'secondary_color', '#cc9955'),
         'surface_color': _hex_color(site, 'surface_color', '#ececec'),
@@ -108,6 +113,7 @@ def site_settings(request):
         'footer_links': footer_links,
         'footer_recent_posts': footer_recent,
         'footer_logo_url': footer_logo_url,
+        "map_embed_default": getattr(settings, "DEFAULT_MAP_EMBED_URL", "") or "",
 
         # نسخة منظمة جاهزة للاستخدام
         'site_settings': data,

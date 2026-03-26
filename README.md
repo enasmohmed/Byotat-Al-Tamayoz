@@ -1,175 +1,107 @@
-# Core CMS – Django Dynamic Company Website
+# Core CMS — موقع شركة ديناميكي (Django)
 
-Core CMS هو مشروع Django معمول كـ **مكتبة / Base CMS**
-تقدري تستخدميه في أي مشروع موقع شركة (Corporate Website)
-وكل حاجة فيه **Dynamic من الأدمن** (Pages – Services – Projects – Blog – Contact – Settings).
+مشروع **Django** جاهز لمواقع الشركات والعقارات والمحتوى المتعدد: الصفحة الرئيسية، من نحن، المشاريع، الخدمات، المدونة، و**صفحة اتصال بنموذج Django** (حفظ الرسائل في لوحة التحكم وإرسال بريد عند التوفر). الواجهة مبنية على قالب HTML/CSS/JS مع دعم **RTL/LTR**، والمحتوى والألوان والروابط تُدار من **لوحة الإدارة**.
 
----
-
-## 🚀 Features
-
-- Dynamic Pages (Home, About, etc.)
-- Services Module
-- Projects Module
-- Blog Module
-- Contact Form (Messages stored in Admin)
-- Global Site Settings (Logo, Colors, Social Links, Language)
-- Multi-language support (Arabic / English)
-- Rich Text Editor (CKEditor)
-- Clean Admin UI (Jazzmin – Optional)
-- Ready to plug with any HTML Template
+**للنشر:** الملفات الحساسة والميديا وقاعدة SQLite مُدرجة في `.gitignore` حتى لا تُرفع إلى GitHub بالخطأ. على الاستضافة **لا تحذف** مجلد `media/` أو ملف قاعدة البيانات أو ناتج `collectstatic` عند كل تحديث — راجع قسم «النشر» أدناه.
 
 ---
 
-## 📁 Project Structure
+## المميزات
 
-core_cms/
-│
-├── core_cms/ # Main project settings
-│
-├── core/ # Site settings (SiteSettings model)
-│
-├── pages/ # Pages app (Home, About, etc.)
-├── services/ # Services app
-├── projects/ # Projects app
-├── blog/ # Blog / Posts app
-├── contact/ # Contact messages app
-│
-├── templates/ # Global templates
-├── static/ # Static files (CSS, JS, Images)
-├── staticfiles/ # Collected static files
-│
-├── env/ # Virtual environment
-├── manage.py
-└── README.md
-
-
+- **صفحات ديناميكية:** الرئيسية ومن نحن من تطبيق `core` مع نماذج قابلة للترجمة.
+- **المشاريع والخدمات والصفحات:** تطبيقات منفصلة (`projects`, `services`, `pages`).
+- **المدونة:** مقالات مع دعم لغة المحتوى.
+- **اتصل بنا:** نموذج Django (`/contact/`) — بدون PHP؛ رسائل مخزنة في الأدمن، ويمكن إشعار البريد حسب الإعدادات.
+- **إعدادات الموقع:** الشعار، الألوان، بيانات التواصل، واتساب، تضمين خريطة Google، اللغة الافتراضية.
+- **ثنائية اللغة (عربي / إنجليزي):** `django-modeltranslation` + `LocaleMiddleware` وزر تبديل اللغة.
+- **محرر نصوص:** CKEditor مع رفع صور (عند التفعيل).
+- **واجهة أدمن:** Jazzmin.
 
 ---
 
-## 🧰 Used Technologies & Libraries
+## هيكل المشروع (مختصر)
+
+| المسار | الوظيفة |
+|--------|---------|
+| `core_cms/` | إعدادات المشروع (`settings`, `urls`) |
+| `core/` | إعدادات الموقع، الفوتر، الصفحة الرئيسية، من نحن، صفحة اتصال (نموذج CMS) |
+| `projects/` | المشاريع |
+| `services/` | الخدمات |
+| `pages/` | صفحات إضافية |
+| `blog/` | المدونة |
+| `contact/` | نموذج الاتصال ورسائل الزوار |
+| `templates/` | قوالب Django |
+| `static/` | أصول الثيم (CSS/JS/صور المصدر) — **مُ tracked في Git** |
+| `staticfiles/` | ملفات ثابتة مجمّعة للإنتاج — **في `.gitignore`** |
+| `media/` | ملفات مرفوعة من الأدمن — **في `.gitignore`** |
+| `locale/` | ترجمات واجهة `gettext` |
+| `requirements.txt` | الاعتماديات |
+
+---
+
+## المتطلبات
 
 - Python 3.12+
-- Django 6.0.1
-- django-ckeditor
-- django-modeltranslation
-- django-jazzmin
-- Pillow
+- الاعتماديات مذكورة في `requirements.txt` (Django 6، modeltranslation، ckeditor، jazzmin، Pillow، إلخ).
 
 ---
 
-## 📦 Requirements
+## التثبيت والتشغيل محلياً
 
-```txt
-Django==6.0.1
-django-ckeditor==6.7.3
-django-modeltranslation==0.19.19
-django-jazzmin==3.0.1
-Pillow
+```bash
+git clone <repository-url>
+cd Core-Projects
+python -m venv env
+source env/bin/activate   # Linux/macOS
+# env\Scripts\activate    # Windows
 
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
 
+- الموقع: `http://127.0.0.1:8000/`
+- لوحة التحكم: `http://127.0.0.1:8000/admin/`
 
-⚙️ Installation Steps
-1️⃣   Clone the project
+بعد تعديل النصوص في القوالب أو الـ Python:
 
-    - git clone https://github.com/your-username/core-cms.git
-    - cd core-cms
+```bash
+python manage.py makemessages -l ar
+# عدّلي locale/ar/LC_MESSAGES/django.po ثم:
+python manage.py compilemessages -l ar
+```
 
-2️⃣   Create & activate virtual environment
-    - python -m venv env
-    - source env/bin/activate  # Linux / Mac
-    - env\Scripts\activate     # Windows
+---
 
-3️⃣   Install dependencies
-    - pip install -r requirements.txt
-    
-OR manually:
+## النموذج والاتصال (Django وليس PHP)
 
-    - pip install django django-ckeditor django-modeltranslation django-jazzmin pillow
+- صفحة: **`/contact/`**، القالب `templates/contact-us.html`، النموذج ذو المعرف **`site-contact-form`** يرسل POST إلى Django.
+- تمت إزالة الاعتماد على **`php/contact.php`** من سكربت الثيم (`static/ltr/js/theme-script.js` و `static/rtl/js/theme-script.js`) حتى لا يُعاد توجيه الإرسال إلى PHP.
 
-4️⃣   Update settings.py
-   -  INSTALLED_APPS = [
-            ...
-            'jazzmin',
-            'ckeditor',
-            'ckeditor_uploader',
-            'modeltranslation',
-        
-            'core',
-            'pages',
-            'services',
-            'projects',
-            'blog',
-            'contact',
-        ]
-   - CKEDITOR_UPLOAD_PATH = "uploads/"
-   - LANGUAGES = (
-        ('en', 'English'),
-        ('ar', 'Arabic'),
-    )
-    
-    MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
-    MODELTRANSLATION_LANGUAGES = ('en', 'ar')
-     
+---
 
-5️⃣   Run migrations
-    - python manage.py makemigrations
-    - python manage.py migrate
+## `.gitignore` والنشر على الاستضافة
 
-6️⃣   Create superuser
-    - python manage.py createsuperuser
+**ما يُستبعد من Git (ومن رفع GitHub):** البيئة الافتراضية، `__pycache__`، ملفات `.env`، **`media/`**، **`*.sqlite3`**، **`staticfiles/`**، سجلات، وملفات IDE.
 
-7️⃣   Run server
-    - python manage.py runserver
+**كي لا «يُحذف» السيرفر الميديا أو قاعدة البيانات أو الملفات الثابتة عند التحديث:**
 
-Admin panel:
-    - http://127.0.0.1:8000/admin/
+1. **لا تستخدم** على السيرفر أوامر مثل `git clean -fdx` أو نشر يمسح المجلد بالكامل ثم يستنسخ من الصفر دون استثناءات.
+2. اجعل **`media/`** و**ملف قاعدة البيانات** و**`staticfiles/`** خارج مجلد الاستنساخ، أو استخدم **Volumes / روابط رمزية** بحيث يبقى المحتوى بين عمليات النشر.
+3. بعد سحب التحديث من Git: شغّل **`python manage.py migrate`** ثم **`python manage.py collectstatic --noinput`** دون حذف مجلد `media/` يدوياً.
+4. للإنتاج: عيّن `DEBUG=False`، `ALLOWED_HOSTS`، مفاتيح آمنة، و**بريد SMTP** (`EMAIL_*` / `DEFAULT_FROM_EMAIL`) إذا اعتمدتَ إشعارات البريد من نموذج الاتصال.
 
+---
 
+## الأمان
 
-🎨 Site Settings
-From Admin → Site Settings you can control:
+لا ترفع `SECRET_KEY` أو كلمات مرور قواعد البيانات إلى المستودع. استخدم متغيرات بيئة أو ملف `.env` محلي (موجود في `.gitignore`) وانسخ القيم على السيرفر بأمان.
 
-    * Site name
-    
-    * Logo & favicon
-    
-    * Primary & Secondary colors
-    
-    * Contact info
-    
-    * Social media links
-    
-    * Default language
-    
-    * All available globally in templates via context processor.
+---
 
-🌍 Multi-Language Support
+## الترخيص والمؤلف
 
-    * Uses django-modeltranslation
-    
-    * Each model supports Arabic & English
-    
-    * Language switching supported via Django i18n
+يُرخّص استخدام المشروع للأغراض الشخصية والتجارية حسب ما يراه صاحب المشروع.
 
-
-📌 Notes
-
-    * This project is designed as a base CMS library
-    
-    * You can reuse it with any frontend template
-    
-    * All content is editable from admin without code changes
-
-
-👩‍💻 Author
-    Built with ❤️ using Django
-    By: Enas Mohamed
-
-
-📄 License
-    Free to use for personal and commercial projects.
-
-
-
-
+مبني بـ Django — **Enas Mohamed**.

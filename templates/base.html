@@ -11,7 +11,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ site_settings.site_name }}</title>
+    <title>{% block head_title %}{{ site_settings.site_name }}{% endblock %}</title>
 
     {# Favicon من الكونتكست الجاهز #}
     {% if favicon_url %}

@@ -1,0 +1,73 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Virtual environments ---
+env/
+venv/
+.venv/
+ENV/
+
+# --- Django: secrets & local overrides ---
+*.log
+.env
+.env.*
+!.env.example
+local_settings.py
+secrets.json
+
+# --- Database (local / production SQLite — لا تترفع للمستودع) ---
+*.sqlite3
+*.db
+
+# --- User uploads & generated media (احتفظ بها على السيرفر؛ لا تستبدلها بـ git pull) ---
+media/
+
+# --- Collected static (يُعاد إنشاؤها بـ collectstatic على السيرفر) ---
+staticfiles/
+
+# --- Tests & coverage ---
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+pytest_debug/
+
+# --- IDE & OS ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# --- Cursor / misc ---
+.cursor/
+*.bak
+
+# Sass cache (if used)
+.sass-cache/

@@ -30,6 +30,10 @@
     <a class="nav-link" href="{% url 'posts_list' %}">{% trans "Our news" %}</a>
   </li>
 
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'contact_form' %}">{% trans "Contact us" %}</a>
+  </li>
+
   {# تبديل اللغة: زر واحد يعرض اللغة الهدف (عربي → زر English، إنجليزي → زر Arabic) #}
   <li class="nav-item d-flex align-items-center ms-2">
     <form method="post" action="{% url 'set_language' %}" class="mb-0">

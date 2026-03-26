@@ -543,7 +543,7 @@
         {% if home_cta and home_cta.button_text %}
           <a href="{{ home_cta.button_url|default:'#' }}" class="btn btn-theme"><span>{{ home_cta.button_text }}</span></a>
         {% else %}
-          <a href="#" class="btn btn-theme"><span>{% trans "Contact Us" %}</span></a>
+          <a href="{% url 'contact_form' %}" class="btn btn-theme"><span>{% trans "Contact Us" %}</span></a>
         {% endif %}
       </div>
     </div>

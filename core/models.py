@@ -40,6 +40,22 @@ class SiteSettings(models.Model):
     facebook = models.URLField(blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
     instagram = models.URLField(blank=True, null=True)
+    whatsapp_number = models.CharField(
+        max_length=32,
+        blank=True,
+        null=True,
+        verbose_name=_("WhatsApp number"),
+        help_text=_("Digits only with country code, no spaces (e.g. 966501234567). Used for chat links."),
+    )
+    map_embed_url = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Google Maps embed URL"),
+        help_text=_(
+            "Paste the iframe src URL from Google Maps (Share → Embed a map). "
+            "If empty, the contact page uses the default map from settings (e.g. Jeddah)."
+        ),
+    )
     default_language = models.CharField(max_length=5, choices=[('en','English'), ('ar','Arabic')], default='en')
 
     class Meta:
@@ -48,6 +64,13 @@ class SiteSettings(models.Model):
 
     def __str__(self):
         return self.site_name or "Site Setting"
+
+    @property
+    def whatsapp_digits(self):
+        """International number for https://wa.me/… (digits only)."""
+        if not self.whatsapp_number:
+            return ""
+        return "".join(c for c in str(self.whatsapp_number) if c.isdigit())
 
 
 class HomeCTA(models.Model):
@@ -391,6 +414,63 @@ class AboutPage(models.Model):
 
     def __str__(self):
         return "About page"
+
+
+class ContactPage(models.Model):
+    """
+    محتوى صفحة اتصل بنا — سجل واحد (يُدار من الأدمن).
+    """
+
+    hero_background = models.ImageField(
+        upload_to="contact_page/hero/",
+        blank=True,
+        null=True,
+        verbose_name=_("Hero background image"),
+        help_text=_("Background for the page title (parallax)."),
+    )
+    hero_overlay = models.PositiveSmallIntegerField(
+        default=7,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+        verbose_name=_("Hero overlay darkness"),
+        help_text=_("0 = light, 10 = very dark (theme data-overlay)."),
+    )
+    hero_title_main = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Hero title — first part"))
+    hero_title_span = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Hero title — highlighted part"))
+    hero_breadcrumb_parent_label = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Breadcrumb middle label"),
+        help_text=_('e.g. "Contact" — appears between Home and current page title.'),
+    )
+
+    sidebar_title_main = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Sidebar title — first part"))
+    sidebar_title_span = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Sidebar title — highlighted part"))
+    sidebar_intro = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("Sidebar intro text"),
+        help_text=_("Short paragraph next to contact details."),
+    )
+
+    form_heading_main = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Form heading — first part"))
+    form_heading_span = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Form heading — highlighted part"))
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Contact page")
+        verbose_name_plural = _("Contact page")
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    def __str__(self):
+        return str(_("Contact page"))
 
 
 class PartnerBrand(models.Model):
