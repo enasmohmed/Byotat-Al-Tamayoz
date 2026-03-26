@@ -1,0 +1,32 @@
+{% load static %} {% load i18n %}
+<!--header start-->
+
+<header id="site-header" class="header">
+  <div id="header-wrap">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <!-- Navbar -->
+          <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand logo" href="{% url 'home' %}">
+              <img id="logo-img" class="img-fluid" src="{{ logo_url }}" alt="{{ site_settings.site_name }}" style="transform: scale(3.25); transform-origin: {% if LANGUAGE_CODE == 'ar' %}right{% else %}left{% endif %} center; {% if LANGUAGE_CODE == 'ar' %}margin-left: 100px;{% else %}margin-right: 100px;{% endif %}">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <!-- Left nav -->
+              {% include "partials/navbar.html" %}
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!--header end-->

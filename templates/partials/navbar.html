@@ -1,0 +1,48 @@
+{% load i18n %}
+
+
+<ul class="nav navbar-nav ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">{% trans "Home" %}</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about_us' %}">{% trans "About us" %}</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="#">{% trans "Our Services" %}</a>
+  </li>
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{% trans "Our projects" %}</a>
+    <ul class="dropdown-menu">
+      <li><a href="{% url 'projects_list' %}">{% trans "Projects" %}</a></li>
+      <li><a href="{% url 'home' %}#home-projects">{% trans "Visit projects" %}</a></li>
+    </ul>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="#">{% trans "Register your interest" %}</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'posts_list' %}">{% trans "Our news" %}</a>
+  </li>
+
+  {# تبديل اللغة: زر واحد يعرض اللغة الهدف (عربي → زر English، إنجليزي → زر Arabic) #}
+  <li class="nav-item d-flex align-items-center ms-2">
+    <form method="post" action="{% url 'set_language' %}" class="mb-0">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.path }}">
+      {% if LANGUAGE_CODE == 'ar' %}
+        <input type="hidden" name="language" value="en">
+        <button type="submit" class="btn btn-theme btn-sm btn-radius">{% trans "English" %}</button>
+      {% else %}
+        <input type="hidden" name="language" value="ar">
+        <button type="submit" class="btn btn-theme btn-sm btn-radius">{% trans "Arabic" %}</button>
+      {% endif %}
+    </form>
+  </li>
+
+</ul>

@@ -1,0 +1,175 @@
+{% load static %}
+{% load i18n %}
+
+<!--footer start-->
+<style>
+  .footer-logo img{
+    transform: scale(3.40);
+    transform-origin: left center;
+    margin-right: 100px;
+  }
+</style>
+<footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
+  <div class="primary-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6">
+          {% if footer %}
+            <h5>{{ footer.about_heading_main }} <span class="text-theme">{{ footer.about_heading_span }}</span></h5>
+            <p class="mb-0">{{ footer.about_text|linebreaksbr }}</p>
+          {% else %}
+            <h5><span class="text-theme">{% trans "About us" %}</span></h5>
+            <p class="mb-0 text-muted">{% trans "Add footer content from the admin (Core → Footer settings)." %}</p>
+          {% endif %}
+        </div>
+        <div class="col-lg-3 col-md-6 mt-5 mt-md-0 footer-list">
+          {% if footer %}
+            <h5>{{ footer.solutions_heading_main }} <span class="text-theme">{{ footer.solutions_heading_span }}</span></h5>
+          {% else %}
+            <h5>{% trans "Our" %} <span class="text-theme">{% trans "Solutions" %}</span></h5>
+          {% endif %}
+          <ul class="list-unstyled">
+            {% for link in footer_links %}
+              <li>
+                <a href="{{ link.url }}"><i class="fas fa-angle-right"></i> {{ link.title }}</a>
+              </li>
+            {% empty %}
+              <li class="text-muted small">{% trans "No footer links yet." %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-lg-3 col-md-6 mt-5 mt-lg-0 widget">
+          {% if footer %}
+            <h5>{{ footer.recent_heading_main }} <span class="text-theme">{{ footer.recent_heading_span }}</span></h5>
+          {% else %}
+            <h5>{% trans "Recent" %} <span class="text-theme">{% trans "Post" %}</span></h5>
+          {% endif %}
+          <div class="recent-post mb-0">
+            <ul class="list-unstyled">
+              {% for post in footer_recent_posts %}
+                <li class="{% if not forloop.last %}mb-3{% endif %}">
+                  <div class="recent-post-thumb">
+                    {% if post.cover_image %}
+                      <img class="img-fluid" src="{{ post.cover_image.url }}" alt="{{ post.title }}">
+                    {% else %}
+                      {% if LANGUAGE_CODE == 'ar' %}
+                        <img class="img-fluid" src="{% static 'rtl/images/blog/blog-thumb/01.jpg' %}" alt="">
+                      {% else %}
+                        <img class="img-fluid" src="{% static 'ltr/images/blog/blog-thumb/01.jpg' %}" alt="">
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                  <div class="recent-post-desc">
+                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                    <span>{{ post.created_at|date:"d F Y" }}</span>
+                  </div>
+                </li>
+              {% empty %}
+                <li class="text-muted small">{% trans "No posts yet." %}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mt-5 mt-lg-0 widget">
+          {% if footer %}
+            <h5>{{ footer.contact_heading_main }} <span class="text-theme">{{ footer.contact_heading_span }}</span></h5>
+          {% else %}
+            <h5>{% trans "Get in touch" %}</h5>
+          {% endif %}
+          <ul class="contact-info list-unstyled mt-4">
+            {% if footer and footer.address %}
+              <li class="mb-4">
+                <i class="flaticon-paper-plane"></i><span>{% trans "Address" %}:</span>
+                <p>{{ footer.address|linebreaksbr }}</p>
+              </li>
+            {% endif %}
+            {% if footer and footer.phone %}
+              <li class="mb-4">
+                <i class="flaticon-phone-call"></i><span>{% trans "Phone" %}:</span>
+                <a href="tel:{{ footer.phone }}">{{ footer.phone }}</a>
+              </li>
+            {% endif %}
+            {% if footer and footer.email %}
+              <li>
+                <i class="flaticon-message"></i><span>{% trans "Email" %}</span>
+                <a href="mailto:{{ footer.email }}">{{ footer.email }}</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <div class="row mt-5 align-items-center">
+        <div class="col-md-4">
+          <div class="footer-logo">
+            <img id="footer-logo-img" class="img-fluid" src="{{ footer_logo_url }}" alt="{{ site_settings.site_name|default:'' }}">
+          </div>
+        </div>
+        <div class="col-md-4 text-md-center mt-3 mt-md-0">
+          {% if footer %}
+            <ul class="list-unstyled working-hours clearfix">
+              {% if footer.hours_line1_label or footer.hours_line1_value %}
+                <li><span>{{ footer.hours_line1_label }}</span> {{ footer.hours_line1_value }}</li>
+              {% endif %}
+              {% if footer.hours_line2_label or footer.hours_line2_value %}
+                <li><span>{{ footer.hours_line2_label }}</span> {{ footer.hours_line2_value }}</li>
+              {% endif %}
+            </ul>
+          {% endif %}
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          {% if footer %}
+            <div class="social-icons social-colored">
+              <ul class="list-inline mb-0">
+                {% if footer.facebook_url %}
+                  <li class="social-facebook">
+                    <a href="{{ footer.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                  </li>
+                {% endif %}
+                {% if footer.twitter_url %}
+                  <li class="social-twitter">
+                    <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                  </li>
+                {% endif %}
+                {% if footer.linkedin_url %}
+                  <li class="social-linkedin">
+                    <a href="{{ footer.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                  </li>
+                {% endif %}
+                {% if footer.instagram_url %}
+                  <li class="social-instagram">
+                    <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                  </li>
+                {% endif %}
+                {% if footer.youtube_url %}
+                  <li class="social-youtube">
+                    <a href="{{ footer.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="secondary-footer">
+    <div class="container">
+      <div class="copyright">
+        <div class="row text-center">
+          <div class="col-md-12">
+            <span>
+              {% trans "Copyright" %} {{ site_settings.site_name }} {% now "Y" %}
+              {% if footer and footer.copyright_suffix %}
+                {{ footer.copyright_suffix }}
+              {% else %}
+                | {% trans "All rights reserved" %}
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!--footer end-->

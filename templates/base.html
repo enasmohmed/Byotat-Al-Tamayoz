@@ -1,0 +1,102 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+
+<!doctype html>
+<html
+  lang="{{ LANGUAGE_CODE|default:'ar' }}"
+  dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ site_settings.site_name }}</title>
+
+    {# Favicon من الكونتكست الجاهز #}
+    {% if favicon_url %}
+      <link rel="icon" href="{{ favicon_url }}" />
+    {% endif %}
+
+    <style>
+      :root {
+        --primary-color: {{ primary_color|default:'#cc9955' }};
+        --secondary-color: {{ secondary_color|default:'#cc9955' }};
+        --surface-color: {{ surface_color|default:'#ececec' }};
+        --dark-color: {{ dark_color|default:'#1d3338' }};
+      }
+    </style>
+
+    <!-- Global Theme CSS (LTR / RTL حسب اللغة) -->
+    {% if LANGUAGE_BIDI %}
+      <link href="{% static 'rtl/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/animate.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/fontawesome-all.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/themify-icons.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/magnific-popup/magnific-popup.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/spacing.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/base.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/shortcodes.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/style.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/responsive.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'rtl/css/theme-color/theme-yellow.css' %}" data-style="styles" rel="stylesheet">
+      <link href="{% static 'rtl/css/site-color-overrides.css' %}" rel="stylesheet" type="text/css" />
+    {% else %}
+      <link href="{% static 'ltr/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/animate.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/fontawesome-all.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/themify-icons.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/magnific-popup/magnific-popup.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/spacing.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/base.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/shortcodes.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/style.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/responsive.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'ltr/css/theme-color/theme-yellow.css' %}" data-style="styles" rel="stylesheet">
+      <link href="{% static 'ltr/css/site-color-overrides.css' %}" rel="stylesheet" type="text/css" />
+    {% endif %}
+
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    {% include "partials/header.html" %}
+
+    {% block content %}{% endblock %}
+
+    {% include "partials/footer.html" %}
+
+    <!--back-to-top start-->
+
+    <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="fas fa-chevron-up"></i></a></div>
+
+    <!--back-to-top end-->
+
+    <!-- Global Theme JS (LTR / RTL حسب اللغة) -->
+    {% if LANGUAGE_BIDI %}
+      <script src="{% static 'rtl/js/theme.js' %}"></script>
+      <script src="{% static 'rtl/js/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+      <script src="{% static 'rtl/js/owl-carousel/owl.carousel.min.js' %}"></script>
+      <script src="{% static 'rtl/js/parallax/parallaxie.min.js' %}"></script>
+      <script src="{% static 'rtl/js/counter/counter.js' %}"></script>
+      <script src="{% static 'rtl/js/particle/jquery.particleground.min.js' %}"></script>
+      <script src="{% static 'rtl/js/countdown/jquery.countdown.min.js' %}"></script>
+      <script src="{% static 'rtl/js/isotope/isotope.pkgd.min.js' %}"></script>
+      <script src="{% static 'rtl/js/contact-form/contact-form.js' %}"></script>
+      <script src="{% static 'rtl/js/theme-script.js' %}"></script>
+    {% else %}
+      <script src="{% static 'ltr/js/theme.js' %}"></script>
+      <script src="{% static 'ltr/js/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+      <script src="{% static 'ltr/js/owl-carousel/owl.carousel.min.js' %}"></script>
+      <script src="{% static 'ltr/js/parallax/parallaxie.min.js' %}"></script>
+      <script src="{% static 'ltr/js/counter/counter.js' %}"></script>
+      <script src="{% static 'ltr/js/particle/jquery.particleground.min.js' %}"></script>
+      <script src="{% static 'ltr/js/countdown/jquery.countdown.min.js' %}"></script>
+      <script src="{% static 'ltr/js/isotope/isotope.pkgd.min.js' %}"></script>
+      <script src="{% static 'ltr/js/contact-form/contact-form.js' %}"></script>
+      <script src="{% static 'ltr/js/theme-script.js' %}"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

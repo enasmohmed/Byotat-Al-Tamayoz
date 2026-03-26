@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block extra_head %}
+<style>
+  .all-projects-page .portfolio-filter {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .all-projects-page .all-projects-loc-filters .form-select {
+    max-width: 260px;
+    min-width: 200px;
+    border-radius: 8px;
+  }
+  .all-projects-page .all-projects-loc-filters label.small {
+    font-weight: 600;
+    color: #444;
+  }
+  .all-projects-page .project-thumb-link {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .all-projects-page .portfolio-title h4 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .all-projects-page .portfolio-title h4 a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-title overflow-hidden text-center parallaxie"
+  data-overlay="{% if all_projects_page %}{{ all_projects_page.hero_overlay }}{% else %}7{% endif %}"
+  data-bg-img="{% if all_projects_page and all_projects_page.hero_background %}{{ all_projects_page.hero_background.url }}{% elif LANGUAGE_BIDI %}{% static 'rtl/images/bg/02.jpg' %}{% else %}{% static 'ltr/images/bg/02.jpg' %}{% endif %}">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 mx-auto">
+        <h1 class="title mb-0">
+          {% if all_projects_page %}
+            {% if all_projects_page.hero_title_main or all_projects_page.hero_title_span %}
+              {{ all_projects_page.hero_title_main }}{% if all_projects_page.hero_title_span %} <span>{{ all_projects_page.hero_title_span }}</span>{% endif %}
+            {% else %}
+              {% trans "Our projects" %}
+            {% endif %}
+          {% else %}
+            {% trans "Our projects" %}
+          {% endif %}
+        </h1>
+      </div>
+    </div>
+    <nav aria-label="breadcrumb" class="page-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="{% url 'projects_list' %}">{% if all_projects_page and all_projects_page.breadcrumb_parent_label %}{{ all_projects_page.breadcrumb_parent_label }}{% else %}{% trans "Projects" %}{% endif %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% if all_projects_page and all_projects_page.breadcrumb_current_label %}{{ all_projects_page.breadcrumb_current_label }}{% else %}{% trans "All projects" %}{% endif %}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<div class="page-content">
+  <section class="overflow-hidden pb-5 all-projects-page"
+    {% if LANGUAGE_CODE == 'ar' %}dir="rtl"{% else %}dir="ltr"{% endif %}>
+    <div class="container pt-5">
+      {% if filter_cities or all_districts_options %}
+      <div class="row justify-content-center mb-3">
+        <div class="col-12">
+          <div class="all-projects-loc-filters d-flex flex-wrap justify-content-center align-items-end gap-3">
+            {% if filter_cities %}
+            <div class="d-flex flex-column align-items-stretch">
+              <label class="small mb-1 text-start" for="all-projects-filter-city">{% trans "City" %}</label>
+              <select id="all-projects-filter-city" class="form-select form-select-sm">
+                <option value="">{% trans "All cities" %}</option>
+                {% for token, label in filter_cities %}
+                  <option value="{{ token }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if all_districts_options %}
+            <div class="d-flex flex-column align-items-stretch">
+              <label class="small mb-1 text-start" for="all-projects-filter-district">{% trans "District" %}</label>
+              <select id="all-projects-filter-district" class="form-select form-select-sm">
+                <option value="">{% trans "All districts" %}</option>
+                {% for opt in all_districts_options %}
+                  <option value="{{ opt.v }}">{{ opt.l }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {{ districts_by_city|json_script:"all-projects-districts-by-city" }}
+      {{ all_districts_options|json_script:"all-projects-districts-all" }}
+      {% endif %}
+      <div class="row text-center">
+        <div class="col-md-12">
+          <div class="portfolio-filter d-flex gap-2">
+            <button type="button" data-filter="*" class="is-checked">{% trans "All" %}</button>
+            {% for cat in categories %}
+              <button type="button" data-filter=".{{ cat.slug }}">{{ cat.name }}</button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid p-0 mt-4">
+      <div class="row g-0">
+        <div class="col-lg-12 col-md-12">
+          <div class="masonry row columns-4 g-0 popup-gallery">
+            <div class="grid-sizer"></div>
+            {% for project in projects %}
+              {% url 'project_detail' project.slug as project_detail_url %}
+              <div class="masonry-brick {% if project.category %}{{ project.category.slug }}{% else %}project-uncat{% endif %}{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}{% if project.filter_district_class %} {{ project.filter_district_class }}{% endif %}">
+                <div class="portfolio-item">
+                  <a href="{{ project_detail_url }}" class="project-thumb-link">
+                    {% if project.image %}
+                      <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                    {% else %}
+                      <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}">
+                    {% endif %}
+                  </a>
+                  <div class="portfolio-hover">
+                    <div class="portfolio-title">
+                      {% if project.category %}<span>{{ project.category.name }}</span>{% endif %}
+                      <h4><a href="{{ project_detail_url }}">{{ project.title }}</a></h4>
+                    </div>
+                    <div class="portfolio-icon">
+                      {% if project.image %}
+                        <a class="popup popup-img" href="{{ project.image.url }}"><i class="flaticon-magnifier"></i></a>
+                      {% endif %}
+                      <a href="{{ project_detail_url }}" title="{% trans 'Project details' %}"><i class="flaticon-broken-link-1"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-12 text-center text-muted py-5">{% trans "No projects yet." %}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% if filter_cities or all_districts_options %}
+{% trans "All districts" as ap_js_all_districts %}
+<script>
+(function ($) {
+  $(window).on('load', function () {
+    var $root = $('.all-projects-page');
+    if (!$root.length) return;
+    var $masonry = $root.find('.masonry');
+    if (!$masonry.length || typeof $masonry.isotope !== 'function') return;
+
+    var elByCity = document.getElementById('all-projects-districts-by-city');
+    var elAllDist = document.getElementById('all-projects-districts-all');
+    var districtsByCity = elByCity ? JSON.parse(elByCity.textContent) : {};
+    var allDistricts = elAllDist ? JSON.parse(elAllDist.textContent) : [];
+
+    var $city = $('#all-projects-filter-city');
+    var $district = $('#all-projects-filter-district');
+    var $catFilter = $root.find('.portfolio-filter');
+    if (!$catFilter.length) return;
+
+    var allDistrictsLabel = "{{ ap_js_all_districts|escapejs }}";
+
+    function fillDistrictOptions(cityToken) {
+      if (!$district.length) return;
+      $district.empty().append($('<option>').val('').text(allDistrictsLabel));
+      var list = cityToken && districtsByCity[cityToken] ? districtsByCity[cityToken] : allDistricts;
+      list.forEach(function (row) {
+        $district.append($('<option>').val(row.v).text(row.l));
+      });
+    }
+
+    function applyFilter() {
+      var cityVal = ($city.length && $city.val()) ? $city.val() : '';
+      var distVal = ($district.length && $district.val()) ? $district.val() : '';
+      var catFilter = $catFilter.find('button.is-checked').attr('data-filter') || '*';
+      $masonry.isotope({
+        filter: function () {
+          var $el = $(this);
+          var okCity = !cityVal || $el.hasClass(cityVal);
+          var okDist = !distVal || $el.hasClass(distVal);
+          var okCat = catFilter === '*' || $el.is(catFilter);
+          return okCity && okDist && okCat;
+        }
+      });
+    }
+
+    $catFilter.off('click', 'button');
+    $catFilter.on('click', 'button', function () {
+      $catFilter.find('button').removeClass('is-checked');
+      $(this).addClass('is-checked');
+      applyFilter();
+    });
+
+    if ($city.length) {
+      $city.on('change', function () {
+        fillDistrictOptions($(this).val() || '');
+        applyFilter();
+      });
+    }
+    if ($district.length) {
+      $district.on('change', applyFilter);
+      fillDistrictOptions(($city.length && $city.val()) ? $city.val() : '');
+    }
+    applyFilter();
+  });
+})(jQuery);
+</script>
+{% endif %}
+{% endblock %}

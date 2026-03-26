@@ -1,0 +1,41 @@
+/*
+  ألوان من الأدمن (:root في base.html)
+  يُحمّل بعد style.css و theme-yellow.css
+*/
+body {
+  background-color: var(--surface-color);
+}
+
+.page-wrapper {
+  background-color: transparent;
+}
+
+.dark-bg {
+  background-color: var(--dark-color) !important;
+}
+
+#header-wrap.fixed-header {
+  background-color: var(--dark-color) !important;
+}
+
+footer.footer .secondary-footer {
+  background-color: var(--dark-color) !important;
+}
+
+.footer-media i {
+  background-color: var(--dark-color) !important;
+}
+
+.footer-list li a::before {
+  background-color: var(--primary-color) !important;
+}
+
+.footer-2 .media-icon.style-2 li.white-bg span,
+footer .widget .recent-post-desc span {
+  color: var(--primary-color) !important;
+}
+
+.theme-bg .video-btn .btn-play,
+.dark-bg .video-btn .btn-play {
+  color: var(--primary-color) !important;
+}

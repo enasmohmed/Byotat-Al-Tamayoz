@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block content %}
+<div class="page-wrapper">
+  <section class="dark-bg text-center py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="section-title mb-0">
+            <h1 class="title">{% trans "News archive" %}</h1>
+            <p class="mb-0 text-white">{% trans "Latest news intro line" %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grey-bg py-5"
+    {% if LANGUAGE_CODE == 'ar' %}
+      dir="rtl" style="direction: rtl; text-align: right;"
+    {% else %}
+      dir="ltr" style="direction: ltr; text-align: left;"
+    {% endif %}>
+    <div class="container">
+      <div class="row g-4">
+        {% for post in posts %}
+          <div class="col-lg-4 col-md-6">
+            <div class="service-item h-100">
+              <div class="service-images">
+                {% if post.cover_image %}
+                  <img src="{{ post.cover_image.url }}" class="img-fluid" alt="{{ post.title }}">
+                {% else %}
+                  {% if LANGUAGE_CODE == 'ar' %}
+                    <img class="img-fluid" src="{% static 'rtl/images/portfolio/01.jpg' %}" alt="{{ post.title }}">
+                  {% else %}
+                    <img class="img-fluid" src="{% static 'ltr/images/portfolio/01.jpg' %}" alt="{{ post.title }}">
+                  {% endif %}
+                {% endif %}
+              </div>
+              <div class="service-description">
+                <h4>{{ post.title }}</h4>
+                <p class="small text-muted mb-2">{{ post.created_at|date:"d F Y" }}</p>
+                <p>{{ post.content|striptags|truncatechars:100 }}</p>
+                <a href="{% url 'post_detail' post.slug %}">{% trans "Read more" %} <i class="fas fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center">
+            <p class="text-muted mb-0">{% trans "No posts yet." %}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

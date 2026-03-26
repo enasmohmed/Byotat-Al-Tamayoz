@@ -1,0 +1,531 @@
+{% extends "base.html" %}
+{% load static i18n l10n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+
+{% block extra_head %}
+<style>
+  .project-detail-hero .project-location-line {
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+  .project-gallery-carousel .carousel-item img {
+    max-height: 460px;
+    width: 100%;
+    object-fit: cover;
+  }
+  .project-gallery-carousel .carousel-control-prev,
+  .project-gallery-carousel .carousel-control-next {
+    width: 3rem;
+    height: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 50%;
+  }
+  .project-detail-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #333;
+  }
+  .project-detail-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .project-detail-body h2,
+  .project-detail-body h3,
+  .project-detail-body h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+  }
+  .project-detail-body ul,
+  .project-detail-body ol {
+    padding-inline-start: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .project-detail-sidebar .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  }
+  .project-detail-sidebar .project-tabs-card .nav-tabs.project-detail-tabs {
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  .project-detail-sidebar .project-tabs-card .tab-content {
+    text-align: start;
+  }
+  .project-specs-table dt {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.25rem;
+  }
+  .project-specs-table dd {
+    margin-bottom: 0.75rem;
+  }
+  .project-detail-tabs .nav-link {
+    font-weight: 600;
+    color: #444;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+  }
+  .project-detail-tabs .nav-link.active {
+    color: var(--primary-color, #cc9955);
+    border-bottom-color: var(--primary-color, #cc9955);
+    background: transparent;
+  }
+  .map-embed iframe {
+    width: 100%;
+    min-height: 360px;
+    border: 0;
+    border-radius: 12px;
+  }
+  .sold-donut {
+    --p: 0;
+    width: 142px;
+    height: 142px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--primary-color, #cc9955) calc(var(--p) * 1%),
+      #e6e6e6 0
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+  }
+  .sold-donut-inner {
+    width: 102px;
+    height: 102px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: #222;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .sold-donut-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    margin-top: 0.15rem;
+  }
+  .project-suggested-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: #fff;
+  }
+  .project-suggested-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+  .project-suggested-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .project-suggested-card .card-body {
+    padding: 1.1rem 1.25rem;
+  }
+  .project-suggested-card .card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #1a1a1a;
+  }
+  .project-suggested-card .text-muted {
+    font-size: 0.9rem;
+  }
+  .project-category-badge {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(204, 153, 85, 0.15);
+    color: var(--primary-color, #b8833d);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-title overflow-hidden text-center parallaxie project-detail-hero"
+  data-overlay="7"
+  data-bg-img="{% if project.image %}{{ project.image.url }}{% elif project_gallery_urls.0 %}{{ project_gallery_urls.0 }}{% elif LANGUAGE_BIDI %}{% static 'rtl/images/bg/02.jpg' %}{% else %}{% static 'ltr/images/bg/02.jpg' %}{% endif %}">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-md-12 mx-auto">
+        <h1 class="title mb-0 text-white">{{ project.title }}</h1>
+        {% if project.location_line %}
+          <p class="mb-0 mt-3 text-white project-location-line opacity-95"><i class="fas fa-map-marker-alt me-2"></i>{{ project.location_line }}</p>
+        {% endif %}
+        {% if project.category %}
+          <p class="mb-0 mt-2 text-white small opacity-85">
+            <i class="fas fa-folder-open me-1"></i>{{ project.category.name }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <nav aria-label="breadcrumb" class="page-breadcrumb">
+      <ol class="breadcrumb justify-content-center">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="{% url 'projects_list' %}">{% trans "Projects" %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ project.title }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<div class="page-content">
+  <section class="project-detail-main grey-bg py-5 py-lg-6"
+    {% if LANGUAGE_BIDI %}dir="rtl"{% else %}dir="ltr"{% endif %}>
+    <div class="container">
+      <div class="row g-4 g-lg-5">
+        <div class="col-lg-8">
+          <div class="bg-white box-shadow p-4 p-lg-5 rounded-3">
+            {% if project.category %}
+              <span class="project-category-badge">{{ project.category.name }}</span>
+            {% endif %}
+
+            {% if project_gallery_urls %}
+              <div id="projectGalleryCarousel" class="carousel slide project-gallery-carousel mb-4" data-bs-ride="carousel">
+                {% if project_gallery_urls|length > 1 %}
+                  <div class="carousel-indicators">
+                    {% for u in project_gallery_urls %}
+                      <button type="button" data-bs-target="#projectGalleryCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <div class="carousel-inner rounded-3 overflow-hidden">
+                  {% for u in project_gallery_urls %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <img src="{{ u }}" class="d-block w-100" alt="{{ project.title }} — {{ forloop.counter }}">
+                    </div>
+                  {% endfor %}
+                </div>
+                {% if project_gallery_urls|length > 1 %}
+                  <button class="carousel-control-prev" type="button" data-bs-target="#projectGalleryCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">{% trans "Previous" %}</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#projectGalleryCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">{% trans "Next" %}</span>
+                  </button>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if project.description %}
+              <div class="project-detail-body">{{ project.description|safe }}</div>
+            {% else %}
+              <p class="text-muted mb-0">{% trans "Detailed description will be added soon." %}</p>
+            {% endif %}
+            <div class="mt-4 pt-4 border-top d-flex flex-wrap gap-2">
+              <a href="{% url 'home' %}" class="btn btn-theme btn-circle"><span>{% trans "Back to home" %}</span></a>
+              <a href="{% url 'projects_list' %}" class="btn btn-border btn-circle"><span>{% trans "All projects" %}</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="project-detail-sidebar">
+            {% if project.location_line %}
+              <div class="card mb-4">
+                <div class="card-body p-4 text-center">
+                  <h6 class="text-muted small mb-2 fw-bold">{% trans "City & district" %}</h6>
+                  <p class="title mb-0" style="font-size: 1.15rem;">{{ project.location_line }}</p>
+                </div>
+              </div>
+            {% endif %}
+          
+            <div class="card mb-4">
+              <div class="card-body p-4 text-center">
+                <h4 class="title mb-3" style="font-size: 1.1rem;">{% trans "Sales progress" %}</h4>
+                <div class="sold-donut" style="--p: {{ project.sold_percentage|default_if_none:0|unlocalize }}">
+                  <div class="sold-donut-inner">
+                    {{ project.sold_percentage|default_if_none:0|floatformat:"-2" }}%
+                    <span class="sold-donut-label">{% trans "sold" %}</span>
+                  </div>
+                </div>
+                <p class="small text-muted mb-0">{% trans "Share of units sold for this project." %}</p>
+              </div>
+            </div>
+            {% if show_project_tabs %}
+            <div class="card mb-4 project-tabs-card">
+              <div class="card-body p-3 p-md-4">
+                <ul class="nav nav-tabs project-detail-tabs flex-wrap border-0 border-bottom mb-3" id="projectDetailTabs" role="tablist">
+                  {% if has_specs_tab %}
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link {% if first_project_tab == 'specs' %}active{% endif %}" id="tab-specs" data-bs-toggle="tab" data-bs-target="#pane-specs" type="button" role="tab" aria-controls="pane-specs" aria-selected="{% if first_project_tab == 'specs' %}true{% else %}false{% endif %}">{% trans "Specifications" %}</button>
+                    </li>
+                  {% endif %}
+                  {% if has_guarantees_tab %}
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link {% if first_project_tab == 'guarantees' %}active{% endif %}" id="tab-guarantees" data-bs-toggle="tab" data-bs-target="#pane-guarantees" type="button" role="tab" aria-controls="pane-guarantees" aria-selected="{% if first_project_tab == 'guarantees' %}true{% else %}false{% endif %}">{% trans "Guarantees" %}</button>
+                    </li>
+                  {% endif %}
+                  {% if has_location_tab %}
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link {% if first_project_tab == 'location' %}active{% endif %}" id="tab-location" data-bs-toggle="tab" data-bs-target="#pane-location" type="button" role="tab" aria-controls="pane-location" aria-selected="{% if first_project_tab == 'location' %}true{% else %}false{% endif %}">{% trans "Location" %}</button>
+                    </li>
+                  {% endif %}
+                  {% if has_video_tab %}
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link {% if first_project_tab == 'video' %}active{% endif %}" id="tab-video" data-bs-toggle="tab" data-bs-target="#pane-video" type="button" role="tab" aria-controls="pane-video" aria-selected="{% if first_project_tab == 'video' %}true{% else %}false{% endif %}"><i class="fas fa-play-circle {% if LANGUAGE_BIDI %}ms-1{% else %}me-1{% endif %}" aria-hidden="true"></i>{% trans "Video" %}</button>
+                    </li>
+                  {% endif %}
+                </ul>
+                    <div class="tab-content" id="projectDetailTabContent">
+                      {% if has_specs_tab %}
+                        <div class="tab-pane fade {% if first_project_tab == 'specs' %}show active{% endif %}" id="pane-specs" role="tabpanel" aria-labelledby="tab-specs" tabindex="0">
+                          <div class="project-specs-table mb-0">
+                            {% if project.area_sqm_min is not None and project.area_sqm_max is not None %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-ruler-combined text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Area" %}</strong>
+                                </span>
+                                <span class="text-end">{{ project.area_sqm_min|floatformat:"-2" }} {% trans "m²" %} – {{ project.area_sqm_max|floatformat:"-2" }} {% trans "m²" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% elif project.area_sqm_min is not None %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-ruler-combined text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Area" %}</strong>
+                                </span>
+                                <span class="text-end">{{ project.area_sqm_min|floatformat:"-2" }} {% trans "m²" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% elif project.area_sqm_max is not None %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-ruler-combined text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Area" %}</strong>
+                                </span>
+                                <span class="text-end">{{ project.area_sqm_max|floatformat:"-2" }} {% trans "m²" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% elif project.area_sqm is not None %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-ruler-combined text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Area" %}</strong>
+                                </span>
+                                <span class="text-end">{{ project.area_sqm }} {% trans "m²" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.room_count is not None %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-bed text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Rooms" %}</strong>
+                                </span>
+                                <span class="text-end">{{ project.room_count }}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.bathroom_count is not None %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-bath text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Bathrooms" %}</strong>
+                                </span>
+                                <span class="text-end">{{ project.bathroom_count }}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.has_living_hall %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-couch text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Living hall" %}</strong>
+                                </span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Yes" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.has_elevator %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-sort-amount-up text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Elevator" %}</strong>
+                                </span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Available" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.has_private_parking %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-car text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Private parking" %}</strong>
+                                </span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Available" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.has_smart_home %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-wifi text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Smart home" %}</strong>
+                                </span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Yes" %}</span>
+                              </div>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.has_maid_room %}
+                              <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
+                                <span class="d-inline-flex align-items-center gap-2">
+                                  <i class="fas fa-door-open text-theme spec-icon" aria-hidden="true"></i>
+                                  <strong>{% trans "Maid room" %}</strong>
+                                </span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Yes" %}</span>
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if has_guarantees_tab %}
+                        <div class="tab-pane fade {% if first_project_tab == 'guarantees' %}show active{% endif %}" id="pane-guarantees" role="tabpanel" aria-labelledby="tab-guarantees" tabindex="0">
+                          <ul class="list-unstyled mb-0 small">
+                            {% if project.structural_warranty_years %}
+                              <li class="mb-3 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Structural framework" %}</strong>
+                                <span>{{ project.structural_warranty_years }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_plumbing %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Plumbing extensions" %}</strong>
+                                <span>{{ project.warranty_plumbing }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_water_heaters %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Water heaters" %}</strong>
+                                <span>{{ project.warranty_water_heaters }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_electrical_switches %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Electrical switches" %}</strong>
+                                <span>{{ project.warranty_electrical_switches }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_electrical_extensions %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Electrical extensions" %}</strong>
+                                <span>{{ project.warranty_electrical_extensions }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_faucets %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Faucets / mixers" %}</strong>
+                                <span>{{ project.warranty_faucets }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_lighting %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Lighting" %}</strong>
+                                <span>{{ project.warranty_lighting }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                          </ul>
+                        </div>
+                      {% endif %}
+                      {% if has_location_tab %}
+                        <div class="tab-pane fade {% if first_project_tab == 'location' %}show active{% endif %}" id="pane-location" role="tabpanel" aria-labelledby="tab-location" tabindex="0">
+                          {% if map_embed_block %}
+                            <div class="map-embed">{{ map_embed_block|safe }}</div>
+                          {% elif map_embed_src %}
+                            <iframe src="{{ map_embed_src }}" class="w-100 rounded-3" height="280" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{% trans 'Project location map' %}"></iframe>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                      {% if has_video_tab %}
+                        <div class="tab-pane fade {% if first_project_tab == 'video' %}show active{% endif %}" id="pane-video" role="tabpanel" aria-labelledby="tab-video" tabindex="0">
+                          <div class="project-detail-video-wrap">
+                            <video controls playsinline preload="metadata">
+                              <source src="{{ project.promo_video.url }}">
+                              {% trans "Your browser does not support the video tag." %}
+                            </video>
+                          </div>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+            {% endif %}
+            <div class="card mb-4">
+              <div class="card-body p-4">
+                <h4 class="title mb-3">{% trans "Interested in this project?" %}</h4>
+                <p class="small text-muted mb-4">
+                  {% trans "Contact our team for more information, site visits, or investment options." %}
+                </p>
+                <a href="{% url 'contact_form' %}" class="btn btn-theme w-100 btn-radius"><span>{% trans "Contact us" %}</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if suggested_projects %}
+        <div class="row mt-5 pt-4">
+          <div class="col-12">
+            <div class="section-title mb-4">
+              <h2 class="title">{% trans "Suggested projects" %} <span>{% trans "in the same area" %}</span></h2>
+            </div>
+          </div>
+          {% for sp in suggested_projects %}
+            <div class="col-md-6 col-lg-3 mb-4">
+              <a href="{% url 'project_detail' sp.slug %}" class="text-decoration-none d-block h-100 text-reset">
+                <div class="project-suggested-card h-100">
+                  {% if sp.image %}
+                    <img src="{{ sp.image.url }}" alt="{{ sp.title }}">
+                  {% else %}
+                    <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ sp.title }}">
+                  {% endif %}
+                  <div class="card-body">
+                    {% if sp.location_line %}
+                      <div class="text-muted small mb-1">{{ sp.location_line }}</div>
+                    {% elif sp.category %}
+                      <div class="text-muted small mb-1">{{ sp.category.name }}</div>
+                    {% endif %}
+                    <h3 class="card-title">{{ sp.title }}</h3>
+                    {% if sp.sold_percentage %}
+                      <div class="small text-theme mb-1">{% trans "Sold" %}: {{ sp.sold_percentage|floatformat:"-2" }}%</div>
+                    {% endif %}
+                    <span class="text-theme small">{% trans "View details" %} <i class="fas fa-arrow-{% if LANGUAGE_BIDI %}left{% else %}right{% endif %} ms-1"></i></span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
+
+{% endblock %}
