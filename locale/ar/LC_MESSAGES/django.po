@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: core-cms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 02:01+0000\n"
+"POT-Creation-Date: 2026-03-26 02:15+0000\n"
 "PO-Revision-Date: 2026-03-19 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2199,16 +2199,19 @@ msgstr "سجل اهتمامك"
 msgid "Our news"
 msgstr "أخبارنا"
 
-msgid "English"
-msgstr "English"
-
-msgid "Arabic"
-msgstr "العربية"
+msgid "Change language"
+msgstr "تغيير اللغة"
 
 #, fuzzy
 #| msgid "View all"
 msgid "View all on home"
 msgstr "شاهد الجميع"
+
+#~ msgid "English"
+#~ msgstr "English"
+
+#~ msgid "Arabic"
+#~ msgstr "العربية"
 
 #~ msgid "Subject (optional)"
 #~ msgstr "الموضوع (اختياري)"

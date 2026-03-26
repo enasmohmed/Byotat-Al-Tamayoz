@@ -67,6 +67,51 @@
 
     {% include "partials/footer.html" %}
 
+    {% if footer %}
+      {% if footer.twitter_url or footer.facebook_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url %}
+        {# Social Icons Sidebar Animation (CodePen-like) #}
+        <nav class="social" aria-label="Social links" dir="ltr">
+          <ul>
+            {% if footer.twitter_url %}
+              <li class="twitter">
+                <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer">
+                  Twitter<i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if footer.facebook_url %}
+              <li class="facebook">
+                <a href="{{ footer.facebook_url }}" target="_blank" rel="noopener noreferrer">
+                  Facebook<i class="fab fa-facebook-f" aria-hidden="true"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if footer.linkedin_url %}
+              <li class="linkedin">
+                <a href="{{ footer.linkedin_url }}" target="_blank" rel="noopener noreferrer">
+                  LinkedIn<i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if footer.instagram_url %}
+              <li class="instagram">
+                <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer">
+                  Instagram<i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if footer.youtube_url %}
+              <li class="youtube">
+                <a href="{{ footer.youtube_url }}" target="_blank" rel="noopener noreferrer">
+                  YouTube<i class="fab fa-youtube" aria-hidden="true"></i>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% endif %}
+
     <!--back-to-top start-->
 
     <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="fas fa-chevron-up"></i></a></div>
@@ -97,6 +142,24 @@
       <script src="{% static 'ltr/js/contact-form/contact-form.js' %}"></script>
       <script src="{% static 'ltr/js/theme-script.js' %}"></script>
     {% endif %}
+    <script>
+      (function () {
+        document.addEventListener('DOMContentLoaded', function () {
+          var form = document.getElementById('site-lang-form');
+          var input = document.getElementById('site-lang-input');
+          if (!form || !input) return;
+          document.querySelectorAll('.sleek-lang-switch__btn[data-set-lang]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              var target = this.getAttribute('data-set-lang');
+              var lang = (document.documentElement.getAttribute('lang') || 'ar').replace('_', '-').split('-')[0];
+              if (target === lang) return;
+              input.value = target;
+              form.submit();
+            });
+          });
+        });
+      })();
+    </script>
     {% block extra_js %}{% endblock %}
   </body>
 </html>

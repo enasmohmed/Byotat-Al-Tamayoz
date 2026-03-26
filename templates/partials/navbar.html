@@ -1,4 +1,5 @@
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 
 
 <ul class="nav navbar-nav ms-auto">
@@ -34,19 +35,33 @@
     <a class="nav-link" href="{% url 'contact_form' %}">{% trans "Contact us" %}</a>
   </li>
 
-  {# تبديل اللغة: زر واحد يعرض اللغة الهدف (عربي → زر English، إنجليزي → زر Arabic) #}
+  {# تبديل لغة منزلق (sleek) — نفس مسار Django set_language #}
   <li class="nav-item d-flex align-items-center ms-2">
-    <form method="post" action="{% url 'set_language' %}" class="mb-0">
+    <form id="site-lang-form" method="post" action="{% url 'set_language' %}" class="visually-hidden" tabindex="-1" aria-hidden="true">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.path }}">
-      {% if LANGUAGE_CODE == 'ar' %}
-        <input type="hidden" name="language" value="en">
-        <button type="submit" class="btn btn-theme btn-sm btn-radius">{% trans "English" %}</button>
-      {% else %}
-        <input type="hidden" name="language" value="ar">
-        <button type="submit" class="btn btn-theme btn-sm btn-radius">{% trans "Arabic" %}</button>
-      {% endif %}
+      <input type="hidden" name="language" id="site-lang-input" value="">
     </form>
+    <div
+      class="sleek-lang-switch{% if LANGUAGE_CODE == 'en' %} sleek-lang-switch--en{% endif %}"
+      dir="ltr"
+      role="group"
+      aria-label="{% trans 'Change language' %}"
+    >
+      <span class="sleek-lang-switch__thumb" aria-hidden="true"></span>
+      <button
+        type="button"
+        class="sleek-lang-switch__btn{% if LANGUAGE_CODE == 'ar' %} is-active{% endif %}"
+        data-set-lang="ar"
+        aria-pressed="{% if LANGUAGE_CODE == 'ar' %}true{% else %}false{% endif %}"
+      >AR</button>
+      <button
+        type="button"
+        class="sleek-lang-switch__btn{% if LANGUAGE_CODE == 'en' %} is-active{% endif %}"
+        data-set-lang="en"
+        aria-pressed="{% if LANGUAGE_CODE == 'en' %}true{% else %}false{% endif %}"
+      >EN</button>
+    </div>
   </li>
 
 </ul>
