@@ -1812,7 +1812,7 @@ msgid "Private parking"
 msgstr "موقف خاص"
 
 msgid "Smart home"
-msgstr "منزل ذكي"
+msgstr "سمارت هوم"
 
 msgid "Maid room"
 msgstr "غرفة خادمة"
@@ -2044,6 +2044,9 @@ msgstr "تمديدات السباكة"
 
 msgid "Water heaters"
 msgstr "سخانات المياه"
+
+msgid "Smart control"
+msgstr "التحكم الذكي"
 
 msgid "Electrical switches"
 msgstr "المفاتيح الكهربائية"

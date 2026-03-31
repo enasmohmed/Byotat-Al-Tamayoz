@@ -201,6 +201,15 @@ footer .widget .recent-post-desc span {
   }
 }
 
+/* Project detail: fixed social strip stays behind main column + sidebar (tabs, map, etc.) */
+body.page-project-detail .social {
+  z-index: 50;
+}
+body.page-project-detail .project-detail-main {
+  position: relative;
+  z-index: 100;
+}
+
 /* Responsive fixes: oversized logos on small screens */
 @media (max-width: 991.98px) {
   #logo-img {

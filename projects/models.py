@@ -114,11 +114,33 @@ class Project(models.Model):
         null=True,
         blank=True,
         verbose_name=_("Rooms count"),
+        help_text=_("Use when all units share one number. If rooms vary (e.g. 3, 4, 5), use «Rooms — options text» instead or as well."),
+    )
+    rooms_options = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Rooms — options text"),
+        help_text=_(
+            "Optional. Shown in specs instead of a single count when units differ. "
+            "Examples: «3، 4، 5» or «3 / 4 / 5»."
+        ),
     )
     bathroom_count = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
         verbose_name=_("Bathrooms count"),
+        help_text=_("Use when all units share one number. If bathrooms vary, use «Bathrooms — options text»."),
+    )
+    bathrooms_options = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Bathrooms — options text"),
+        help_text=_(
+            "Optional. Shown in specs instead of a single count when units differ. "
+            "Examples: «3، 4» or «2 / 3»."
+        ),
     )
     has_living_hall = models.BooleanField(default=False, verbose_name=_("Has living hall (صالة)"))
     has_elevator = models.BooleanField(default=False, verbose_name=_("Has elevator"))
@@ -150,6 +172,13 @@ class Project(models.Model):
     )
     warranty_plumbing = models.CharField(max_length=120, blank=True, default="", verbose_name=_("Plumbing extensions warranty"))
     warranty_water_heaters = models.CharField(max_length=120, blank=True, default="", verbose_name=_("Water heaters warranty"))
+    warranty_smart_control = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Smart control warranty"),
+        help_text=_("e.g. years for smart home / building automation systems (التحكم الذكي)."),
+    )
     warranty_electrical_switches = models.CharField(max_length=120, blank=True, default="", verbose_name=_("Electrical switches warranty"))
     warranty_electrical_extensions = models.CharField(max_length=120, blank=True, default="", verbose_name=_("Electrical extensions warranty"))
     warranty_faucets = models.CharField(max_length=120, blank=True, default="", verbose_name=_("Faucets / mixers warranty"))

@@ -2,6 +2,9 @@
 {% load static i18n l10n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 
+{# يخفّض z-index للشريط الاجتماعي في base حتى لا يغطي تبويبات الـ sidebar #}
+{% block body_class %}page-project-detail{% endblock %}
+
 {% block extra_head %}
 <style>
   .project-detail-hero .project-location-line {
@@ -327,23 +330,23 @@
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
-                            {% if project.room_count is not None %}
+                            {% if project.rooms_options or project.room_count is not None %}
                               <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
                                 <span class="d-inline-flex align-items-center gap-2">
                                   <i class="fas fa-bed text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Rooms" %}</strong>
                                 </span>
-                                <span class="text-end">{{ project.room_count }}</span>
+                                <span class="text-end">{% if project.rooms_options %}{{ project.rooms_options }}{% else %}{{ project.room_count }}{% endif %}</span>
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
-                            {% if project.bathroom_count is not None %}
+                            {% if project.bathrooms_options or project.bathroom_count is not None %}
                               <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap project-spec-row">
                                 <span class="d-inline-flex align-items-center gap-2">
                                   <i class="fas fa-bath text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Bathrooms" %}</strong>
                                 </span>
-                                <span class="text-end">{{ project.bathroom_count }}</span>
+                                <span class="text-end">{% if project.bathrooms_options %}{{ project.bathrooms_options }}{% else %}{{ project.bathroom_count }}{% endif %}</span>
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
@@ -353,7 +356,7 @@
                                   <i class="fas fa-couch text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Living hall" %}</strong>
                                 </span>
-                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Yes" %}</span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> </span>
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
@@ -363,7 +366,7 @@
                                   <i class="fas fa-sort-amount-up text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Elevator" %}</strong>
                                 </span>
-                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Available" %}</span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> </span>
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
@@ -373,7 +376,7 @@
                                   <i class="fas fa-car text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Private parking" %}</strong>
                                 </span>
-                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Available" %}</span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> </span>
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
@@ -383,7 +386,7 @@
                                   <i class="fas fa-wifi text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Smart home" %}</strong>
                                 </span>
-                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Yes" %}</span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> </span>
                               </div>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}
@@ -393,7 +396,7 @@
                                   <i class="fas fa-door-open text-theme spec-icon" aria-hidden="true"></i>
                                   <strong>{% trans "Maid room" %}</strong>
                                 </span>
-                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> {% trans "Yes" %}</span>
+                                <span class="text-end"><i class="fas fa-check text-theme" aria-hidden="true"></i> </span>
                               </div>
                             {% endif %}
                           </div>
@@ -420,6 +423,13 @@
                               <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
                                 <strong>{% trans "Water heaters" %}</strong>
                                 <span>{{ project.warranty_water_heaters }} {% trans "years" %}</span>
+                              </li>
+                              <hr class="my-2" style="opacity:0.15;">
+                            {% endif %}
+                            {% if project.warranty_smart_control %}
+                              <li class="mb-2 d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <strong>{% trans "Smart control" %}</strong>
+                                <span>{{ project.warranty_smart_control }} {% trans "years" %}</span>
                               </li>
                               <hr class="my-2" style="opacity:0.15;">
                             {% endif %}

@@ -69,22 +69,10 @@
   <section class="overflow-hidden pb-5 all-projects-page"
     {% if LANGUAGE_CODE == 'ar' %}dir="rtl"{% else %}dir="ltr"{% endif %}>
     <div class="container pt-5">
-      {% if filter_cities or all_districts_options %}
+      {% if all_districts_options %}
       <div class="row justify-content-center mb-3">
         <div class="col-12">
           <div class="all-projects-loc-filters d-flex flex-wrap justify-content-center align-items-end gap-3">
-            {% if filter_cities %}
-            <div class="d-flex flex-column align-items-stretch">
-              <label class="small mb-1 text-start" for="all-projects-filter-city">{% trans "City" %}</label>
-              <select id="all-projects-filter-city" class="form-select form-select-sm">
-                <option value="">{% trans "All cities" %}</option>
-                {% for token, label in filter_cities %}
-                  <option value="{{ token }}">{{ label }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            {% endif %}
-            {% if all_districts_options %}
             <div class="d-flex flex-column align-items-stretch">
               <label class="small mb-1 text-start" for="all-projects-filter-district">{% trans "District" %}</label>
               <select id="all-projects-filter-district" class="form-select form-select-sm">
@@ -94,19 +82,20 @@
                 {% endfor %}
               </select>
             </div>
-            {% endif %}
           </div>
         </div>
       </div>
+      {% endif %}
+      {% if filter_cities or all_districts_options %}
       {{ districts_by_city|json_script:"all-projects-districts-by-city" }}
       {{ all_districts_options|json_script:"all-projects-districts-all" }}
       {% endif %}
       <div class="row text-center">
         <div class="col-md-12">
           <div class="portfolio-filter d-flex gap-2">
-            <button type="button" data-filter="*" class="is-checked">{% trans "All" %}</button>
-            {% for cat in categories %}
-              <button type="button" data-filter=".{{ cat.slug }}">{{ cat.name }}</button>
+            <button type="button" data-filter="*" data-city="" class="is-checked">{% trans "All" %}</button>
+            {% for city_token, city_label in filter_cities %}
+              <button type="button" data-filter=".{{ city_token }}" data-city="{{ city_token }}">{{ city_label }}</button>
             {% endfor %}
           </div>
         </div>
@@ -119,7 +108,7 @@
             <div class="grid-sizer"></div>
             {% for project in projects %}
               {% url 'project_detail' project.slug as project_detail_url %}
-              <div class="masonry-brick {% if project.category %}{{ project.category.slug }}{% else %}project-uncat{% endif %}{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}{% if project.filter_district_class %} {{ project.filter_district_class }}{% endif %}">
+              <div class="masonry-brick{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}{% if project.filter_district_class %} {{ project.filter_district_class }}{% endif %}">
                 <div class="portfolio-item">
                   <a href="{{ project_detail_url }}" class="project-thumb-link">
                     {% if project.image %}
@@ -170,12 +159,16 @@
     var districtsByCity = elByCity ? JSON.parse(elByCity.textContent) : {};
     var allDistricts = elAllDist ? JSON.parse(elAllDist.textContent) : [];
 
-    var $city = $('#all-projects-filter-city');
     var $district = $('#all-projects-filter-district');
-    var $catFilter = $root.find('.portfolio-filter');
-    if (!$catFilter.length) return;
+    var $cityFilter = $root.find('.portfolio-filter');
+    if (!$cityFilter.length) return;
 
     var allDistrictsLabel = "{{ ap_js_all_districts|escapejs }}";
+
+    function selectedCityToken() {
+      var $btn = $cityFilter.find('button.is-checked');
+      return ($btn.length && $btn.data('city') !== undefined) ? String($btn.data('city') || '') : '';
+    }
 
     function fillDistrictOptions(cityToken) {
       if (!$district.length) return;
@@ -187,36 +180,30 @@
     }
 
     function applyFilter() {
-      var cityVal = ($city.length && $city.val()) ? $city.val() : '';
+      var cityVal = selectedCityToken();
       var distVal = ($district.length && $district.val()) ? $district.val() : '';
-      var catFilter = $catFilter.find('button.is-checked').attr('data-filter') || '*';
+      var cityClassFilter = $cityFilter.find('button.is-checked').attr('data-filter') || '*';
       $masonry.isotope({
         filter: function () {
           var $el = $(this);
-          var okCity = !cityVal || $el.hasClass(cityVal);
+          var okCity = cityClassFilter === '*' || $el.is(cityClassFilter);
           var okDist = !distVal || $el.hasClass(distVal);
-          var okCat = catFilter === '*' || $el.is(catFilter);
-          return okCity && okDist && okCat;
+          return okCity && okDist;
         }
       });
     }
 
-    $catFilter.off('click', 'button');
-    $catFilter.on('click', 'button', function () {
-      $catFilter.find('button').removeClass('is-checked');
+    $cityFilter.off('click', 'button');
+    $cityFilter.on('click', 'button', function () {
+      $cityFilter.find('button').removeClass('is-checked');
       $(this).addClass('is-checked');
+      fillDistrictOptions(selectedCityToken());
       applyFilter();
     });
 
-    if ($city.length) {
-      $city.on('change', function () {
-        fillDistrictOptions($(this).val() || '');
-        applyFilter();
-      });
-    }
     if ($district.length) {
       $district.on('change', applyFilter);
-      fillDistrictOptions(($city.length && $city.val()) ? $city.val() : '');
+      fillDistrictOptions(selectedCityToken());
     }
     applyFilter();
   });

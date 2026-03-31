@@ -397,8 +397,8 @@
       <div class="col-md-12">
         <div class="portfolio-filter d-flex gap-2 home-projects-filter">
           <button data-filter="*" class="is-checked">{% trans "All" %}</button>
-          {% for cat in categories %}
-          <button data-filter=".{{ cat.slug }}">{{ cat.name }}</button>
+          {% for city_token, city_label in filter_cities %}
+          <button data-filter=".{{ city_token }}">{{ city_label }}</button>
           {% endfor %}
         </div>
       </div>
@@ -407,7 +407,7 @@
           <div class="grid-sizer"></div>
           {% for project in projects %}
           {% url 'project_detail' project.slug as project_detail_url %}
-          <div class="masonry-brick {% if project.category %}{{ project.category.slug }}{% else %}project-uncat{% endif %}">
+          <div class="masonry-brick{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}">
             <div class="portfolio-item">
               <a href="{{ project_detail_url }}" class="project-thumb-link">
               {% if project.image %}

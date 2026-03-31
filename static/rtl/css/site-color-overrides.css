@@ -199,3 +199,12 @@ footer .widget .recent-post-desc span {
     display: none;
   }
 }
+
+/* Project detail: fixed social strip stays behind main column + sidebar (tabs, map, etc.) */
+body.page-project-detail .social {
+  z-index: 50;
+}
+body.page-project-detail .project-detail-main {
+  position: relative;
+  z-index: 100;
+}

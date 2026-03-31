@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView
 
 from core.i18n_utils import interface_language
 
-from .models import AllProjectsPageSettings, Project, ProjectCategory
+from .models import AllProjectsPageSettings, Project
 
 
 def _location_filter_class(prefix: str, raw: str) -> str:
@@ -33,7 +33,6 @@ class ProjectListView(ListView):
         lang = interface_language(self.request)
         context["all_projects_page"] = AllProjectsPageSettings.objects.first()
         context["interface_lang"] = lang
-        context["categories"] = ProjectCategory.objects.all()
 
         plist = list(context["projects"])
         city_labels = {}
@@ -135,7 +134,9 @@ class ProjectDetailView(DetailView):
                 project.area_sqm_min is not None,
                 project.area_sqm_max is not None,
                 project.room_count is not None,
+                (getattr(project, "rooms_options", "") or "").strip(),
                 project.bathroom_count is not None,
+                (getattr(project, "bathrooms_options", "") or "").strip(),
                 project.has_living_hall,
                 project.has_elevator,
                 project.has_private_parking,
@@ -148,6 +149,7 @@ class ProjectDetailView(DetailView):
                 project.structural_warranty_years,
                 (project.warranty_plumbing or "").strip(),
                 (project.warranty_water_heaters or "").strip(),
+                (getattr(project, "warranty_smart_control", "") or "").strip(),
                 (project.warranty_electrical_switches or "").strip(),
                 (project.warranty_electrical_extensions or "").strip(),
                 (project.warranty_faucets or "").strip(),

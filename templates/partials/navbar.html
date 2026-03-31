@@ -4,11 +4,11 @@
 
 <ul class="nav navbar-nav ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'home' %}">{% trans "Home" %}</a>
+    <a class="nav-link{% if request.resolver_match.url_name == 'home' %} active{% endif %}" href="{% url 'home' %}">{% trans "Home" %}</a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'about_us' %}">{% trans "About us" %}</a>
+    <a class="nav-link{% if request.resolver_match.url_name == 'about_us' %} active{% endif %}" href="{% url 'about_us' %}">{% trans "About us" %}</a>
   </li>
 
   <li class="nav-item">
@@ -16,7 +16,7 @@
   </li>
 
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{% trans "Our projects" %}</a>
+    <a class="nav-link dropdown-toggle{% if request.resolver_match.url_name == 'projects_list' %} active{% endif %}" href="#" data-bs-toggle="dropdown">{% trans "Our projects" %}</a>
     <ul class="dropdown-menu">
       <li><a href="{% url 'projects_list' %}">{% trans "Projects" %}</a></li>
       <li><a href="{% url 'home' %}#home-projects">{% trans "Visit projects" %}</a></li>
@@ -28,11 +28,11 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'posts_list' %}">{% trans "Our news" %}</a>
+    <a class="nav-link{% if request.resolver_match.url_name == 'posts_list' or request.resolver_match.url_name == 'post_detail' %} active{% endif %}" href="{% url 'posts_list' %}">{% trans "Our news" %}</a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'contact_form' %}">{% trans "Contact us" %}</a>
+    <a class="nav-link{% if request.resolver_match.url_name == 'contact_form' %} active{% endif %}" href="{% url 'contact_form' %}">{% trans "Contact us" %}</a>
   </li>
 
   {# تبديل لغة منزلق (sleek) — نفس مسار Django set_language #}

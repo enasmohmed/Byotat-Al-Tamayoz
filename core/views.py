@@ -1,8 +1,11 @@
+import hashlib
+
+from django.utils.text import slugify
 from django.views.generic import TemplateView
 from blog.models import Post
 from core.i18n_utils import interface_language
 from core.models import AboutPage, HomeCTA, PartnerBrand, SiteSettings
-from projects.models import SectionTitle, Project, ProjectCategory
+from projects.models import SectionTitle, Project
 
 
 def _section_display(section, lang):
@@ -21,6 +24,17 @@ def _section_display(section, lang):
                 getattr(section, 'subtitle_ar', None) or
                 getattr(section, 'subtitle_en', None) or '')
     return {'title': title, 'highlight': highlight, 'subtitle': subtitle}
+
+
+def _location_filter_class(prefix: str, raw: str) -> str:
+    raw = (raw or "").strip()
+    if not raw:
+        return ""
+    s = slugify(raw)
+    if s:
+        return f"{prefix}-{s}"
+    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
+    return f"{prefix}-u{digest}"
 
 
 class HomeView(TemplateView):
@@ -42,8 +56,15 @@ class HomeView(TemplateView):
         context['section_partners_display'] = _section_display(section_partners, lang)
         context['section_news_display'] = _section_display(section_news, lang)
 
-        context["projects"] = Project.objects.filter(is_active=True).select_related("category")
-        context["categories"] = ProjectCategory.objects.all()
+        plist = list(Project.objects.filter(is_active=True).select_related("category"))
+        city_labels = {}
+        for p in plist:
+            city = (getattr(p, "city", None) or "").strip()
+            p.filter_city_class = _location_filter_class("ct", city) if city else ""
+            if p.filter_city_class:
+                city_labels[p.filter_city_class] = city
+        context["projects"] = plist
+        context["filter_cities"] = sorted(city_labels.items(), key=lambda x: x[1].casefold())
         context["partner_brands"] = PartnerBrand.objects.filter(is_active=True).order_by("sort_order", "id")
         context["home_cta"] = HomeCTA.objects.filter(is_active=True).first()
 
