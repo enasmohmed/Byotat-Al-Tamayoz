@@ -16,6 +16,9 @@ ENV/
 *.log
 .env
 .env.*
+.git
+.idea
+
 
 
 # --- User uploads & generated media (احتفظ بها على السيرفر؛ لا تستبدلها بـ git pull) ---
