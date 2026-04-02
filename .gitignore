@@ -1,3 +1,9 @@
+# ملاحظة: .gitignore لا يوقف تتبّع ملفات «مضافة مسبقاً» للمستودع.
+# لإزالة الملفات من Git مع الإبقاء عليها على الجهاز ثم دفع التغيير:
+#   git rm -r --cached env/ media/  &&  git rm --cached db.sqlite3
+#   git ls-files | grep __pycache__ | xargs git rm --cached   (أو نفس الفكرة لأي مسار)
+# ثم: git commit -m "Stop tracking ignored paths"
+
 # --- Python ---
 __pycache__/
 *.py[cod]
