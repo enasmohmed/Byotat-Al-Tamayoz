@@ -147,6 +147,7 @@ class Project(models.Model):
     has_private_parking = models.BooleanField(default=False, verbose_name=_("Private parking"))
     has_smart_home = models.BooleanField(default=False, verbose_name=_("Smart home"))
     has_maid_room = models.BooleanField(default=False, verbose_name=_("Maid room"))
+    has_driver_room = models.BooleanField(default=False, verbose_name=_("Driver room"))
 
     promo_video = models.FileField(
         upload_to="projects/videos/",

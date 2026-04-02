@@ -6,6 +6,7 @@ class ContactMessage(models.Model):
     class SendVia(models.TextChoices):
         EMAIL = "email", _("Company email")
         WHATSAPP = "whatsapp", _("Company WhatsApp")
+        BOTH = "both", _("Email and WhatsApp")
 
     name = models.CharField(max_length=255)
     email = models.EmailField()

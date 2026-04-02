@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="page-wrapper">
+  <section class="dark-bg text-center py-5">
+    <div class="container">
+      <div class="col-lg-8 mx-auto">
+        <h1 class="title">{{ service.title }}</h1>
+        {% if service.short_description %}
+          <p class="text-white mb-0">{{ service.short_description }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <div class="page-content py-5">
+    <div class="container">
+      {% if service.image %}
+        <div class="mb-4 text-center"><img src="{{ service.image.url }}" class="img-fluid" alt="{{ service.title }}"></div>
+      {% endif %}
+      <div class="service-detail-body">{{ service.description|safe }}</div>
+      <p class="mt-4"><a href="{% url 'services_list' %}" class="btn btn-theme btn-radius">{% trans "Back to services" %}</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

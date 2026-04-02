@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: core-cms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 02:15+0000\n"
+"POT-Creation-Date: 2026-04-01 23:00+0000\n"
 "PO-Revision-Date: 2026-03-19 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,620 +13,871 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
+#: blog/admin.py:22 core/admin.py:14 core/admin.py:113 projects/admin.py:100
+msgid "Hero (page title / parallax)"
+msgstr ""
+
+#: blog/admin.py:34 projects/admin.py:111
+msgid "Breadcrumb"
+msgstr "مسار التصفح"
+
+#: blog/admin.py:37 projects/admin.py:114
+msgid "Leave labels empty to use the default translated strings."
+msgstr ""
+
+#: blog/models.py:48 core/models.py:292 core/models.py:428
+#: projects/models.py:274 services/models.py:31
+msgid "Hero background image"
+msgstr ""
+
+#: blog/models.py:53 core/models.py:298 core/models.py:434
+#: projects/models.py:279 services/models.py:37
+msgid "Hero overlay darkness"
+msgstr ""
+
+#: blog/models.py:54 projects/models.py:280
+msgid "1–10 (parallax overlay strength)."
+msgstr ""
+
+#: blog/models.py:56 projects/models.py:282
+msgid "Page title (main)"
+msgstr ""
+
+#: blog/models.py:57 projects/models.py:283
+msgid "Page title (highlight span)"
+msgstr ""
+
+#: blog/models.py:61
+msgid "Intro under title"
+msgstr ""
+
+#: blog/models.py:62
+msgid "Optional short line under the page title (leave blank to hide)."
+msgstr ""
+
+#: blog/models.py:68
+msgid "Breadcrumb: parent link label"
+msgstr ""
+
+#: blog/models.py:69
+msgid "Middle link (e.g. News). Leave blank for default translation."
+msgstr ""
+
+#: blog/models.py:75 projects/models.py:295
+msgid "Breadcrumb: current page label"
+msgstr ""
+
+#: blog/models.py:76 projects/models.py:296
+msgid "Last crumb. Leave blank for default translation."
+msgstr ""
+
+#: blog/models.py:80 blog/models.py:81 blog/models.py:84
+msgid "News list page"
+msgstr ""
+
+#: contact/forms.py:12
 msgid "Name"
 msgstr "الاسم"
 
+#: contact/forms.py:17 templates/contact-us.html:99
+#: templates/contact-us.html:115 templates/partials/footer.html:94
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-msgid "Phone (optional)"
-msgstr "الهاتف (اختياري)"
-
+#: contact/forms.py:27
 msgid "Subject"
 msgstr "الموضوع"
 
+#: contact/forms.py:32
 msgid "Message"
 msgstr "الرسالة"
 
+#: contact/forms.py:36
 msgid "Send message via"
 msgstr "أرسل الرسالة عبر"
 
+#: contact/forms.py:47 contact/forms.py:56
 msgid "Via company email"
 msgstr "بريد الشركة الإلكتروني"
 
+#: contact/forms.py:49 contact/forms.py:57
 msgid "Via company WhatsApp"
 msgstr "واتساب الشركة"
 
+#: contact/forms.py:71
 msgid "Site settings are missing. Please contact the administrator."
 msgstr "إعدادات الموقع غير متوفرة. يرجى التواصل مع مشرف الموقع."
 
-msgid ""
-"Company email is not configured. Choose WhatsApp or ask the administrator to "
-"set it in Site settings."
-msgstr ""
-"لم يُضبط بريد الشركة. اختر واتساب أو اطلب من المشرف ضبطه من إعدادات الموقع."
+#: contact/forms.py
+msgid "Please choose at least one: email or WhatsApp."
+msgstr "يرجى اختيار طريقة واحدة على الأقل: البريد أو واتساب."
 
+#: contact/forms.py
 msgid ""
-"Company WhatsApp is not configured. Choose email or ask the administrator to "
-"set it in Site settings."
+"Company email is not configured. Uncheck email or ask the administrator to set "
+"it in Site settings."
 msgstr ""
-"لم يُضبط واتساب الشركة. اختر البريد الإلكتروني أو اطلب من المشرف ضبطه من "
-"إعدادات الموقع."
+"لم يُضبط بريد الشركة. ألغِ تحديد البريد أو اطلب من المشرف ضبطه من إعدادات "
+"الموقع."
 
+#: contact/forms.py
+msgid ""
+"Company WhatsApp is not configured. Uncheck WhatsApp or ask the administrator "
+"to set it in Site settings."
+msgstr ""
+"لم يُضبط واتساب الشركة. ألغِ تحديد واتساب أو اطلب من المشرف ضبطه من إعدادات "
+"الموقع."
+
+#: contact/models.py:7
 msgid "Company email"
 msgstr "بريد الشركة الإلكتروني"
 
+#: contact/models.py:8
 msgid "Company WhatsApp"
 msgstr "واتساب الشركة"
 
+#: contact/models.py
+msgid "Email and WhatsApp"
+msgstr "البريد الإلكتروني وواتساب"
+
+#: contact/models.py:19
 msgid "Send via"
 msgstr "طريقة الإرسال"
 
+#: contact/views.py:62
 msgid "Opening WhatsApp so you can send the message to the company."
 msgstr "جاري فتح واتساب لإرسال رسالتك إلى الشركة."
 
+#: contact/views.py
+msgid ""
+"Your message was sent by email. Opening WhatsApp so you can send the same "
+"message there too."
+msgstr ""
+"تم إرسال رسالتك بالبريد. جاري فتح واتساب لإرسال نفس الرسالة هناك أيضاً."
+
+#: contact/views.py:69
 #, python-format
 msgid "Subject: %(subject)s"
 msgstr "الموضوع: %(subject)s"
 
+#: contact/views.py:70
 #, python-format
 msgid "Name: %(name)s"
 msgstr "الاسم: %(name)s"
 
+#: contact/views.py:71
 #, python-format
 msgid "Email: %(email)s"
 msgstr "البريد الإلكتروني: %(email)s"
 
+#: contact/views.py:75
 #, python-format
 msgid "Phone: %(phone)s"
 msgstr "الهاتف: %(phone)s"
 
+#: contact/views.py:90
 msgid "Thank you! Your message has been sent. We will get back to you soon."
 msgstr "شكراً لك! تم إرسال رسالتك. سنتواصل معك قريباً."
 
-msgid "Hero (page title / parallax)"
-msgstr ""
-
+#: core/admin.py:26
 msgid "Intro — image gallery (up to 4)"
 msgstr ""
 
+#: core/admin.py:30
 msgid "Intro — text & button"
 msgstr ""
 
+#: core/admin.py:42
 msgid "Tabs — button labels"
 msgstr ""
 
+#: core/admin.py:44
 msgid "Tab: Mission"
 msgstr ""
 
+#: core/admin.py:56
 msgid "Tab: Vision"
 msgstr ""
 
+#: core/admin.py:68
 msgid "Tab: Values"
 msgstr ""
 
+#: core/admin.py:80
 msgid "Quality policy & “for you” (carousel section)"
 msgstr ""
 
+#: core/admin.py:83
 msgid ""
 "Section title appears above the slider. Slide 1: quality policy (title "
 "optional intro then one line per bullet). Slide 2: “for you” block."
 msgstr ""
 
+#: core/admin.py:125
 msgid "Left column (sidebar)"
 msgstr ""
 
+#: core/admin.py:135
 msgid "Form area heading"
 msgstr ""
 
+#: core/admin.py:154
 msgid "Identity & contact"
 msgstr ""
 
+#: core/admin.py:173
 msgid "Theme colors (HEX, e.g. #1d3338)"
 msgstr ""
 
+#: core/admin.py:176
 msgid ""
 "Accent = buttons & links. Secondary accent = gradients. Surface = page & "
 "light areas. Dark = header & footer."
 msgstr ""
 
+#: core/admin.py:215
 #, fuzzy
 #| msgid "About us"
 msgid "About column"
 msgstr "نبذة عنا"
 
+#: core/admin.py:221
 msgid "Solutions column (headings; links in table below)"
 msgstr ""
 
+#: core/admin.py:227
 msgid "Recent posts column (title only — posts come from blog)"
 msgstr ""
 
+#: core/admin.py:233
 #, fuzzy
 #| msgid "Contact Us"
 msgid "Contact column"
 msgstr "تواصل معنا"
 
+#: core/admin.py:239
 msgid "Footer bottom row"
 msgstr ""
 
+#: core/admin.py:251 templates/contact-us.html:124
 msgid "Social media"
 msgstr "وسائل التواصل"
 
+#: core/admin.py:263
 #, fuzzy
 #| msgid "Copyright"
 msgid "Copyright line"
 msgstr "حقوق النشر"
 
+#: core/models.py:13
 msgid "Accent color"
 msgstr ""
 
+#: core/models.py:14
 msgid ""
 "Buttons, links, icons, progress bars, highlights — the color that should "
 "stand out."
 msgstr ""
 
+#: core/models.py:20
 msgid "Secondary accent"
 msgstr ""
 
+#: core/models.py:21
 msgid "Gradients with accent, secondary buttons, subtle accents."
 msgstr ""
 
+#: core/models.py:27
 msgid "Surface / page background"
 msgstr ""
 
+#: core/models.py:28
 msgid "Main page background and light sections (e.g. #ececec)."
 msgstr ""
 
+#: core/models.py:34
 msgid "Dark brand background"
 msgstr ""
 
+#: core/models.py:35
 msgid "Header (when fixed), footer, dark sections (e.g. #1d3338)."
 msgstr ""
 
+#: core/models.py:47
 msgid "WhatsApp number"
 msgstr ""
 
+#: core/models.py:48
 msgid ""
 "Digits only with country code, no spaces (e.g. 966501234567). Used for chat "
 "links."
 msgstr ""
 
+#: core/models.py:53
 msgid "Google Maps embed URL"
 msgstr ""
 
+#: core/models.py:55
 msgid ""
 "Paste the iframe src URL from Google Maps (Share → Embed a map). If empty, "
 "the contact page uses the default map from settings (e.g. Jeddah)."
 msgstr ""
 
+#: core/models.py:62
 msgid "Site Setting"
 msgstr ""
 
+#: core/models.py:63
 msgid "Site Settings"
 msgstr ""
 
+#: core/models.py:77
 msgid "Main text"
 msgstr ""
 
+#: core/models.py:78
 msgid "Highlighted text"
 msgstr ""
 
+#: core/models.py:79
 msgid "Button text"
 msgstr ""
 
+#: core/models.py:84
 msgid "Button URL"
 msgstr ""
 
+#: core/models.py:85
 msgid "Internal path like /contact/ or full URL."
 msgstr ""
 
+#: core/models.py:87 core/models.py:272
 msgid "Active"
 msgstr ""
 
+#: core/models.py:90 core/models.py:91 core/models.py:101
 #, fuzzy
 #| msgid "Home"
 msgid "Home CTA"
 msgstr "الرئيسية"
 
+#: core/models.py:112
 msgid "About — first part of title"
 msgstr ""
 
+#: core/models.py:113
 msgid "Example: \"About\" in \"About Us\""
 msgstr ""
 
+#: core/models.py:119
 msgid "About — colored part"
 msgstr ""
 
+#: core/models.py:120
 msgid "Example: \"Us\" (appears in theme color)"
 msgstr ""
 
+#: core/models.py:125
 msgid "About — text"
 msgstr ""
 
+#: core/models.py:132
 msgid "Our Solutions — first part"
 msgstr ""
 
+#: core/models.py:133
 msgid "Example: \"Our\" in \"Our Solutions\""
 msgstr ""
 
+#: core/models.py:139
 msgid "Our Solutions — colored part"
 msgstr ""
 
+#: core/models.py:140
 #, fuzzy
 #| msgid "Solutions"
 msgid "Example: \"Solutions\""
 msgstr "الحلول"
 
+#: core/models.py:147
 msgid "Recent Post — first part"
 msgstr ""
 
+#: core/models.py:148
 msgid "Example: \"Recent\" in \"Recent Post\""
 msgstr ""
 
+#: core/models.py:154
 msgid "Recent Post — colored part"
 msgstr ""
 
+#: core/models.py:155
 msgid "Example: \"Post\""
 msgstr ""
 
+#: core/models.py:162
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Get in touch — first part"
 msgstr "تواصل معنا"
 
+#: core/models.py:163
 msgid "Example: \"Get In\""
 msgstr ""
 
+#: core/models.py:169
 msgid "Get in touch — colored part"
 msgstr ""
 
+#: core/models.py:170
 msgid "Example: \"Touch\""
 msgstr ""
 
+#: core/models.py:176
 #, fuzzy
 #| msgid "Contact Us"
 msgid "Contact — address"
 msgstr "تواصل معنا"
 
+#: core/models.py:182
 msgid "Contact — phone"
 msgstr ""
 
+#: core/models.py:187
 msgid "Contact — email"
 msgstr ""
 
+#: core/models.py:194
 msgid "Footer logo"
 msgstr ""
 
+#: core/models.py:195
 msgid "If empty, the main site logo is used."
 msgstr ""
 
+#: core/models.py:202
 msgid "Working hours — line 1 label"
 msgstr ""
 
+#: core/models.py:203
 msgid "Example: \"Monday - Friday\""
 msgstr ""
 
+#: core/models.py:209
 msgid "Working hours — line 1 hours"
 msgstr ""
 
+#: core/models.py:210
 msgid "Example: \"10:00 to 6:00\""
 msgstr ""
 
+#: core/models.py:216
 msgid "Working hours — line 2 label"
 msgstr ""
 
+#: core/models.py:222
 msgid "Working hours — line 2 hours"
 msgstr ""
 
+#: core/models.py:225
 msgid "Facebook URL"
 msgstr ""
 
+#: core/models.py:226
 msgid "X (Twitter) URL"
 msgstr ""
 
+#: core/models.py:227
 msgid "LinkedIn URL"
 msgstr ""
 
+#: core/models.py:228
 msgid "Instagram URL"
 msgstr ""
 
+#: core/models.py:229
 msgid "YouTube URL"
 msgstr ""
 
+#: core/models.py:235
 #, fuzzy
 #| msgid "All rights reserved"
 msgid "e.g. | All Rights Reserved"
 msgstr "جميع الحقوق محفوظة"
 
+#: core/models.py:239 core/models.py:240
 msgid "Footer settings"
 msgstr ""
 
+#: core/models.py:251
 msgid "Footer"
 msgstr ""
 
+#: core/models.py:265
 msgid "Link title"
 msgstr ""
 
+#: core/models.py:268
 msgid "Link URL"
 msgstr ""
 
+#: core/models.py:269
 msgid "e.g. /blog/ or https://…"
 msgstr ""
 
+#: core/models.py:271
+#: env/lib/python3.12/site-packages/django/forms/formsets.py:484
+#: env/lib/python3.12/site-packages/django/forms/formsets.py:491
 msgid "Order"
 msgstr ""
 
+#: core/models.py:275
 #, fuzzy
 #| msgid "No footer links yet."
 msgid "Footer link"
 msgstr "لا توجد روابط في الفوتر بعد."
 
+#: core/models.py:276
 #, fuzzy
 #| msgid "No footer links yet."
 msgid "Footer links"
 msgstr "لا توجد روابط في الفوتر بعد."
 
-msgid "Hero background image"
-msgstr ""
-
+#: core/models.py:293 core/models.py:429 services/models.py:32
 msgid "Background for the page title (parallax)."
 msgstr ""
 
-msgid "Hero overlay darkness"
-msgstr ""
-
+#: core/models.py:299 core/models.py:435 services/models.py:38
 msgid "0 = light, 10 = very dark (theme data-overlay)."
 msgstr ""
 
+#: core/models.py:301 core/models.py:437 services/models.py:40
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Hero title — first part"
 msgstr "تواصل معنا"
 
+#: core/models.py:302 core/models.py:438 services/models.py:41
 msgid "Hero title — highlighted part"
 msgstr ""
 
+#: core/models.py:307 core/models.py:443 services/models.py:46
 msgid "Breadcrumb middle label"
 msgstr ""
 
+#: core/models.py:308 services/models.py:47
 msgid "e.g. \"Pages\" — appears between Home and current page."
 msgstr ""
 
+#: core/models.py:311 services/models.py:50
 msgid "Gallery image 1"
 msgstr ""
 
+#: core/models.py:312 services/models.py:51
 msgid "Gallery image 2"
 msgstr ""
 
+#: core/models.py:313 services/models.py:52
 msgid "Gallery image 3"
 msgstr ""
 
+#: core/models.py:314 services/models.py:53
 msgid "Gallery image 4"
 msgstr ""
 
+#: core/models.py:316 services/models.py:55
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Intro title — first part"
 msgstr "تواصل معنا"
 
+#: core/models.py:317 services/models.py:56
 msgid "Intro title — highlighted part"
 msgstr ""
 
+#: core/models.py:318 services/models.py:57
 msgid "Intro lead paragraph"
 msgstr ""
 
+#: core/models.py:319 services/models.py:58
 msgid "Intro body text"
 msgstr ""
 
+#: core/models.py:320 services/models.py:59
 msgid "Read more button label"
 msgstr ""
 
+#: core/models.py:325 services/models.py:64
 #, fuzzy
 #| msgid "Read more"
 msgid "Read more URL"
 msgstr "اقرأ المزيد"
 
+#: core/models.py:326 services/models.py:65
 msgid "e.g. /contact/ or full URL; leave empty to hide button."
 msgstr ""
 
+#: core/models.py:329 services/models.py:68
 msgid "Tab: Mission label"
 msgstr ""
 
+#: core/models.py:330 services/models.py:69
 msgid "Tab: Vision label"
 msgstr ""
 
+#: core/models.py:331 services/models.py:70
 msgid "Tab: Values label"
 msgstr ""
 
+#: core/models.py:333 services/models.py:72
 msgid "Mission — image"
 msgstr ""
 
+#: core/models.py:334 services/models.py:73
 msgid "Mission — heading first part"
 msgstr ""
 
+#: core/models.py:335 services/models.py:74
 msgid "Mission — heading highlight"
 msgstr ""
 
+#: core/models.py:336 services/models.py:75
 msgid "Mission — lead"
 msgstr ""
 
+#: core/models.py:337 services/models.py:76
 msgid "Mission — body"
 msgstr ""
 
+#: core/models.py:339 services/models.py:78
 msgid "Vision — image"
 msgstr ""
 
+#: core/models.py:340 services/models.py:79
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Vision — heading first part"
 msgstr "تواصل معنا"
 
+#: core/models.py:341 services/models.py:80
 msgid "Vision — heading highlight"
 msgstr ""
 
+#: core/models.py:342 services/models.py:81
 msgid "Vision — lead"
 msgstr ""
 
+#: core/models.py:343 services/models.py:82
 msgid "Vision — body"
 msgstr ""
 
+#: core/models.py:345 services/models.py:84
 msgid "Values — image"
 msgstr ""
 
+#: core/models.py:346 services/models.py:85
 msgid "Values — heading first part"
 msgstr ""
 
+#: core/models.py:347 services/models.py:86
 msgid "Values — heading highlight"
 msgstr ""
 
+#: core/models.py:348 services/models.py:87
 msgid "Values — lead"
 msgstr ""
 
+#: core/models.py:349 services/models.py:88
 msgid "Values — body"
 msgstr ""
 
+#: core/models.py:355 services/models.py:94
 msgid "Policy section — background"
 msgstr ""
 
+#: core/models.py:356 services/models.py:95
 msgid "Parallax background (optional)."
 msgstr ""
 
+#: core/models.py:361 services/models.py:100
 msgid "Policy section — overlay"
 msgstr ""
 
+#: core/models.py:362 services/models.py:101
 msgid "0–10, darker background behind text."
 msgstr ""
 
+#: core/models.py:368 services/models.py:107
 msgid "Policy section — main title"
 msgstr ""
 
+#: core/models.py:369 services/models.py:108
 msgid "Large heading above the carousel (e.g. commitment / quality)."
 msgstr ""
 
+#: core/models.py:375 services/models.py:114
 msgid "Policy section — highlighted title part"
 msgstr ""
 
+#: core/models.py:381 services/models.py:120
 msgid "Quality policy — block title"
 msgstr ""
 
+#: core/models.py:382 services/models.py:121
 msgid "e.g. \"Quality policy\"."
 msgstr ""
 
+#: core/models.py:387 services/models.py:126
 msgid "Quality policy — intro before bullets"
 msgstr ""
 
+#: core/models.py:388 services/models.py:127
 msgid "Optional short paragraph above the bullet list (teaser / lead-in)."
 msgstr ""
 
+#: core/models.py:393 services/models.py:132
 msgid "Quality policy — bullet points"
 msgstr ""
 
+#: core/models.py:394 services/models.py:133
 msgid "One bullet per line."
 msgstr ""
 
+#: core/models.py:400 services/models.py:139
 msgid "\"For you\" block — title"
 msgstr ""
 
+#: core/models.py:401 services/models.py:140
 msgid "e.g. \"For you\" / \"من أجلكم\"."
 msgstr ""
 
+#: core/models.py:406 services/models.py:145
 msgid "\"For you\" block — text"
 msgstr ""
 
+#: core/models.py:412 core/models.py:413 services/models.py:151
+#: services/models.py:152
 #, fuzzy
 #| msgid "About us"
 msgid "About page"
 msgstr "نبذة عنا"
 
+#: core/models.py:444
 msgid "e.g. \"Contact\" — appears between Home and current page title."
 msgstr ""
 
+#: core/models.py:447
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Sidebar title — first part"
 msgstr "تواصل معنا"
 
+#: core/models.py:448
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Sidebar title — highlighted part"
 msgstr "تواصل معنا"
 
+#: core/models.py:452
 msgid "Sidebar intro text"
 msgstr ""
 
+#: core/models.py:453
 msgid "Short paragraph next to contact details."
 msgstr ""
 
+#: core/models.py:456
 #, fuzzy
 #| msgid "Get in touch"
 msgid "Form heading — first part"
 msgstr "تواصل معنا"
 
+#: core/models.py:457
 msgid "Form heading — highlighted part"
 msgstr ""
 
+#: core/models.py:462 core/models.py:463 core/models.py:473
 #, fuzzy
 #| msgid "Contact us"
 msgid "Contact page"
 msgstr "اتصل بنا"
 
+#: core/models.py:484
 #, fuzzy
 #| msgid "Partners"
 msgid "Partner Brand"
 msgstr "النجاح"
 
+#: core/models.py:485
 #, fuzzy
 #| msgid "Partners"
 msgid "Partner Brands"
 msgstr "النجاح"
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/forms.py:6
 msgid "Search files"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:5
 msgid "Select an image to embed"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:27
 msgid "Browse for the image you want, then click 'Embed Image' to continue..."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:29
 msgid ""
 "No images found. Upload images using the 'Image Button' dialog's 'Upload' "
 "tab."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:50
 msgid "Images in: "
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:62
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:80
 msgid "Embed Image"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:146
 msgid "Play Slideshow"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:147
 msgid "Pause Slideshow"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:148
 msgid "&lsaquo; Previous Photo"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:149
 msgid "Next Photo &rsaquo;"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:150
 msgid "Next &rsaquo;"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:151
 msgid "&lsaquo; Prev"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
 msgid "Messages"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/contrib/sitemaps/apps.py:8
 msgid "Site Maps"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/contrib/staticfiles/apps.py:9
 msgid "Static Files"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/contrib/syndication/apps.py:7
 #, fuzzy
 #| msgid "Specifications"
 msgid "Syndication"
@@ -634,92 +885,119 @@ msgstr "المواصفات"
 
 #. Translators: String used to replace omitted page numbers in elided page
 #. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: env/lib/python3.12/site-packages/django/core/paginator.py:33
 msgid "…"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/paginator.py:35
 msgid "That page number is not an integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/paginator.py:36
 msgid "That page number is less than 1"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/paginator.py:37
 msgid "That page contains no results"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:22
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid value."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:70
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid domain name."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:153
+#: env/lib/python3.12/site-packages/django/forms/fields.py:774
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid URL."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:200
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid integer."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:211
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid email address."
 msgstr "العنوان"
 
 #. Translators: "letters" means latin letters: a-z and A-Z.
+#: env/lib/python3.12/site-packages/django/core/validators.py:289
 msgid ""
 "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:297
 msgid ""
 "Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
 "hyphens."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:309
+#: env/lib/python3.12/site-packages/django/core/validators.py:318
+#: env/lib/python3.12/site-packages/django/core/validators.py:332
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2220
 #, fuzzy, python-format
 #| msgid "Address"
 msgid "Enter a valid %(protocol)s address."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:311
 msgid "IPv4"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:320
+#: env/lib/python3.12/site-packages/django/utils/ipv6.py:43
 msgid "IPv6"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:334
 msgid "IPv4 or IPv6"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:375
 msgid "Enter only digits separated by commas."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:381
 #, python-format
 msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:416
 #, python-format
 msgid "Ensure this value is less than or equal to %(limit_value)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:425
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:434
 #, python-format
 msgid "Ensure this value is a multiple of step size %(limit_value)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:441
 #, python-format
 msgid ""
 "Ensure this value is a multiple of step size %(limit_value)s, starting from "
 "%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:473
 #, python-format
 msgid ""
 "Ensure this value has at least %(limit_value)d character (it has "
@@ -734,6 +1012,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:491
 #, python-format
 msgid ""
 "Ensure this value has at most %(limit_value)d character (it has "
@@ -748,9 +1027,13 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:514
+#: env/lib/python3.12/site-packages/django/forms/fields.py:365
+#: env/lib/python3.12/site-packages/django/forms/fields.py:404
 msgid "Enter a number."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:516
 #, python-format
 msgid "Ensure that there are no more than %(max)s digit in total."
 msgid_plural "Ensure that there are no more than %(max)s digits in total."
@@ -761,6 +1044,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:521
 #, python-format
 msgid "Ensure that there are no more than %(max)s decimal place."
 msgid_plural "Ensure that there are no more than %(max)s decimal places."
@@ -771,6 +1055,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:526
 #, python-format
 msgid ""
 "Ensure that there are no more than %(max)s digit before the decimal point."
@@ -783,287 +1068,366 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:597
 #, python-format
 msgid ""
 "File extension “%(extension)s” is not allowed. Allowed extensions are: "
 "%(allowed_extensions)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/core/validators.py:659
 msgid "Null characters are not allowed."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/base.py:1631
+#: env/lib/python3.12/site-packages/django/forms/models.py:932
 msgid "and"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/base.py:1633
 #, python-format
 msgid "%(model_name)s with this %(field_labels)s already exists."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/constraints.py:20
 #, python-format
 msgid "Constraint “%(name)s” is violated."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:134
 #, python-format
 msgid "Value %(value)r is not a valid choice."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:135
 msgid "This field cannot be null."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:136
 msgid "This field cannot be blank."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:137
 #, python-format
 msgid "%(model_name)s with this %(field_label)s already exists."
 msgstr ""
 
 #. Translators: The 'lookup_type' is one of 'date', 'year' or
 #. 'month'. Eg: "Title must be unique for pub_date year"
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
 #, python-format
 msgid ""
 "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
 #, python-format
 msgid "Field of type: %(field_type)s"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1161
 #, python-format
 msgid "“%(value)s” value must be either True or False."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1162
 #, python-format
 msgid "“%(value)s” value must be either True, False, or None."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1164
 msgid "Boolean (Either True or False)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1214
 #, python-format
 msgid "String (up to %(max_length)s)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1216
 msgid "String (unlimited)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1325
 msgid "Comma-separated integers"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1426
 #, python-format
 msgid ""
 "“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
 "format."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1430
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1565
 #, python-format
 msgid ""
 "“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
 "date."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1434
 msgid "Date (without time)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1561
 #, python-format
 msgid ""
 "“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
 "uuuuuu]][TZ] format."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1569
 #, python-format
 msgid ""
 "“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
 "[TZ]) but it is an invalid date/time."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1574
 msgid "Date (with time)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1701
 #, python-format
 msgid "“%(value)s” value must be a decimal number."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1703
 msgid "Decimal number"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1864
 #, python-format
 msgid ""
 "“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
 "uuuuuu] format."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1868
 #, fuzzy
 #| msgid "Location"
 msgid "Duration"
 msgstr "الموقع"
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1920
 #, fuzzy
 #| msgid "Address"
 msgid "Email address"
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1945
 msgid "File path"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2023
 #, python-format
 msgid "“%(value)s” value must be a float."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2025
 msgid "Floating point number"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2065
 #, python-format
 msgid "“%(value)s” value must be an integer."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2067
 msgid "Integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2163
 msgid "Big (8 byte) integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2180
 msgid "Small integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2188
 #, fuzzy
 #| msgid "Address"
 msgid "IPv4 address"
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2219
 #, fuzzy
 #| msgid "Address"
 msgid "IP address"
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2310
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2311
 #, python-format
 msgid "“%(value)s” value must be either None, True or False."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2313
 msgid "Boolean (Either True, False or None)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2364
 msgid "Positive big integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2379
 msgid "Positive integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2394
 msgid "Positive small integer"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2410
 #, python-format
 msgid "Slug (up to %(max_length)s)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2446
 msgid "Text"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2526
 #, python-format
 msgid ""
 "“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
 "format."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2530
 #, python-format
 msgid ""
 "“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
 "invalid time."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2534
 msgid "Time"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2642
 msgid "URL"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2666
 msgid "Raw binary data"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2731
 #, python-format
 msgid "“%(value)s” is not a valid UUID."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2733
 msgid "Universally unique identifier"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/files.py:244
 msgid "File"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/files.py:420
+#: projects/models.py:241
 msgid "Image"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/json.py:24
 msgid "A JSON object"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/json.py:26
 msgid "Value must be valid JSON."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/related.py:978
 #, python-format
 msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/related.py:981
 msgid "Foreign Key (type determined by related field)"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/related.py:1275
 msgid "One-to-one relationship"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/related.py:1332
 #, python-format
 msgid "%(from)s-%(to)s relationship"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/related.py:1334
 #, python-format
 msgid "%(from)s-%(to)s relationships"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/db/models/fields/related.py:1382
 msgid "Many-to-many relationship"
 msgstr ""
 
 #. Translators: If found as last label character, these punctuation
 #. characters will prevent the default label_suffix to be appended to
 #. the label
+#: env/lib/python3.12/site-packages/django/forms/boundfield.py:188
 msgid ":?.!"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:92
 msgid "This field is required."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:314
 msgid "Enter a whole number."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:485
+#: env/lib/python3.12/site-packages/django/forms/fields.py:1251
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid date."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:508
+#: env/lib/python3.12/site-packages/django/forms/fields.py:1252
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid time."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:535
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid date/time."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:569
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid duration."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:570
 #, python-brace-format
 msgid "The number of days must be between {min_days} and {max_days}."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:639
 msgid "No file was submitted. Check the encoding type on the form."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:640
 msgid "No file was submitted."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:641
 msgid "The submitted file is empty."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:643
 #, python-format
 msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
@@ -1075,50 +1439,65 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:648
 msgid "Please either submit a file or check the clear checkbox, not both."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:716
 msgid ""
 "Upload a valid image. The file you uploaded was either not an image or a "
 "corrupted image."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:872
+#: env/lib/python3.12/site-packages/django/forms/fields.py:959
+#: env/lib/python3.12/site-packages/django/forms/models.py:1621
 #, python-format
 msgid "Select a valid choice. %(value)s is not one of the available choices."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:961
+#: env/lib/python3.12/site-packages/django/forms/fields.py:1080
+#: env/lib/python3.12/site-packages/django/forms/models.py:1619
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a list of values."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:1081
 msgid "Enter a complete value."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:1323
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid UUID."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/forms/fields.py:1353
 #, fuzzy
 #| msgid "Address"
 msgid "Enter a valid JSON."
 msgstr "العنوان"
 
 #. Translators: This is the default suffix added to form field labels
+#: env/lib/python3.12/site-packages/django/forms/forms.py:97
 msgid ":"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/forms.py:239
 #, python-format
 msgid "(Hidden field %(name)s) %(error)s"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/formsets.py:61
 #, python-format
 msgid ""
 "ManagementForm data is missing or has been tampered with. Missing fields: "
 "%(field_names)s. You may need to file a bug report if the issue persists."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/formsets.py:65
 #, python-format
 msgid "Please submit at most %(num)d form."
 msgid_plural "Please submit at most %(num)d forms."
@@ -1129,6 +1508,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/forms/formsets.py:70
 #, python-format
 msgid "Please submit at least %(num)d form."
 msgid_plural "Please submit at least %(num)d forms."
@@ -1139,72 +1519,91 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/forms/formsets.py:499
 msgid "Delete"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:925
 #, python-format
 msgid "Please correct the duplicate data for %(field)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:930
 #, python-format
 msgid "Please correct the duplicate data for %(field)s, which must be unique."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:937
 #, python-format
 msgid ""
 "Please correct the duplicate data for %(field_name)s which must be unique "
 "for the %(lookup)s in %(date_field)s."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:946
 msgid "Please correct the duplicate values below."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:1383
 msgid "The inline value did not match the parent instance."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:1474
 msgid "Select a valid choice. That choice is not one of the available choices."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/models.py:1623
 #, python-format
 msgid "“%(pk)s” is not a valid value."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/utils.py:229
 #, python-format
 msgid ""
 "%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
 "may be ambiguous or it may not exist."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/widgets.py:528
 msgid "Clear"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/widgets.py:529
 msgid "Currently"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/widgets.py:530
 msgid "Change"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/widgets.py:869
 msgid "Unknown"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/forms/widgets.py:870
 msgid "Yes"
 msgstr "نعم"
 
+#: env/lib/python3.12/site-packages/django/forms/widgets.py:871
 msgid "No"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/tasks/base.py:34
 msgctxt "Task"
 msgid "Ready"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/tasks/base.py:36
 msgctxt "Task"
 msgid "Running"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/tasks/base.py:38
 msgctxt "Task"
 msgid "Failed"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/tasks/base.py:40
 #, fuzzy
 #| msgid "Success"
 msgctxt "Task"
@@ -1212,9 +1611,12 @@ msgid "Successful"
 msgstr "شركاء"
 
 #. Translators: Please do not add spaces around commas.
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:878
 msgid "yes,no,maybe"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:908
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:925
 #, python-format
 msgid "%(size)d byte"
 msgid_plural "%(size)d bytes"
@@ -1225,273 +1627,352 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:927
 #, python-format
 msgid "%s KB"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:929
 #, python-format
 msgid "%s MB"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:931
 #, python-format
 msgid "%s GB"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:933
 #, python-format
 msgid "%s TB"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/template/defaultfilters.py:935
 #, python-format
 msgid "%s PB"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dateformat.py:74
 msgid "p.m."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dateformat.py:75
 msgid "a.m."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dateformat.py:80
 msgid "PM"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dateformat.py:81
 msgid "AM"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dateformat.py:153
 msgid "midnight"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dateformat.py:155
 msgid "noon"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:7
 msgid "Monday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:8
 msgid "Tuesday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:9
 msgid "Wednesday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:10
 msgid "Thursday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:11
 msgid "Friday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:12
 msgid "Saturday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:13
 msgid "Sunday"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:16
 msgid "Mon"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:17
 msgid "Tue"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:18
 msgid "Wed"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:19
 msgid "Thu"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:20
 msgid "Fri"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:21
 msgid "Sat"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:22
 msgid "Sun"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:25
 msgid "January"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:26
 msgid "February"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:27
 msgid "March"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:28
 msgid "April"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:29
 msgid "May"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:30
 msgid "June"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:31
 msgid "July"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:32
 msgid "August"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:33
 msgid "September"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:34
 msgid "October"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:35
 msgid "November"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:36
 msgid "December"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:39
 msgid "jan"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:40
 msgid "feb"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:41
 msgid "mar"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:42
 msgid "apr"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:43
 msgid "may"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:44
 msgid "jun"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:45
 msgid "jul"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:46
 msgid "aug"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:47
 msgid "sep"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:48
 #, fuzzy
 #| msgid "Projects"
 msgid "oct"
 msgstr "المشاريع"
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:49
 msgid "nov"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:50
 msgid "dec"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:53
 msgctxt "abbrev. month"
 msgid "Jan."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:54
 msgctxt "abbrev. month"
 msgid "Feb."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:55
 msgctxt "abbrev. month"
 msgid "March"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:56
 msgctxt "abbrev. month"
 msgid "April"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:57
 msgctxt "abbrev. month"
 msgid "May"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:58
 msgctxt "abbrev. month"
 msgid "June"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:59
 msgctxt "abbrev. month"
 msgid "July"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:60
 msgctxt "abbrev. month"
 msgid "Aug."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:61
 msgctxt "abbrev. month"
 msgid "Sept."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:62
 msgctxt "abbrev. month"
 msgid "Oct."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:63
 msgctxt "abbrev. month"
 msgid "Nov."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:64
 msgctxt "abbrev. month"
 msgid "Dec."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:67
 msgctxt "alt. month"
 msgid "January"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:68
 msgctxt "alt. month"
 msgid "February"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:69
 msgctxt "alt. month"
 msgid "March"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:70
 msgctxt "alt. month"
 msgid "April"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:71
 msgctxt "alt. month"
 msgid "May"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:72
 msgctxt "alt. month"
 msgid "June"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:73
 msgctxt "alt. month"
 msgid "July"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:74
 msgctxt "alt. month"
 msgid "August"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:75
 msgctxt "alt. month"
 msgid "September"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:76
 msgctxt "alt. month"
 msgid "October"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:77
 msgctxt "alt. month"
 msgid "November"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/dates.py:78
 msgctxt "alt. month"
 msgid "December"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/ipv6.py:20
 #, fuzzy
 #| msgid "Address"
 msgid "This is not a valid IPv6 address."
 msgstr "العنوان"
 
+#: env/lib/python3.12/site-packages/django/utils/text.py:76
 #, python-format
 msgctxt "String to return when truncating text"
 msgid "%(truncated_text)s…"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/text.py:287
 msgid "or"
 msgstr ""
 
 #. Translators: This string is used as a separator between list elements
+#: env/lib/python3.12/site-packages/django/utils/text.py:306
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:135
 msgid ", "
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:8
 #, python-format
 msgid "%(num)d year"
 msgid_plural "%(num)d years"
@@ -1502,6 +1983,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:9
 #, python-format
 msgid "%(num)d month"
 msgid_plural "%(num)d months"
@@ -1512,6 +1994,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:10
 #, python-format
 msgid "%(num)d week"
 msgid_plural "%(num)d weeks"
@@ -1522,6 +2005,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:11
 #, python-format
 msgid "%(num)d day"
 msgid_plural "%(num)d days"
@@ -1532,6 +2016,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:12
 #, python-format
 msgid "%(num)d hour"
 msgid_plural "%(num)d hours"
@@ -1542,6 +2027,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/utils/timesince.py:13
 #, python-format
 msgid "%(num)d minute"
 msgid_plural "%(num)d minutes"
@@ -1552,12 +2038,15 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:29
 msgid "Forbidden"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:30
 msgid "CSRF verification failed. Request aborted."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:34
 msgid ""
 "You are seeing this message because this HTTPS site requires a “Referer "
 "header” to be sent by your web browser, but none was sent. This header is "
@@ -1565,12 +2054,14 @@ msgid ""
 "hijacked by third parties."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:40
 msgid ""
 "If you have configured your browser to disable “Referer” headers, please re-"
 "enable them, at least for this site, or for HTTPS connections, or for “same-"
 "origin” requests."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:45
 msgid ""
 "If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
 "including the “Referrer-Policy: no-referrer” header, please remove them. The "
@@ -1579,84 +2070,111 @@ msgid ""
 "rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:54
 msgid ""
 "You are seeing this message because this site requires a CSRF cookie when "
 "submitting forms. This cookie is required for security reasons, to ensure "
 "that your browser is not being hijacked by third parties."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:60
 msgid ""
 "If you have configured your browser to disable cookies, please re-enable "
 "them, at least for this site, or for “same-origin” requests."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/csrf.py:66
 msgid "More information is available with DEBUG=True."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:44
 msgid "No year specified"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:64
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:115
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:214
 msgid "Date out of range"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:94
 msgid "No month specified"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:147
 msgid "No day specified"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:194
 msgid "No week specified"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:353
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:384
 #, python-format
 msgid "No %(verbose_name_plural)s available"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:680
 #, python-format
 msgid ""
 "Future %(verbose_name_plural)s not available because %(class_name)s."
 "allow_future is False."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/dates.py:720
 #, python-format
 msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/detail.py:56
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/list.py:70
 msgid "Page is not “last”, nor can it be converted to an int."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/list.py:77
 #, python-format
 msgid "Invalid page (%(page_number)s): %(message)s"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/generic/list.py:173
 #, python-format
 msgid "Empty list and “%(class_name)s.allow_empty” is False."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/static.py:49
 msgid "Directory indexes are not allowed here."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/static.py:51
 #, python-format
 msgid "“%(path)s” does not exist"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/static.py:68
+#: env/lib/python3.12/site-packages/django/views/templates/directory_index.html:8
+#: env/lib/python3.12/site-packages/django/views/templates/directory_index.html:11
 #, python-format
 msgid "Index of %(directory)s"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:7
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:204
 msgid "The install worked successfully! Congratulations!"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
 #, python-format
 msgid ""
 "View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
 "target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
 #, python-format
 msgid ""
 "You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
@@ -1665,550 +2183,904 @@ msgid ""
 "configured any URLs."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:217
 msgid "Django Documentation"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:218
 msgid "Topics, references, &amp; how-to’s"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:226
 msgid "Tutorial: A Polling App"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:227
 msgid "Get started with Django"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:235
 msgid "Django Community"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:14
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:54
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:62
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:72
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:82
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:86
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:118
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:137
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:364
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:369
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:379
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:399
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:416
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:435
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:441
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:458
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:470
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:478
 msgid "title"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:18
 msgid "password"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:245
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:264
 msgid "title a"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:249
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:275
 msgid "title b"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:253
 msgid "title c"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:257
 msgid "title d"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/models.py:380
 msgid "visits"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/tests/translation.py:62
 msgid "Sorry, translation is not available."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/modeltranslation/widgets.py:32
 msgid "None"
 msgstr ""
 
+#: env/lib/python3.12/site-packages/sass_processor/management/commands/compilescss.py:63
 msgid "Delete generated `*.css` files instead of creating them."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/sass_processor/management/commands/compilescss.py:70
 msgid ""
 "Store resulting .css in configured storage. Default: store each css side-by-"
 "side with .scss."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/sass_processor/management/commands/compilescss.py:77
 msgid "Set templating engine used (django, jinja2). Default: django."
 msgstr ""
 
+#: env/lib/python3.12/site-packages/sass_processor/management/commands/compilescss.py:84
 msgid ""
 "Set the precision for numeric computations in the SASS processor. Default: "
 "settings.SASS_PRECISION."
 msgstr ""
 
+#: projects/admin.py:47
 msgid "Location (display)"
 msgstr ""
 
+#: projects/admin.py:50
 msgid ""
 "Use the same «Area grouping key» for projects in one zone to link "
 "«suggested»."
 msgstr ""
 
+#: projects/admin.py:54
 msgid "Specifications (real estate)"
 msgstr ""
 
+#: projects/admin.py:74
 msgid "Sales"
 msgstr ""
 
+#: projects/admin.py:78 templates/blog-details.html:278
 msgid "Guarantees"
 msgstr "الضمانات"
 
+#: projects/admin.py:92
 msgid "Map"
 msgstr ""
 
-msgid "Breadcrumb"
-msgstr ""
-
-msgid "Leave labels empty to use the default translated strings."
-msgstr ""
-
+#: projects/models.py:17 projects/models.py:18
 msgid "Project Category"
 msgstr ""
 
+#: projects/models.py:55
 msgid "Main cover image"
 msgstr ""
 
+#: projects/models.py:70
 msgid "City"
 msgstr "المدينة"
 
+#: projects/models.py:71
 msgid "e.g. \"Jeddah\" / \"جدة\""
 msgstr ""
 
+#: projects/models.py:77
 msgid "District / neighborhood"
 msgstr ""
 
+#: projects/models.py:78
 msgid "e.g. \"Al-Rawdah\" / \"حي الروضة\""
 msgstr ""
 
+#: projects/models.py:84
 msgid "Area grouping key"
 msgstr ""
 
+#: projects/models.py:86
 msgid ""
 "Same value for all projects in one area (e.g. jeddah-rawdah). Used for "
 "«suggested in same area». Not shown on site."
 msgstr ""
 
+#: projects/models.py:94
 msgid "Area (m²) — single value"
 msgstr ""
 
+#: projects/models.py:95
 msgid "Optional. Use area range below for min–max (e.g. 79.80–96)."
 msgstr ""
 
+#: projects/models.py:102
 msgid "Area from (m²)"
 msgstr ""
 
+#: projects/models.py:103
 msgid "Minimum unit area, e.g. 79.80"
 msgstr ""
 
+#: projects/models.py:110
 msgid "Area to (m²)"
 msgstr ""
 
+#: projects/models.py:111
 msgid "Maximum unit area, e.g. 96"
 msgstr ""
 
+#: projects/models.py:116
 msgid "Rooms count"
 msgstr ""
 
+#: projects/models.py:117
+msgid ""
+"Use when all units share one number. If rooms vary (e.g. 3, 4, 5), use "
+"«Rooms — options text» instead or as well."
+msgstr ""
+
+#: projects/models.py:123
+msgid "Rooms — options text"
+msgstr ""
+
+#: projects/models.py:125
+msgid ""
+"Optional. Shown in specs instead of a single count when units differ. "
+"Examples: «3، 4، 5» or «3 / 4 / 5»."
+msgstr ""
+
+#: projects/models.py:132
 msgid "Bathrooms count"
 msgstr ""
 
+#: projects/models.py:133
+msgid ""
+"Use when all units share one number. If bathrooms vary, use «Bathrooms — "
+"options text»."
+msgstr ""
+
+#: projects/models.py:139
+msgid "Bathrooms — options text"
+msgstr ""
+
+#: projects/models.py:141
+msgid ""
+"Optional. Shown in specs instead of a single count when units differ. "
+"Examples: «3، 4» or «2 / 3»."
+msgstr ""
+
+#: projects/models.py:145
 msgid "Has living hall (صالة)"
 msgstr ""
 
+#: projects/models.py:146
 msgid "Has elevator"
 msgstr ""
 
+#: projects/models.py:147 templates/blog-details.html:377
 msgid "Private parking"
 msgstr "موقف خاص"
 
+#: projects/models.py:148 templates/blog-details.html:387
 msgid "Smart home"
 msgstr "سمارت هوم"
 
+#: projects/models.py:149 templates/blog-details.html:397
 msgid "Maid room"
 msgstr "غرفة خادمة"
 
+#: projects/models.py:150 templates/blog-details.html:407
+msgid "Driver room"
+msgstr "غرفة سائق"
+
+#: projects/models.py:156
 msgid "Promo / walkthrough video"
 msgstr "فيديو تعريفي / جولة"
 
+#: projects/models.py:157
 msgid ""
 "Optional MP4 or WebM. A “Video” tab appears only when a file is uploaded."
 msgstr "اختياري MP4 أو WebM. يظهر تبويب «فيديو» فقط عند رفع ملف."
 
+#: projects/models.py:165
 msgid "Sold percentage"
 msgstr ""
 
+#: projects/models.py:166
 msgid "0–100 (decimals allowed), for the progress ring."
 msgstr ""
 
+#: projects/models.py:172
 msgid "Structural warranty (years)"
 msgstr ""
 
+#: projects/models.py:174
 msgid "Plumbing extensions warranty"
 msgstr ""
 
+#: projects/models.py:175
 msgid "Water heaters warranty"
 msgstr ""
 
+#: projects/models.py:180
+#, fuzzy
+#| msgid "Smart control"
+msgid "Smart control warranty"
+msgstr "التحكم الذكي"
+
+#: projects/models.py:181
+msgid "e.g. years for smart home / building automation systems (التحكم الذكي)."
+msgstr ""
+
+#: projects/models.py:183
 msgid "Electrical switches warranty"
 msgstr ""
 
+#: projects/models.py:184
 msgid "Electrical extensions warranty"
 msgstr ""
 
+#: projects/models.py:185
 msgid "Faucets / mixers warranty"
 msgstr ""
 
+#: projects/models.py:186
 msgid "Lighting warranty"
 msgstr ""
 
+#: projects/models.py:191
 msgid "Map embed URL"
 msgstr ""
 
+#: projects/models.py:192
 msgid "Google Maps «Embed» iframe src URL (long paste OK)."
 msgstr ""
 
+#: projects/models.py:199 projects/models.py:200 projects/models.py:240
 #, fuzzy
 #| msgid "Projects"
 msgid "Project"
 msgstr "المشاريع"
 
+#: projects/models.py:242
 msgid "Sort order"
 msgstr ""
 
+#: projects/models.py:245
 msgid "Project gallery image"
 msgstr ""
 
+#: projects/models.py:246
 msgid "Project gallery images"
 msgstr ""
 
+#: projects/models.py:260 projects/models.py:261
 msgid "Section Title"
 msgstr ""
 
-msgid "1–10 (parallax overlay strength)."
-msgstr ""
-
-msgid "Page title (main)"
-msgstr ""
-
-msgid "Page title (highlight span)"
-msgstr ""
-
+#: projects/models.py:288
 msgid "Breadcrumb: projects link label"
 msgstr ""
 
+#: projects/models.py:289
 msgid "Middle link. Leave blank for default translation."
 msgstr ""
 
-msgid "Breadcrumb: current page label"
-msgstr ""
-
-msgid "Last crumb. Leave blank for default translation."
-msgstr ""
-
+#: projects/models.py:300 projects/models.py:301 projects/models.py:304
 #, fuzzy
 #| msgid "All projects"
 msgid "All projects page"
 msgstr "كل المشاريع"
 
+#: templates/about_us.html:267 templates/about_us.html:270
+#: templates/about_us.html:325 templates/about_us.html:328
 #, fuzzy
 #| msgid "About us"
 msgid "About"
 msgstr "نبذة عنا"
 
+#: templates/about_us.html:267 templates/about_us.html:270
+#: templates/about_us.html:325 templates/about_us.html:328
 msgid "Us"
 msgstr ""
 
+#: templates/about_us.html:282
 msgid "Pages"
 msgstr ""
 
+#: templates/about_us.html:289 templates/partials/footer.html:21
+#: templates/partials/navbar.html:10
 msgid "About us"
 msgstr "نبذة عنا"
 
+#: templates/about_us.html:340 templates/blog/posts_list.html:72
+#: templates/index.html:721
 msgid "Read more"
 msgstr "اقرأ المزيد"
 
+#: templates/about_us.html:365
 #, fuzzy
 #| msgid "Our solutions"
 msgid "Our Mission"
 msgstr "حلولنا"
 
+#: templates/about_us.html:368
 #, fuzzy
 #| msgid "Our solutions"
 msgid "Our Vision"
 msgstr "حلولنا"
 
+#: templates/about_us.html:371
 #, fuzzy
 #| msgid "Our news"
 msgid "Our Values"
 msgstr "أخبارنا"
 
+#: templates/about_us.html:391 templates/about_us.html:394
+#: templates/about_us.html:417 templates/about_us.html:420
+#: templates/about_us.html:443 templates/about_us.html:446
+#: templates/partials/footer.html:29
 msgid "Our"
 msgstr ""
 
+#: templates/about_us.html:391 templates/about_us.html:394
 msgid "Mission"
 msgstr ""
 
+#: templates/about_us.html:417 templates/about_us.html:420
 msgid "Vision"
 msgstr ""
 
+#: templates/about_us.html:443 templates/about_us.html:446
 msgid "Values"
 msgstr ""
 
+#: templates/about_us.html:476
 msgid "Our commitment"
 msgstr ""
 
+#: templates/about_us.html:476
 msgid "to you"
 msgstr ""
 
+#: templates/all_projects.html:50 templates/all_projects.html:53
+#: templates/partials/navbar.html:18 templates/projects/projects_list.html:12
 msgid "Our projects"
 msgstr "مشاريعنا"
 
+#: templates/all_projects.html:61 templates/blog-details.html:186
+#: templates/index.html:640 templates/partials/navbar.html:20
+#: templates/projects/projects_list.html:18
 msgid "Projects"
 msgstr "المشاريع"
 
+#: templates/all_projects.html:62 templates/blog-details.html:240
 msgid "All projects"
 msgstr "كل المشاريع"
 
-msgid "All cities"
-msgstr "جميع المدن"
-
+#: templates/all_projects.html:77
 msgid "District"
 msgstr "الحي"
 
+#: templates/all_projects.html:79 templates/all_projects.html:148
 msgid "All districts"
 msgstr "جميع الأحياء"
 
+#: templates/all_projects.html:96 templates/index.html:649
 msgid "All"
 msgstr "الكل"
 
+#: templates/all_projects.html:129
 msgid "Project details"
 msgstr "تفاصيل المشروع"
 
+#: templates/all_projects.html:135 templates/projects/projects_list.html:49
 #, fuzzy
 #| msgid "No posts yet."
 msgid "No projects yet."
 msgstr "لا توجد مقالات بعد."
 
+#: templates/blog-details.html:223 templates/blog/posts_list.html:85
 msgid "Previous"
 msgstr "السابق"
 
+#: templates/blog-details.html:227 templates/blog/posts_list.html:95
 msgid "Next"
 msgstr "التالي"
 
+#: templates/blog-details.html:236
 msgid "Detailed description will be added soon."
 msgstr "سيتم إضافة الوصف التفصيلي قريباً."
 
+#: templates/blog-details.html:239
 msgid "Back to home"
 msgstr "العودة للرئيسية"
 
+#: templates/blog-details.html:249
 msgid "City & district"
 msgstr "المدينة والحي"
 
+#: templates/blog-details.html:257
 msgid "Sales progress"
 msgstr "تقدم المبيعات"
 
+#: templates/blog-details.html:261
 msgid "sold"
 msgstr "مُباع"
 
+#: templates/blog-details.html:264
 msgid "Share of units sold for this project."
 msgstr "نسبة الوحدات المباعة في هذا المشروع."
 
+#: templates/blog-details.html:273
 msgid "Specifications"
 msgstr "المواصفات"
 
+#: templates/blog-details.html:283
 msgid "Location"
 msgstr "الموقع"
 
+#: templates/blog-details.html:288
 msgid "Video"
 msgstr "فيديو"
 
+#: templates/blog-details.html:300 templates/blog-details.html:309
+#: templates/blog-details.html:318 templates/blog-details.html:327
 msgid "Area"
 msgstr "المساحة"
 
+#: templates/blog-details.html:302 templates/blog-details.html:311
+#: templates/blog-details.html:320 templates/blog-details.html:329
 msgid "m²"
 msgstr "م²"
 
+#: templates/blog-details.html:337
 msgid "Rooms"
 msgstr "الغرف"
 
+#: templates/blog-details.html:347
 msgid "Bathrooms"
 msgstr "الحمامات"
 
+#: templates/blog-details.html:357
 msgid "Living hall"
 msgstr "صالة معيشة"
 
+#: templates/blog-details.html:367
 msgid "Elevator"
 msgstr "مصعد"
 
-msgid "Available"
-msgstr "متوفر"
-
+#: templates/blog-details.html:420
 msgid "Structural framework"
 msgstr "الهيكل الإنشائي"
 
+#: templates/blog-details.html:421 templates/blog-details.html:428
+#: templates/blog-details.html:435 templates/blog-details.html:442
+#: templates/blog-details.html:449 templates/blog-details.html:456
+#: templates/blog-details.html:463 templates/blog-details.html:470
 msgid "years"
 msgstr "سنوات"
 
+#: templates/blog-details.html:427
 msgid "Plumbing extensions"
 msgstr "تمديدات السباكة"
 
+#: templates/blog-details.html:434
 msgid "Water heaters"
 msgstr "سخانات المياه"
 
+#: templates/blog-details.html:441
 msgid "Smart control"
 msgstr "التحكم الذكي"
 
+#: templates/blog-details.html:448
 msgid "Electrical switches"
 msgstr "المفاتيح الكهربائية"
 
+#: templates/blog-details.html:455
 msgid "Electrical extensions"
 msgstr "تمديدات الكهرباء"
 
+#: templates/blog-details.html:462
 msgid "Faucets / mixers"
 msgstr "خلاطات المياه"
 
+#: templates/blog-details.html:469
 msgid "Lighting"
 msgstr "الإضاءة"
 
+#: templates/blog-details.html:482
 msgid "Project location map"
 msgstr "خريطة موقع المشروع"
 
+#: templates/blog-details.html:491
 msgid "Your browser does not support the video tag."
 msgstr "المتصفح لا يدعم تشغيل الفيديو."
 
+#: templates/blog-details.html:502
 msgid "Interested in this project?"
 msgstr "مهتم بهذا المشروع؟"
 
+#: templates/blog-details.html:504
 msgid ""
 "Contact our team for more information, site visits, or investment options."
 msgstr "تواصل مع فريقنا لمزيد من المعلومات، زيارة الموقع، أو خيارات الاستثمار."
 
+#: templates/blog-details.html:506 templates/contact-us.html:31
+#: templates/contact-us.html:34 templates/contact-us.html:51
 msgid "Contact us"
 msgstr "اتصل بنا"
 
+#: templates/blog-details.html:517
 msgid "Suggested projects"
 msgstr "مشاريع مقترحة"
 
-msgid "in the same area"
-msgstr "في نفس المنطقة"
+#: templates/blog-details.html:517
+msgid "in the same city"
+msgstr "في نفس المدينة"
 
+#: templates/blog-details.html:537
 msgid "Sold"
 msgstr "مباع"
 
+#: templates/blog-details.html:539
 msgid "View details"
 msgstr "عرض التفاصيل"
 
+#: templates/blog/post_detail.html:36
 msgid "Back to news"
 msgstr "العودة إلى الأخبار"
 
+#: templates/blog/post_detail.html
+msgid "Share this article"
+msgstr "شارك المقال"
+
+#: templates/blog/post_detail.html
+msgid "Share on Facebook"
+msgstr "مشاركة على فيسبوك"
+
+#: templates/blog/post_detail.html
+msgid "Share on X"
+msgstr "مشاركة على X"
+
+#: templates/blog/post_detail.html
+msgid "Share on LinkedIn"
+msgstr "مشاركة على لينكد إن"
+
+#: templates/blog/post_detail.html
+msgid "Share on WhatsApp"
+msgstr "مشاركة على واتساب"
+
+#: templates/blog/post_detail.html
+msgid "Share on Telegram"
+msgstr "مشاركة على تيليجرام"
+
+#: templates/blog/post_detail.html
+msgid "Share by email"
+msgstr "مشاركة بالبريد"
+
+#: templates/blog/post_detail.html
+msgid "Copy link"
+msgstr "نسخ الرابط"
+
+#: templates/blog/post_detail.html
+msgid "Link copied"
+msgstr "تم نسخ الرابط"
+
+#: templates/blog/posts_list.html:18 templates/blog/posts_list.html:21
+#: templates/blog/posts_list.html:33
 msgid "News archive"
 msgstr "أرشيف الأخبار"
 
-msgid "Latest news intro line"
-msgstr "تعرّف على آخر المستجدات والأخبار."
+#: templates/blog/posts_list.html:32
+msgid "News"
+msgstr "الأخبار"
 
+#: templates/blog/posts_list.html:69
+msgid "Article"
+msgstr "مقال"
+
+#: templates/blog/posts_list.html:77 templates/blog/posts_list.html:134
+#: templates/index.html:736 templates/partials/footer.html:68
 msgid "No posts yet."
 msgstr "لا توجد مقالات بعد."
 
+#: templates/blog/posts_list.html:81
+msgid "Page navigation"
+msgstr "تصفح الصفحات"
+
+#: templates/blog/posts_list.html:107
+msgid "Search"
+msgstr "بحث"
+
+#: templates/blog/posts_list.html:108
+msgid "Search…"
+msgstr "ابحث…"
+
+#: templates/blog/posts_list.html
+msgid "Categories"
+msgstr "التصنيفات"
+
+#: templates/blog/posts_list.html:114
+msgid "Recent posts"
+msgstr "آخر المقالات"
+
+#: templates/blog/posts_list.html:141
+msgid "Follow us"
+msgstr "تابعنا"
+
+#: templates/contact-us.html:45
 msgid "Contact"
 msgstr "الاتصال"
 
+#: templates/contact-us.html:71 templates/contact-us.html:74
 msgid "Get in"
 msgstr "تواصل"
 
+#: templates/contact-us.html:71 templates/contact-us.html:74
 msgid "touch"
 msgstr "معنا"
 
+#: templates/contact-us.html:80
 msgid "Reach us by email, phone, WhatsApp, or send a message using the form."
 msgstr ""
 "يمكنك التواصل عبر البريد أو الهاتف أو واتساب، أو إرسال رسالة من النموذج."
 
+#: templates/contact-us.html:87 templates/contact-us.html:105
+#: templates/partials/footer.html:82
 msgid "Address"
 msgstr "العنوان"
 
+#: contact/forms.py:22 templates/contact-us.html:92 templates/contact-us.html:110
+#: templates/partials/footer.html:88
 msgid "Phone"
 msgstr "الهاتف"
 
+#: templates/contact-us.html:160
 msgid "WhatsApp"
 msgstr "واتساب"
 
+#: templates/contact-us.html:161
 msgid "Hello, I would like to get in touch."
 msgstr "مرحباً، أود التواصل معكم."
 
+#: templates/contact-us.html:163
 msgid "Chat on WhatsApp"
 msgstr "مراسلة على واتساب"
 
+#: templates/contact-us.html:177 templates/contact-us.html:180
 msgid "Send us a"
 msgstr "أرسل لنا"
 
+#: templates/contact-us.html:177 templates/contact-us.html:180
 msgid "message"
 msgstr "رسالة"
 
+#: templates/contact-us.html:232
 msgid "Submit"
 msgstr "إرسال"
 
+#: templates/contact-us.html:247
 msgid "Company location map"
 msgstr "خريطة موقع الشركة"
 
+#: templates/index.html:640
+msgid "Latest"
+msgstr ""
+
+#: templates/index.html:641
+msgid ""
+"Misto Provide Greate Services for elit. Excepturi vero aliquam id. Lorem "
+"ipsum dolor sit amet, consectetur adipisicing elit."
+msgstr ""
+
+#: templates/index.html:648
+msgid "Filter projects by city"
+msgstr "تصفية المشاريع حسب المدينة"
+
+#: templates/index.html:680 templates/index.html:715
 msgid "Bayoutat Al-Tamayuz News"
 msgstr "أخبار بيوتات التميز"
 
+#: templates/index.html:681
+msgid "Latest news intro line"
+msgstr "تعرّف على آخر المستجدات والأخبار."
+
+#: templates/index.html:686
 msgid "View all"
 msgstr "شاهد الجميع"
 
+#: templates/index.html:737
 msgid "Add posts from the admin."
 msgstr "يمكنك إضافة المقالات من لوحة التحكم."
 
+#: templates/index.html:763
 msgid "Are You Looking Great Solution"
 msgstr ""
 
+#: templates/index.html:763
 msgid "For Your Company?"
 msgstr ""
 
+#: templates/index.html:770
 msgid "Contact Us"
 msgstr "تواصل معنا"
 
+#: templates/index.html:813 templates/index.html:834
+msgid "View logo"
+msgstr "عرض الشعار"
+
+#: templates/index.html:833 templates/index.html:835 templates/index.html:839
 msgid "Brand"
 msgstr ""
 
+#: templates/partials/footer.html:22
 msgid "Add footer content from the admin (Core → Footer settings)."
 msgstr "أضيفي محتوى الفوتر من لوحة التحكم (الإعدادات ← إعدادات الفوتر)."
 
+#: templates/partials/footer.html:29
 msgid "Solutions"
 msgstr "الحلول"
 
+#: templates/partials/footer.html:37
 msgid "No footer links yet."
 msgstr "لا توجد روابط في الفوتر بعد."
 
+#: templates/partials/footer.html:45
 #, fuzzy
 #| msgid "Recent posts"
 msgid "Recent"
 msgstr "آخر المقالات"
 
+#: templates/partials/footer.html:45
 msgid "Post"
 msgstr "المقالات"
 
+#: templates/partials/footer.html:77
 msgid "Get in touch"
 msgstr "تواصل معنا"
 
+#: templates/partials/footer.html:161
 msgid "Copyright"
 msgstr "حقوق النشر"
 
+#: templates/partials/footer.html:165
 msgid "All rights reserved"
 msgstr "جميع الحقوق محفوظة"
 
+#: templates/partials/home_projects_masonry.html:22
+msgid "View project"
+msgstr "عرض المشروع"
+
+#: templates/partials/home_projects_masonry.html:27
+msgid "Full image"
+msgstr "صورة المشروع"
+
+#: templates/partials/navbar.html:6
 msgid "Home"
 msgstr "الرئيسية"
 
+#: templates/partials/navbar.html:14
 msgid "Our Services"
 msgstr "خدماتنا"
 
+#: templates/partials/navbar.html:21
 msgid "Visit projects"
 msgstr "زيارة المشاريع"
 
-msgid "Register your interest"
-msgstr "سجل اهتمامك"
-
+#: templates/partials/navbar.html:26
 msgid "Our news"
 msgstr "أخبارنا"
 
+#: templates/partials/navbar.html:30
+msgid "Register your interest"
+msgstr "سجل اهتمامك"
+
+#: templates/partials/navbar.html:44
 msgid "Change language"
 msgstr "تغيير اللغة"
 
+#: templates/services.html
+msgid "Why"
+msgstr "لماذا"
+
+#: templates/services.html
+msgid "choose us"
+msgstr "تختارنا"
+
+#: templates/services.html
+msgid ""
+"Add your intro text and feature items from the admin under Our services page."
+msgstr ""
+"أضيفي المقدمة وبنود المميزات من الأدمن في «صفحة خدماتنا» (Our services page)."
+
+#: templates/services.html
+msgid ""
+"Add feature items in the admin and mark one as «beside sidebar» if you want "
+"a large cell here."
+msgstr ""
+"أضيفي بنود المميزات من الأدمن وحدّدي واحداً «بجانب العمود الجانبي» ليظهر في "
+"الخلية الكبيرة."
+
+#: templates/services.html
+msgid "Sample"
+msgstr "عيّنة"
+
+#: templates/services/service_detail.html
+msgid "Back to services"
+msgstr "العودة إلى الخدمات"
+
+#: templates/projects/projects_list.html:27
 #, fuzzy
 #| msgid "View all"
 msgid "View all on home"
 msgstr "شاهد الجميع"
+
+#~ msgid "All cities"
+#~ msgstr "جميع المدن"
+
+#~ msgid "Available"
+#~ msgstr "متوفر"
+
+#~ msgid "in the same area"
+#~ msgstr "في نفس المنطقة"
 
 #~ msgid "English"
 #~ msgstr "English"

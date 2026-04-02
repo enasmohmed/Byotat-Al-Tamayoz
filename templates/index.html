@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load i18n %}
+{% load i18n_dates %}
 
 {% block extra_head %}
 <style>
@@ -77,6 +78,15 @@
   .home-projects-filter {
     justify-content: center;
   }
+  .home-projects-filter-wrap {
+    margin-bottom: 2rem;
+    padding-bottom: 0.35rem;
+  }
+  @media (min-width: 992px) {
+    .home-projects-filter-wrap {
+      margin-bottom: 2.5rem;
+    }
+  }
   .home-news-view-all-icon {
     transform: rotate(45deg);
     font-size: 0.85em;
@@ -91,6 +101,109 @@
     display: block;
     position: relative;
     z-index: 1;
+    overflow: hidden;
+  }
+  /* Masonry tile heights — home grid (mixed sample or full city via AJAX) */
+  .home-projects-section .home-projects-masonry .portfolio-item {
+    height: 100%;
+  }
+  .home-projects-section .home-projects-masonry .project-thumb-link {
+    position: relative;
+  }
+  .home-projects-section .home-projects-masonry .project-thumb-link img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* إلغاء طبقة الثيم الداكنة (.portfolio-item:before) على الصفحة الرئيسية */
+  .home-projects-section .portfolio-item:before,
+  .home-partners-section .portfolio-item:before {
+    display: none !important;
+    content: none !important;
+  }
+  /* بطاقات مشاريع أوضح بدون الأوفرلاي */
+  .home-projects-section .home-projects-masonry .portfolio-item {
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(22, 28, 45, 0.08);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+  }
+  .home-projects-section.home-projects-visible .home-projects-masonry .portfolio-item:hover {
+    box-shadow: 0 12px 32px rgba(22, 28, 45, 0.14);
+    transform: translateY(-2px);
+  }
+
+  /* Reference proportions: 600×600 (sq), 600×450 (short / 4:3), 600×900 (tall / 2:3) */
+  .home-projects-section .home-projects-masonry .masonry-brick {
+    padding: 4px;
+  }
+  .home-projects-section .hp-msnry--sq .project-thumb-link {
+    min-height: 280px;
+    aspect-ratio: 1 / 1;
+  }
+  .home-projects-section .hp-msnry--short .project-thumb-link {
+    min-height: 210px;
+    aspect-ratio: 4 / 3;
+  }
+  .home-projects-section .hp-msnry--tall .project-thumb-link {
+    min-height: 420px;
+    aspect-ratio: 2 / 3;
+  }
+  @supports not (aspect-ratio: 1 / 1) {
+    .home-projects-section .hp-msnry--sq .project-thumb-link {
+      min-height: 300px;
+    }
+    .home-projects-section .hp-msnry--short .project-thumb-link {
+      min-height: 225px;
+    }
+    .home-projects-section .hp-msnry--tall .project-thumb-link {
+      min-height: 450px;
+    }
+  }
+  @media (max-width: 991.98px) {
+    .home-projects-section .hp-msnry--sq .project-thumb-link {
+      min-height: 240px;
+    }
+    .home-projects-section .hp-msnry--short .project-thumb-link {
+      min-height: 190px;
+    }
+    .home-projects-section .hp-msnry--tall .project-thumb-link {
+      min-height: 360px;
+    }
+  }
+  @media (max-width: 575.98px) {
+    .home-projects-section .hp-msnry--sq .project-thumb-link,
+    .home-projects-section .hp-msnry--short .project-thumb-link,
+    .home-projects-section .hp-msnry--tall .project-thumb-link {
+      aspect-ratio: auto;
+      min-height: 260px;
+    }
+  }
+  .home-projects-filter button.home-projects-filter__btn {
+    position: relative;
+    cursor: pointer;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    background: transparent;
+    color: #23244a;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .home-projects-filter button.home-projects-filter__btn:focus {
+    outline: none;
+  }
+  .home-projects-filter button.home-projects-filter__btn.is-checked,
+  .home-projects-filter button.home-projects-filter__btn:hover {
+    color: #f9a305;
+    border-color: #f9a305;
   }
   .home-projects-section .portfolio-title h4 a {
     color: inherit;
@@ -101,17 +214,46 @@
     text-decoration: underline;
   }
 
-  .home-partners-section .partner-logo-card {
-    height: 140px;
+  /* أزرار صريحة فوق البطاقة (بدل أيقونات صغيرة) */
+  .home-projects-section .portfolio-icon.home-project-hover-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    right: auto;
+    width: calc(100% - 1.5rem);
+    max-width: 20rem;
+    transform: translateX(-50%);
+    text-align: center;
   }
-  .home-partners-section .partner-logo-image {
-    max-height: 100px;
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
+  .home-projects-section .portfolio-item a.home-project-hover-btn {
+    flex: 1 1 auto;
+    min-width: 6.5rem;
+    margin: 0 !important;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .home-projects-section .portfolio-item a.home-project-hover-btn.popup.popup-img {
+    width: auto !important;
+    height: auto !important;
+    min-height: 2.35rem;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem !important;
+  }
+  .home-projects-section .portfolio-item a.home-project-hover-btn--primary {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  }
+  .home-projects-section .portfolio-item a.home-project-hover-btn--enlarge {
+    backdrop-filter: blur(4px);
   }
 
   /* قسم المشاريع — ظهور عند التمرير */
@@ -120,7 +262,8 @@
     transform: translate3d(0, 40px, 0);
     transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .home-projects-section .portfolio-filter button {
+  .home-projects-section .portfolio-filter button,
+  .home-projects-section .home-projects-filter button.home-projects-filter__btn {
     opacity: 0;
     transform: translate3d(0, 16px, 0);
     transition: opacity 0.55s ease, transform 0.55s ease;
@@ -134,37 +277,48 @@
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
-  .home-projects-section.home-projects-visible .portfolio-filter button {
+  .home-projects-section.home-projects-visible .portfolio-filter button,
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(1) { transition-delay: 0.08s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(2) { transition-delay: 0.14s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(3) { transition-delay: 0.2s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(4) { transition-delay: 0.26s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(5) { transition-delay: 0.32s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(6) { transition-delay: 0.38s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(7) { transition-delay: 0.44s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(8) { transition-delay: 0.5s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(9) { transition-delay: 0.56s; }
-  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(10) { transition-delay: 0.62s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(1),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(1) { transition-delay: 0.08s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(2),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(2) { transition-delay: 0.14s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(3),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(3) { transition-delay: 0.2s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(4),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(4) { transition-delay: 0.26s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(5),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(5) { transition-delay: 0.32s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(6),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(6) { transition-delay: 0.38s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(7),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(7) { transition-delay: 0.44s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(8),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(8) { transition-delay: 0.5s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(9),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(9) { transition-delay: 0.56s; }
+  .home-projects-section.home-projects-visible .portfolio-filter button:nth-child(10),
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(10) { transition-delay: 0.62s; }
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(11) { transition-delay: 0.68s; }
+  .home-projects-section.home-projects-visible .home-projects-filter button.home-projects-filter__btn:nth-child(12) { transition-delay: 0.74s; }
   .home-projects-section.home-projects-visible .masonry-brick {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
   }
-  .home-projects-section.home-projects-visible .portfolio-item {
-    transition: box-shadow 0.45s ease, transform 0.45s ease;
-  }
-  .home-projects-section.home-projects-visible .portfolio-item:hover {
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-  }
   @media (prefers-reduced-motion: reduce) {
     .home-projects-section .section-title,
     .home-projects-section .portfolio-filter button,
+    .home-projects-section .home-projects-filter button.home-projects-filter__btn,
     .home-projects-section .masonry-brick {
       opacity: 1 !important;
       transform: none !important;
       transition: none !important;
+    }
+    .home-projects-section.home-projects-visible .home-projects-masonry .portfolio-item:hover {
+      transform: none !important;
     }
   }
 
@@ -174,6 +328,24 @@
     font-size: 0.8rem;
     padding: 0.45rem 0.75rem;
     line-height: 1.4;
+  }
+
+  /* صور كروت الأخبار — نفس الارتفاع/العرض بصرياً مهما اختلفت أبعاد الملف */
+  .home-news-section .service-item .service-images {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #0f1a20;
+  }
+  .home-news-section .service-item .service-images img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
 
   /* قسم الأخبار — ظهور عند التمرير */
@@ -217,7 +389,78 @@
     }
   }
 
-  /* شركاء النجاح — ظهور عند التمرير + تفاعل الشعارات */
+  /* شركاء النجاح — خلفية داكنة + بطاقة بيضاء لكل شعار */
+  .home-partners-section.dark-bg .section-title .title {
+    color: #fff;
+  }
+  .home-partners-section.dark-bg .section-title .title:before {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  .home-partners-section.dark-bg .section-title .title span {
+    color: #f9a305;
+  }
+  .home-partners-section.dark-bg .section-title p {
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .home-partners-section .home-partners-carousel .item.partner-logo-slide {
+    position: relative;
+    background-color: #f6f6f6;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 2px solid rgba(204, 204, 204, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  }
+  .home-partners-section .home-partners-carousel .item.partner-logo-slide:hover,
+  .home-partners-section .home-partners-carousel .item.partner-logo-slide:focus-within {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(249, 163, 5, 0.2);
+    border-color: rgba(249, 163, 5, 0.35);
+    transform: translateY(-3px);
+  }
+  .home-partners-section .home-partners-carousel .item.partner-logo-slide:active {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14), 0 0 0 2px rgba(249, 163, 5, 0.45);
+    transform: translateY(-1px);
+  }
+  /* طبقة ضغط شفافة: أي مكان على الكارد يفتح اللوجو في اللايت بوكس */
+  /* يتجاوز theme-color: a.popup { background: var(--primary-color) } */
+  .home-partners-section .partner-logo-slide__hit,
+  .home-partners-section .partner-logo-slide__hit.popup,
+  .home-partners-section .partner-logo-slide__hit.popup-img {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: 18px;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    line-height: normal !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  .home-partners-section .partner-logo-slide__hit:hover,
+  .home-partners-section .partner-logo-slide__hit:focus {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  .home-partners-section .partner-logo-slide__hit:focus {
+    outline: none;
+  }
+  .home-partners-section .partner-logo-slide:focus-within .partner-logo-slide__hit:focus-visible {
+    outline: 2px solid #f9a305;
+    outline-offset: 3px;
+  }
+  .home-partners-section .partner-logo-slide__body {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
   .home-partners-section .section-title {
     opacity: 0;
     transform: translate3d(0, 36px, 0);
@@ -225,9 +468,37 @@
   }
   .home-partners-section .home-partners-carousel .item .portfolio-item {
     opacity: 0;
-    transform: translate3d(0, 28px, 0) scale(0.95);
-    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
-    border-radius: 8px;
+    transform: translate3d(0, 28px, 0) scale(0.97);
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  .home-partners-section .partner-logo-panel {
+    position: relative;
+    margin: 0 auto;
+    max-width: 220px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    padding: 0.55rem 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .home-partners-section .partner-logo-image {
+    max-width: 100%;
+    max-height: 92%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
   }
   .home-partners-section.home-partners-visible .section-title {
     opacity: 1;
@@ -236,48 +507,51 @@
   .home-partners-section.home-partners-visible .home-partners-carousel .item .portfolio-item {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
-    position: relative;
-    overflow: hidden;
   }
-  .home-partners-section.home-partners-visible .home-partners-carousel .item .portfolio-item:hover {
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-  }
-  .home-partners-section .home-partners-carousel .item .portfolio-item .partner-logo-lightbox {
-    display: block;
-    width: 100%;
-    cursor: pointer;
-  }
-  .home-partners-section.home-partners-visible .home-partners-carousel .item .portfolio-item img {
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
-  }
-  .home-partners-section.home-partners-visible .home-partners-carousel .item .portfolio-item:hover img {
+  .home-partners-section.home-partners-visible .partner-logo-slide:hover .partner-logo-image,
+  .home-partners-section.home-partners-visible .partner-logo-slide:focus-within .partner-logo-image {
     transform: scale(1.06);
-    filter: brightness(1.06);
+    filter: brightness(1.04);
   }
-  .home-partners-section .home-partners-carousel .item .portfolio-item .brand-website-link {
+  .home-partners-section .partner-logo-panel .brand-website-link {
     position: absolute;
-    top: 10px;
-    inset-inline-end: 10px;
-    width: 28px;
-    height: 28px;
+    top: 8px;
+    inset-inline-end: 8px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(26, 47, 58, 0.88);
+    background: rgba(26, 47, 58, 0.9);
     color: #fff;
+    font-size: 0.75rem;
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     transition: opacity 0.28s ease, transform 0.28s ease, background 0.28s ease;
-    z-index: 2;
+    z-index: 4;
+    pointer-events: auto;
+    text-decoration: none;
   }
-  .home-partners-section .home-partners-carousel .item .portfolio-item:hover .brand-website-link,
-  .home-partners-section .home-partners-carousel .item .portfolio-item:focus-within .brand-website-link {
+  .home-partners-section .partner-logo-slide:hover .brand-website-link,
+  .home-partners-section .partner-logo-slide:focus-within .brand-website-link {
     opacity: 1;
     transform: translateY(0);
   }
-  .home-partners-section .home-partners-carousel .item .portfolio-item .brand-website-link:hover {
-    background: rgba(26, 47, 58, 1);
+  .home-partners-section .partner-logo-panel .brand-website-link:hover {
+    background: #f9a305;
+    color: #1a1a1a;
+  }
+  @supports not (aspect-ratio: 1 / 1) {
+    .home-partners-section .partner-logo-panel {
+      min-height: 200px;
+    }
+  }
+  @media (max-width: 575.98px) {
+    .home-partners-section .partner-logo-panel {
+      max-width: 100%;
+      padding: 0.5rem 0.6rem;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .home-partners-section .section-title,
@@ -286,7 +560,18 @@
       transform: none !important;
       transition: none !important;
     }
-    .home-partners-section .home-partners-carousel .item .portfolio-item:hover img {
+    .home-partners-section .partner-logo-panel,
+    .home-partners-section .partner-logo-image {
+      transition: none !important;
+    }
+    .home-partners-section .home-partners-carousel .item.partner-logo-slide:hover,
+    .home-partners-section .home-partners-carousel .item.partner-logo-slide:focus-within,
+    .home-partners-section .home-partners-carousel .item.partner-logo-slide:active {
+      transform: none !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+    }
+    .home-partners-section.home-partners-visible .partner-logo-slide:hover .partner-logo-image,
+    .home-partners-section.home-partners-visible .partner-logo-slide:focus-within .partner-logo-image {
       transform: none !important;
       filter: none !important;
     }
@@ -296,6 +581,7 @@
   <style>
     #home-projects .section-title,
     #home-projects .portfolio-filter button,
+    #home-projects .home-projects-filter button.home-projects-filter__btn,
     #home-projects .masonry-brick {
       opacity: 1 !important;
       transform: none !important;
@@ -345,27 +631,7 @@
       </video>
       <div class="hero-video-overlay"></div>
     </div>
-    <div class="align-center">
-      <div class="container">
-        <div class="row text-end">
-<!--          <div class="col-xl-6 col-lg-8 col-md-10 ms-auto">-->
-<!--            <h1 class="text-white mb-4 animated6">-->
-<!--              Misto Provide Best <span>Service For Your Company</span>-->
-<!--            </h1>-->
-<!--            <p class="lead text-white animated5">-->
-<!--              Misto has provide Best Service our dolor sit amet,-->
-<!--              <br>consectetur adipisicing elit.-->
-<!--            </p>-->
-<!--            <a class="btn btn-theme btn-radius animated7" href="#about">-->
-<!--              Learn More-->
-<!--            </a>-->
-<!--            <a class="btn btn-border btn-radius animated6" href="#contact">-->
-<!--              Contact Us-->
-<!--            </a>-->
-<!--          </div>-->
-        </div>
-      </div>
-    </div>
+    
   </section>
   <!-- hero section end -->
 
@@ -373,64 +639,41 @@
 
 <!--project start-->
 
-{# اتجاه السكشن حسب لغة الواجهة الحالية (نفس المتغير المستخدم في الهيدر LANGUAGE_CODE) #}
+{# مشاريع حقيقية + فلترة بالمدينة عبر Isotope (نفس أنيميشن الثيم). «الكل» = عيّينة مختلطة (.home-in-mix). #}
 <section id="home-projects" class="pb-5 home-projects-section"
   {% if LANGUAGE_CODE == 'ar' %}
     dir="rtl"
   {% else %}
     dir="ltr"
-  {% endif %} >
+  {% endif %}>
   <div class="container">
     <div class="row text-center">
       <div class="col-lg-8 col-md-10 mx-auto">
         {% if section_projects_display %}
           <div class="section-title">
             <h2 class="title">{{ section_projects_display.title }} <span>{{ section_projects_display.highlight }}</span></h2>
-            <p class="mb-0">
-              {{ section_projects_display.subtitle }}
-            </p>
+            <p class="mb-0">{{ section_projects_display.subtitle }}</p>
           </div>
-          {% endif %}
+        {% else %}
+          <div class="section-title">
+            <h2 class="title">{% trans "Latest" %} <span>{% trans "Projects" %}</span></h2>
+            <p class="mb-0">{% blocktrans trimmed %}Misto Provide Greate Services for elit. Excepturi vero aliquam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit.{% endblocktrans %}</p>
+          </div>
+        {% endif %}
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <div class="portfolio-filter d-flex gap-2 home-projects-filter">
-          <button data-filter="*" class="is-checked">{% trans "All" %}</button>
+      <div class="col-md-12 text-center home-projects-filter-wrap">
+        <div class="portfolio-filter d-flex flex-wrap justify-content-center gap-2" role="toolbar" aria-label="{% trans 'Filter projects by city' %}">
+          <button type="button" data-filter=".home-in-mix" class="is-checked">{% trans "All" %}</button>
           {% for city_token, city_label in filter_cities %}
-          <button data-filter=".{{ city_token }}">{{ city_label }}</button>
+          <button type="button" data-filter=".{{ city_token }}">{{ city_label }}</button>
           {% endfor %}
         </div>
       </div>
       <div class="col-lg-12 col-md-12">
-        <div class="masonry row columns-4 popup-gallery">
-          <div class="grid-sizer"></div>
-          {% for project in projects %}
-          {% url 'project_detail' project.slug as project_detail_url %}
-          <div class="masonry-brick{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}">
-            <div class="portfolio-item">
-              <a href="{{ project_detail_url }}" class="project-thumb-link">
-              {% if project.image %}
-              <img src="{{ project.image.url }}" alt="{{ project.title }}">
-              {% else %}
-              <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}">
-              {% endif %}
-              </a>
-              <div class="portfolio-hover">
-                <div class="portfolio-title">
-                  {% if project.category %}<span>{{ project.category.name }}</span>{% endif %}
-                  <h4><a href="{{ project_detail_url }}">{{ project.title }}</a></h4>
-                </div>
-                <div class="portfolio-icon">
-                  {% if project.image %}
-                  <a class="popup popup-img" href="{{ project.image.url }}"><i class="flaticon-magnifier"></i></a>
-                  {% endif %}
-                  <a href="{{ project_detail_url }}" title="{% trans 'Project details' %}"><i class="flaticon-broken-link-1"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
+        <div id="home-projects-masonry" class="masonry row columns-4 popup-gallery home-projects-masonry">
+          {% include "partials/home_projects_masonry.html" %}
         </div>
       </div>
     </div>
@@ -483,7 +726,7 @@
                 {% endif %}
               </div>
               <div class="home-news-meta-bar">
-                <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"l" }} — {{ post.created_at|date:"d" }} {{ post.created_at|date:"F" }} {{ post.created_at|date:"Y" }}</time>
+                <time datetime="{{ post.effective_display_date|date:'Y-m-d' }}">{% locale_date post.effective_display_date LANGUAGE_CODE "LONG_DATE" %}</time>
                 &nbsp;|&nbsp;
                 {% if section_news_display %}
                   {{ section_news_display.title }} {{ section_news_display.highlight }}
@@ -555,7 +798,7 @@
 
 
   <!-- شركاء النجاح -->
-  <section id="home-partners" class="overflow-hidden home-partners-section">
+  <section id="home-partners" class="overflow-hidden home-partners-section py-5">
     <div class="container">
       <div class="row text-center">
         <div class="col-lg-8 col-md-10 mx-auto">
@@ -570,39 +813,50 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid p-0">
+    <div class="container-fluid px-2 px-lg-3 pt-3 pb-1">
       <div class="row">
         <div class="col-md-12">
           <div class="owl-carousel home-partners-carousel no-pb"
                data-items="4"
                data-md-items="3"
                data-sm-items="2"
+               data-margin="8"
                data-dots="false"
                data-nav="true"
                data-autoplay="true">
             {% for brand in partner_brands %}
-              <div class="item">
-                <div class="portfolio-item d-flex align-items-center justify-content-center partner-logo-card">
-                  <a class="partner-logo-lightbox"
-                    href="{{ brand.logo.url }}"
-                    title="{{ brand.name|default:'Brand' }}">
+              <div class="item partner-logo-slide">
+                <a class="partner-logo-slide__hit partner-logo-lightbox popup popup-img"
+                  href="{{ brand.logo.url }}"
+                  title="{{ brand.name|default:'Brand' }}"
+                  aria-label="{% trans 'View logo' %} — {{ brand.name|default:'Brand' }}">
+                  <span class="visually-hidden">{{ brand.name|default:'Brand' }}</span>
+                </a>
+                <div class="portfolio-item partner-logo-card partner-logo-slide__body">
+                  <div class="partner-logo-panel">
                     <img class="partner-logo-image"
                           src="{{ brand.logo.url }}"
                           alt="{{ brand.name|default:'Brand' }}">
-                  </a>
-                  {% if brand.website_url %}
-                    <a class="brand-website-link" target="_blank" rel="noopener" href="{{ brand.website_url }}" aria-label="{{ brand.name|default:'Website' }}">
-                      <i class="fas fa-external-link-alt"></i>
-                    </a>
-                  {% endif %}
+                    {% if brand.website_url %}
+                      <a class="brand-website-link" target="_blank" rel="noopener" href="{{ brand.website_url }}" aria-label="{{ brand.name|default:'Website' }}">
+                        <i class="fas fa-external-link-alt"></i>
+                      </a>
+                    {% endif %}
+                  </div>
                 </div>
               </div>
             {% empty %}
-              <div class="item">
-                <div class="portfolio-item">
-                  <a class="partner-logo-lightbox" href="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" title="{% trans 'Brand' %}">
-                    <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{% trans 'Brand' %}">
-                  </a>
+              <div class="item partner-logo-slide">
+                <a class="partner-logo-slide__hit partner-logo-lightbox popup popup-img"
+                  href="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}"
+                  title="{% trans 'Brand' %}"
+                  aria-label="{% trans 'View logo' %}">
+                  <span class="visually-hidden">{% trans 'Brand' %}</span>
+                </a>
+                <div class="portfolio-item partner-logo-card partner-logo-slide__body">
+                  <div class="partner-logo-panel">
+                    <img class="partner-logo-image" src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{% trans 'Brand' %}">
+                  </div>
                 </div>
               </div>
             {% endfor %}
@@ -648,6 +902,43 @@ setupSectionReveal('home-partners', 'home-partners-visible', '.home-partners-car
 
 /* شركاء النجاح: فتح نفس صورة اللوجو المضغوطة فقط (بدون معرض/فهرس يختلط مع نسخ Owl) */
 $(function () {
+  var $homeMasonry = $('#home-projects-masonry');
+  $('#home-projects .portfolio-filter').on('click', 'button', function () {
+    var $g = $(this).closest('.portfolio-filter');
+    $g.find('button.is-checked').removeClass('is-checked');
+    $(this).addClass('is-checked');
+  });
+
+  if ($('#home-projects').length && $homeMasonry.length) {
+    function applyHomeProjectsInitialFilter() {
+      if (!$homeMasonry.length || typeof $homeMasonry.isotope !== 'function') {
+        return false;
+      }
+      if (!$homeMasonry.data('isotope')) {
+        return false;
+      }
+      $homeMasonry.isotope({ filter: '.home-in-mix' });
+      return true;
+    }
+    function scheduleHomeProjectsInitialFilter() {
+      if (applyHomeProjectsInitialFilter()) {
+        return;
+      }
+      var n = 0;
+      var id = window.setInterval(function () {
+        n += 1;
+        if (applyHomeProjectsInitialFilter() || n > 50) {
+          window.clearInterval(id);
+        }
+      }, 40);
+    }
+    if (document.readyState === 'complete') {
+      scheduleHomeProjectsInitialFilter();
+    } else {
+      $(window).on('load', scheduleHomeProjectsInitialFilter);
+    }
+  }
+
   $('.home-partners-carousel').on('click', 'a.partner-logo-lightbox', function (e) {
     e.preventDefault();
     e.stopPropagation();

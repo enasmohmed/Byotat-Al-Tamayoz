@@ -4,79 +4,84 @@ from django.utils.translation import gettext_lazy as _
 
 from core.models import SiteSettings
 
-from .models import ContactMessage
-
 
 class ContactForm(forms.Form):
     name = forms.CharField(
         label=_("Name"),
         max_length=255,
-        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "name"}),
+        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "name", "required": True}),
     )
     email = forms.EmailField(
         label=_("Email"),
-        widget=forms.EmailInput(attrs={"class": "form-control", "autocomplete": "email"}),
+        widget=forms.EmailInput(attrs={"class": "form-control", "autocomplete": "email", "required": True}),
     )
     phone = forms.CharField(
-        label=_("Phone (optional)"),
+        label=_("Phone"),
         max_length=50,
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "tel"}),
+        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "tel", "required": True}),
     )
     subject = forms.CharField(
         label=_("Subject"),
         max_length=255,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.TextInput(attrs={"class": "form-control", "required": True}),
     )
     message = forms.CharField(
         label=_("Message"),
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5, "required": True}),
     )
-    send_via = forms.ChoiceField(
-        label=_("Send message via"),
-        choices=ContactMessage.SendVia.choices,
-        widget=forms.RadioSelect(attrs={"class": "contact-send-via"}),
-        initial=ContactMessage.SendVia.EMAIL,
+    send_via_email = forms.BooleanField(
+        label=_("Via company email"),
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+    )
+    send_via_whatsapp = forms.BooleanField(
+        label=_("Via company WhatsApp"),
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
     )
 
     def __init__(self, *args, site=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.site = site if site is not None else SiteSettings.objects.first()
-        choices = []
-        if self.site and (self.site.email or "").strip():
-            choices.append((ContactMessage.SendVia.EMAIL, _("Via company email")))
-        if self.site and getattr(self.site, "whatsapp_digits", ""):
-            choices.append((ContactMessage.SendVia.WHATSAPP, _("Via company WhatsApp")))
+        has_email = bool(self.site and (self.site.email or "").strip())
+        has_wa = bool(self.site and getattr(self.site, "whatsapp_digits", ""))
 
-        fld = self.fields["send_via"]
-        fld.help_text = ""
-
-        if not choices:
-            fld.choices = [
-                (ContactMessage.SendVia.EMAIL, _("Via company email")),
-                (ContactMessage.SendVia.WHATSAPP, _("Via company WhatsApp")),
-            ]
+        if has_email and has_wa:
+            self.fields["send_via_email"].initial = True
+            self.fields["send_via_whatsapp"].initial = True
+        elif has_email:
+            self.fields["send_via_email"].initial = True
+            self.fields["send_via_whatsapp"].initial = False
+            self.fields["send_via_whatsapp"].widget = forms.HiddenInput()
+        elif has_wa:
+            self.fields["send_via_email"].initial = False
+            self.fields["send_via_whatsapp"].initial = True
+            self.fields["send_via_email"].widget = forms.HiddenInput()
         else:
-            fld.choices = choices
-            if len(choices) == 1:
-                only = choices[0][0]
-                fld.initial = only
-                fld.widget = forms.HiddenInput()
-                fld.choices = choices
+            self.fields["send_via_email"].initial = False
+            self.fields["send_via_whatsapp"].initial = False
 
     def clean(self):
         cleaned = super().clean()
-        send_via = cleaned.get("send_via")
         if not self.site:
             raise ValidationError(_("Site settings are missing. Please contact the administrator."))
-        if send_via == ContactMessage.SendVia.EMAIL:
-            if not (self.site.email or "").strip():
-                raise ValidationError(
-                    _("Company email is not configured. Choose WhatsApp or ask the administrator to set it in Site settings.")
-                )
-        elif send_via == ContactMessage.SendVia.WHATSAPP:
-            if not getattr(self.site, "whatsapp_digits", ""):
-                raise ValidationError(
-                    _("Company WhatsApp is not configured. Choose email or ask the administrator to set it in Site settings.")
-                )
+
+        has_email = bool((self.site.email or "").strip())
+        has_wa = bool(getattr(self.site, "whatsapp_digits", ""))
+        send_email = bool(cleaned.get("send_via_email"))
+        send_wa = bool(cleaned.get("send_via_whatsapp"))
+
+        if not send_email and not send_wa:
+            raise ValidationError(_("Please choose at least one: email or WhatsApp."))
+
+        if send_email and not has_email:
+            raise ValidationError(
+                _("Company email is not configured. Uncheck email or ask the administrator to set it in Site settings.")
+            )
+        if send_wa and not has_wa:
+            raise ValidationError(
+                _("Company WhatsApp is not configured. Uncheck WhatsApp or ask the administrator to set it in Site settings.")
+            )
         return cleaned

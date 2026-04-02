@@ -1,58 +1,191 @@
 {% extends "base.html" %}
-{% load static i18n %}
+{% load static i18n i18n_dates %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE_CODE %}
 
 {% block content %}
-<div class="page-wrapper">
-  <section class="dark-bg text-center py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="section-title mb-0">
-            <h1 class="title">{% trans "News archive" %}</h1>
-            <p class="mb-0 text-white">{% trans "Latest news intro line" %}</p>
-          </div>
-        </div>
+<section class="page-title overflow-hidden text-center parallaxie"
+  data-overlay="{% if blog_list_page %}{{ blog_list_page.hero_overlay }}{% else %}7{% endif %}"
+  data-bg-img="{% if blog_list_page and blog_list_page.hero_background %}{{ blog_list_page.hero_background.url }}{% elif LANGUAGE_BIDI %}{% static 'rtl/images/bg/02.jpg' %}{% else %}{% static 'ltr/images/bg/02.jpg' %}{% endif %}">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 mx-auto">
+        <h1 class="title mb-0">
+          {% if blog_list_page %}
+            {% if blog_list_page.hero_title_main or blog_list_page.hero_title_span %}
+              {{ blog_list_page.hero_title_main }}{% if blog_list_page.hero_title_span %} <span>{{ blog_list_page.hero_title_span }}</span>{% endif %}
+            {% else %}
+              {% trans "News archive" %}
+            {% endif %}
+          {% else %}
+            {% trans "News archive" %}
+          {% endif %}
+        </h1>
+        {% if blog_list_page and blog_list_page.hero_intro %}
+          <p class="text-white mb-0 mt-3">{{ blog_list_page.hero_intro }}</p>
+        {% endif %}
       </div>
     </div>
-  </section>
+    <nav aria-label="{% trans 'Breadcrumb' %}" class="page-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="{% url 'posts_list' %}">{% if blog_list_page and blog_list_page.breadcrumb_parent_label %}{{ blog_list_page.breadcrumb_parent_label }}{% else %}{% trans "News" %}{% endif %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% if blog_list_page and blog_list_page.breadcrumb_current_label %}{{ blog_list_page.breadcrumb_current_label }}{% else %}{% trans "News archive" %}{% endif %}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
 
-  <section class="grey-bg py-5"
-    {% if LANGUAGE_CODE == 'ar' %}
-      dir="rtl" style="direction: rtl; text-align: right;"
-    {% else %}
-      dir="ltr" style="direction: ltr; text-align: left;"
-    {% endif %}>
-    <div class="container">
-      <div class="row g-4">
+<div class="page-content">
+<section
+  {% if LANGUAGE_CODE == 'ar' %}dir="rtl"{% else %}dir="ltr"{% endif %}>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 col-md-12">
         {% for post in posts %}
-          <div class="col-lg-4 col-md-6">
-            <div class="service-item h-100">
-              <div class="service-images">
-                {% if post.cover_image %}
-                  <img src="{{ post.cover_image.url }}" class="img-fluid" alt="{{ post.title }}">
-                {% else %}
-                  {% if LANGUAGE_CODE == 'ar' %}
+          <div class="blog-classic">
+            <div class="post">
+              <div class="post-image">
+                <a href="{% url 'post_detail' post.slug %}">
+                  {% if post.cover_image %}
+                    <img src="{{ post.cover_image.url }}" class="img-fluid" alt="{{ post.title }}">
+                  {% elif LANGUAGE_BIDI %}
                     <img class="img-fluid" src="{% static 'rtl/images/portfolio/01.jpg' %}" alt="{{ post.title }}">
                   {% else %}
                     <img class="img-fluid" src="{% static 'ltr/images/portfolio/01.jpg' %}" alt="{{ post.title }}">
                   {% endif %}
-                {% endif %}
+                </a>
+                <div class="post-date">{% locale_date post.effective_display_date LANGUAGE_CODE "LONG_DATE" %}</div>
               </div>
-              <div class="service-description">
-                <h4>{{ post.title }}</h4>
-                <p class="small text-muted mb-2">{{ post.created_at|date:"d F Y" }}</p>
-                <p>{{ post.content|striptags|truncatechars:100 }}</p>
-                <a href="{% url 'post_detail' post.slug %}">{% trans "Read more" %} <i class="fas fa-arrow-right"></i></a>
+              <div class="post-desc">
+                <div class="post-title">
+                  <h5><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h5>
+                </div>
+                <p>{{ post.content|striptags|truncatechars:220 }}</p>
+              </div>
+              <div class="post-bottom">
+                <div class="post-meta">
+                  <ul class="list-inline">
+                    <li>
+                      {% if post.category %}
+                        <i class="fas fa-folder-open text-theme me-1"></i>
+                        <a href="{% url 'posts_list' %}?category={{ post.category.slug }}">{{ post.category.name }}</a>
+                      {% else %}
+                        <i class="fas fa-file-alt text-theme me-1"></i>{% trans "Article" %}
+                      {% endif %}
+                    </li>
+                  </ul>
+                </div>
+                <a class="post-btn" href="{% url 'post_detail' post.slug %}">{% trans "Read more" %}{% if LANGUAGE_BIDI %}<i class="me-2 fas fa-long-arrow-alt-left"></i>{% else %}<i class="ms-2 fas fa-long-arrow-alt-right"></i>{% endif %}</a>
               </div>
             </div>
           </div>
         {% empty %}
-          <div class="col-12 text-center">
-            <p class="text-muted mb-0">{% trans "No posts yet." %}</p>
-          </div>
+          <p class="text-muted text-center py-5 mb-0">{% trans "No posts yet." %}</p>
         {% endfor %}
+
+        {% if is_paginated and page_obj.paginator.num_pages > 1 %}
+        <nav aria-label="{% trans 'Page navigation' %}">
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?{% if request.GET.category %}category={{ request.GET.category|urlencode }}&amp;{% endif %}{% if request.GET.q %}q={{ request.GET.q|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+            </li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+            <li class="page-item{% if page_obj.number == num %} active{% endif %}">
+              <a class="page-link" href="?{% if request.GET.category %}category={{ request.GET.category|urlencode }}&amp;{% endif %}{% if request.GET.q %}q={{ request.GET.q|urlencode }}&amp;{% endif %}page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?{% if request.GET.category %}category={{ request.GET.category|urlencode }}&amp;{% endif %}{% if request.GET.q %}q={{ request.GET.q|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+      <div class="col-lg-3 col-md-12 sidebar mt-5 mt-lg-0">
+        <div class="widget">
+          <div class="widget-search">
+            <form class="form-inline form" method="get" action="{% url 'posts_list' %}">
+              {% if request.GET.category %}
+                <input type="hidden" name="category" value="{{ request.GET.category }}">
+              {% endif %}
+              <div class="widget-searchbox">
+                <button type="submit" class="search-btn" aria-label="{% trans 'Search' %}"><i class="fas fa-search"></i></button>
+                <input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="{% trans 'Search…' %}" class="form-control">
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="widget">
+          <h5 class="widget-title">{% trans "Categories" %}</h5>
+          <ul class="widget-categories list-unstyled">
+            <li>
+              <a href="{% url 'posts_list' %}{% if request.GET.q %}?q={{ request.GET.q|urlencode }}{% endif %}" {% if not request.GET.category %}class="text-theme fw-semibold"{% endif %}>{% trans "All" %}</a>
+            </li>
+            {% for cat in blog_categories %}
+              <li>
+                <a href="{% url 'posts_list' %}?category={{ cat.slug }}{% if request.GET.q %}&amp;q={{ request.GET.q|urlencode }}{% endif %}"
+                   {% if request.GET.category == cat.slug %}class="text-theme fw-semibold"{% endif %}>{{ cat.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="widget">
+          <h5 class="widget-title">{% trans "Recent posts" %}</h5>
+          <div class="recent-post">
+            <ul class="list-unstyled">
+              {% for rp in sidebar_recent_posts %}
+              <li class="mb-3">
+                <div class="recent-post-thumb">
+                  {% if rp.cover_image %}
+                    <a href="{% url 'post_detail' rp.slug %}"><img class="img-fluid" src="{{ rp.cover_image.url }}" alt="{{ rp.title }}"></a>
+                  {% elif LANGUAGE_BIDI %}
+                    <a href="{% url 'post_detail' rp.slug %}"><img class="img-fluid" src="{% static 'rtl/images/portfolio/01.jpg' %}" alt="{{ rp.title }}"></a>
+                  {% else %}
+                    <a href="{% url 'post_detail' rp.slug %}"><img class="img-fluid" src="{% static 'ltr/images/portfolio/01.jpg' %}" alt="{{ rp.title }}"></a>
+                  {% endif %}
+                </div>
+                <div class="recent-post-desc">
+                  {% if rp.category %}
+                    <div class="small mb-1">
+                      <a href="{% url 'posts_list' %}?category={{ rp.category.slug }}" class="text-theme text-decoration-none">{{ rp.category.name }}</a>
+                    </div>
+                  {% endif %}
+                  <a href="{% url 'post_detail' rp.slug %}">{{ rp.title }}</a>
+                  <span><i class="fas fa-calendar-alt text-theme me-1"></i>{% locale_date rp.effective_display_date LANGUAGE_CODE "LONG_DATE" %}</span>
+                </div>
+              </li>
+              {% empty %}
+              <li class="text-muted small">{% trans "No posts yet." %}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% if site.facebook or site.linkedin or site.instagram %}
+        <div class="widget">
+          <h5 class="widget-title">{% trans "Follow us" %}</h5>
+          <div class="social-icons social-colored">
+            <ul class="list-inline mb-0">
+              {% if site.facebook %}
+              <li class="social-facebook"><a href="{{ site.facebook }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+              {% endif %}
+              {% if site.linkedin %}
+              <li class="social-linkedin"><a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+              {% endif %}
+              {% if site.instagram %}
+              <li class="social-instagram"><a href="{{ site.instagram }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
-  </section>
+  </div>
+</section>
 </div>
 {% endblock %}

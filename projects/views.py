@@ -110,21 +110,26 @@ class ProjectDetailView(DetailView):
                 if len(suggested) >= limit:
                     break
 
-        if (project.area_key or "").strip():
-            add_from(qs.filter(area_key=project.area_key))
-        if len(suggested) < 4 and (project.district or "").strip() and (project.city or "").strip():
-            add_from(
-                qs.filter(
-                    district=project.district,
-                    city=project.city,
-                )
-            )
-        if len(suggested) < 4 and (project.city or "").strip():
-            add_from(qs.filter(city=project.city))
-        if len(suggested) < 4 and project.category_id:
-            add_from(qs.filter(category_id=project.category_id))
-        if len(suggested) < 4:
-            add_from(qs.order_by("id"))
+        # Suggested projects: keep recommendations within the same city.
+        # (Avoid showing Makkah projects while viewing a Jeddah project, etc.)
+        city = (project.city or "").strip()
+        district = (project.district or "").strip()
+
+        if city:
+            qs_city = qs.filter(city=city)
+            if district:
+                add_from(qs_city.filter(district=district))
+            add_from(qs_city)
+        else:
+            # If city isn't set, fall back to the previous strategy (best-effort).
+            if (project.area_key or "").strip():
+                add_from(qs.filter(area_key=project.area_key))
+            if len(suggested) < 4 and district:
+                add_from(qs.filter(district=district))
+            if len(suggested) < 4 and project.category_id:
+                add_from(qs.filter(category_id=project.category_id))
+            if len(suggested) < 4:
+                add_from(qs.order_by("id"))
 
         context["suggested_projects"] = suggested[:4]
 
@@ -142,6 +147,7 @@ class ProjectDetailView(DetailView):
                 project.has_private_parking,
                 project.has_smart_home,
                 project.has_maid_room,
+                getattr(project, "has_driver_room", False),
             ]
         )
         context["has_guarantees_tab"] = any(

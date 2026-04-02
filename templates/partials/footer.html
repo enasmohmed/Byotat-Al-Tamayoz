@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+{% load i18n_dates %}
 
 <!--footer start-->
 <style>
@@ -61,7 +62,7 @@
                   </div>
                   <div class="recent-post-desc">
                     <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
-                    <span>{{ post.created_at|date:"d F Y" }}</span>
+                    <span>{% locale_date post.effective_display_date LANGUAGE_CODE "LONG_DATE" %}</span>
                   </div>
                 </li>
               {% empty %}

@@ -1,7 +1,17 @@
 {% extends "base.html" %}
-{% load static i18n %}
+{% load static i18n contact_extras %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_current_language as LANGUAGE_CODE %}
+
+{% block extra_head %}
+<style>
+  /* أرقام الهاتف والـ tel: لا تنعكس بشكل خاطئ في RTL */
+  .contact-phone-display {
+    unicode-bidi: isolate;
+    direction: ltr;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 
@@ -39,7 +49,7 @@
     <nav aria-label="breadcrumb" class="page-breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
-        {% if contact_page.hero_breadcrumb_parent_label %}
+        {% if contact_page and contact_page.hero_breadcrumb_parent_label %}
           <li class="breadcrumb-item"><a href="#">{{ contact_page.hero_breadcrumb_parent_label }}</a></li>
         {% else %}
           <li class="breadcrumb-item"><a href="#">{% trans "Contact" %}</a></li>
@@ -91,7 +101,9 @@
               {% if footer.phone or site.phone %}
                 <li class="mb-4"><i class="flaticon-phone-call"></i><span>{% trans "Phone" %}:</span>
                   {% with p=footer.phone|default:site.phone %}
-                    <a href="tel:{{ p|cut:' '|cut:'-' }}">{{ p }}</a>
+                    {% with d=p|phone_digits %}
+                      <a href="tel:{{ d }}" translate="no"><span class="contact-phone-display">{{ p }}</span></a>
+                    {% endwith %}
                   {% endwith %}
                 </li>
               {% endif %}
@@ -108,7 +120,7 @@
               {% endif %}
               {% if site.phone %}
                 <li class="mb-4"><i class="flaticon-phone-call"></i><span>{% trans "Phone" %}:</span>
-                  <a href="tel:{{ site.phone|cut:' '|cut:'-' }}">{{ site.phone }}</a>
+                  <a href="tel:{{ site.phone|phone_digits }}" translate="no"><span class="contact-phone-display">{{ site.phone }}</span></a>
                 </li>
               {% endif %}
               {% if site.email %}
@@ -181,23 +193,23 @@
             {% endif %}
           </h2>
 
-          <form id="site-contact-form" method="post" action="{% url 'contact_form' %}" novalidate>
+          <form id="site-contact-form" method="post" action="{% url 'contact_form' %}">
             {% csrf_token %}
             {% if form.non_field_errors %}
               <div class="alert alert-danger">{{ form.non_field_errors }}</div>
             {% endif %}
             <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+              <label class="form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="text-danger">*</span></label>
               {{ form.name }}
               {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+              <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }} <span class="text-danger">*</span></label>
               {{ form.email }}
               {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+              <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }} <span class="text-danger">*</span></label>
               {{ form.phone }}
               {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors }}</div>{% endif %}
             </div>
@@ -207,25 +219,29 @@
               {% if form.subject.errors %}<div class="text-danger small">{{ form.subject.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+              <label class="form-label" for="{{ form.message.id_for_label }}">{{ form.message.label }} <span class="text-danger">*</span></label>
               {{ form.message }}
               {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              {% if not form.send_via.field.widget.is_hidden %}
-                <span class="form-label d-block mb-2">{{ form.send_via.label }}</span>
+              <span class="form-label d-block mb-2">{% trans "Send message via" %} <span class="text-danger">*</span></span>
+              {% if form.send_via_email.errors or form.send_via_whatsapp.errors %}
+                <div class="text-danger small mb-2">{{ form.send_via_email.errors }}{{ form.send_via_whatsapp.errors }}</div>
               {% endif %}
-              {% if form.send_via.errors %}<div class="text-danger small mb-2">{{ form.send_via.errors }}</div>{% endif %}
-              {% if form.send_via.field.widget.is_hidden %}
-                {{ form.send_via }}
+              {% if form.send_via_email.field.widget.is_hidden %}
+                {{ form.send_via_email }}
               {% else %}
-                {# {{ w }} يتضمّن الـ input والـ label — بدون تسمية ثانية لتفادي التكرار #}
-                <div class="contact-send-via-options">
-                  {% for w in form.send_via.subwidgets %}
-                    <div class="form-check mb-2">
-                      {{ w }}
-                    </div>
-                  {% endfor %}
+                <div class="form-check mb-2">
+                  {{ form.send_via_email }}
+                  <label class="form-check-label" for="{{ form.send_via_email.id_for_label }}">{{ form.send_via_email.label }}</label>
+                </div>
+              {% endif %}
+              {% if form.send_via_whatsapp.field.widget.is_hidden %}
+                {{ form.send_via_whatsapp }}
+              {% else %}
+                <div class="form-check mb-2">
+                  {{ form.send_via_whatsapp }}
+                  <label class="form-check-label" for="{{ form.send_via_whatsapp.id_for_label }}">{{ form.send_via_whatsapp.label }}</label>
                 </div>
               {% endif %}
             </div>

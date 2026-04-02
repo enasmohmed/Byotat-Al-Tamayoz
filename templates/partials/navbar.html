@@ -1,7 +1,6 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 
-
 <ul class="nav navbar-nav ms-auto">
   <li class="nav-item">
     <a class="nav-link{% if request.resolver_match.url_name == 'home' %} active{% endif %}" href="{% url 'home' %}">{% trans "Home" %}</a>
@@ -12,7 +11,7 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="#">{% trans "Our Services" %}</a>
+    <a class="nav-link{% if request.resolver_match.url_name == 'services_list' %} active{% endif %}" href="{% url 'services_list' %}">{% trans "Our Services" %}</a>
   </li>
 
   <li class="nav-item dropdown">
@@ -24,15 +23,11 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="#">{% trans "Register your interest" %}</a>
-  </li>
-
-  <li class="nav-item">
     <a class="nav-link{% if request.resolver_match.url_name == 'posts_list' or request.resolver_match.url_name == 'post_detail' %} active{% endif %}" href="{% url 'posts_list' %}">{% trans "Our news" %}</a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link{% if request.resolver_match.url_name == 'contact_form' %} active{% endif %}" href="{% url 'contact_form' %}">{% trans "Contact us" %}</a>
+    <a class="nav-link{% if request.resolver_match.url_name == 'contact_form' %} active{% endif %}" href="{% url 'contact_form' %}">{% trans "Register your interest" %}</a>
   </li>
 
   {# تبديل لغة منزلق (sleek) — نفس مسار Django set_language #}

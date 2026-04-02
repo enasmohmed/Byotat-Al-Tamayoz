@@ -66,6 +66,7 @@ class ProjectAdmin(TranslationAdmin):
                     "has_private_parking",
                     "has_smart_home",
                     "has_maid_room",
+                    "has_driver_room",
                 ),
             },
         ),

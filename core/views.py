@@ -1,4 +1,5 @@
 import hashlib
+from collections import defaultdict
 
 from django.utils.text import slugify
 from django.views.generic import TemplateView
@@ -6,6 +7,22 @@ from blog.models import Post
 from core.i18n_utils import interface_language
 from core.models import AboutPage, HomeCTA, PartnerBrand, SiteSettings
 from projects.models import SectionTitle, Project
+
+HOME_PROJECTS_MAX = 11
+
+# Masonry tile height variants (cycle) — matches home grid layout pattern
+HOME_MSNRY_VARIANTS = (
+    "hp-msnry--sq",
+    "hp-msnry--tall",
+    "hp-msnry--short",
+    "hp-msnry--short",
+    "hp-msnry--sq",
+    "hp-msnry--short",
+    "hp-msnry--sq",
+    "hp-msnry--tall",
+    "hp-msnry--short",
+    "hp-msnry--sq",
+)
 
 
 def _section_display(section, lang):
@@ -37,6 +54,74 @@ def _location_filter_class(prefix: str, raw: str) -> str:
     return f"{prefix}-u{digest}"
 
 
+def _project_sort_key(p):
+    return (
+        0 if (p.image and getattr(p.image, "name", "")) else 1,
+        -(p.pk or 0),
+    )
+
+
+def _pick_home_projects_mixed(all_projects: list, limit: int) -> list:
+    """
+    Pick up to `limit` projects, round-robin across cities so «All» shows a mix of cities.
+    Projects without a city fill in after named cities in the rotation.
+    """
+    buckets: dict[str, list] = defaultdict(list)
+    for p in all_projects:
+        city = (getattr(p, "city", None) or "").strip()
+        token = _location_filter_class("ct", city) if city else ""
+        buckets[token].append(p)
+    for token in buckets:
+        buckets[token].sort(key=_project_sort_key)
+
+    nonempty = [t for t in buckets if t and buckets[t]]
+    nonempty.sort(key=lambda t: (buckets[t][0].city or "").casefold())
+    ordered_tokens = nonempty + ([""] if buckets.get("") else [])
+
+    picked = []
+    while len(picked) < limit and any(buckets[t] for t in buckets):
+        moved = False
+        for t in ordered_tokens:
+            if len(picked) >= limit:
+                break
+            if buckets[t]:
+                picked.append(buckets[t].pop(0))
+                moved = True
+        if not moved:
+            break
+
+    if len(picked) < limit:
+        seen = {id(x) for x in picked}
+        rest = [p for p in all_projects if id(p) not in seen]
+        rest.sort(key=_project_sort_key)
+        for p in rest:
+            if len(picked) >= limit:
+                break
+            picked.append(p)
+    return picked
+
+
+def annotate_home_projects_for_home(qs_home: list):
+    """
+    Mutate each project in qs_home with filter_city_class, home_msnry_variant, home_in_mix.
+    Full list is rendered; Isotope filters by .home-in-mix (All) or .ct-* (city).
+    """
+    city_labels = {}
+    for p in qs_home:
+        city = (getattr(p, "city", None) or "").strip()
+        if city:
+            ct = _location_filter_class("ct", city)
+            city_labels[ct] = city
+    mix_pks = {p.pk for p in _pick_home_projects_mixed(qs_home, HOME_PROJECTS_MAX)}
+    n_var = len(HOME_MSNRY_VARIANTS)
+    for i, p in enumerate(qs_home):
+        city = (getattr(p, "city", None) or "").strip()
+        p.filter_city_class = _location_filter_class("ct", city) if city else ""
+        p.home_msnry_variant = HOME_MSNRY_VARIANTS[i % n_var]
+        p.home_in_mix = p.pk in mix_pks
+    return sorted(city_labels.items(), key=lambda x: x[1].casefold())
+
+
 class HomeView(TemplateView):
     template_name = 'index.html'
 
@@ -56,24 +141,26 @@ class HomeView(TemplateView):
         context['section_partners_display'] = _section_display(section_partners, lang)
         context['section_news_display'] = _section_display(section_news, lang)
 
-        plist = list(Project.objects.filter(is_active=True).select_related("category"))
-        city_labels = {}
-        for p in plist:
-            city = (getattr(p, "city", None) or "").strip()
-            p.filter_city_class = _location_filter_class("ct", city) if city else ""
-            if p.filter_city_class:
-                city_labels[p.filter_city_class] = city
-        context["projects"] = plist
-        context["filter_cities"] = sorted(city_labels.items(), key=lambda x: x[1].casefold())
+        qs_home = list(
+            Project.objects.filter(is_active=True).select_related("category").order_by("-id")
+        )
+        context["filter_cities"] = annotate_home_projects_for_home(qs_home)
+        context["projects"] = qs_home
         context["partner_brands"] = PartnerBrand.objects.filter(is_active=True).order_by("sort_order", "id")
         context["home_cta"] = HomeCTA.objects.filter(is_active=True).first()
 
-        # مقالات بنفس لغة الواجهة؛ لو مفيش (مثلاً بوستات قديمة بلغة تانية)، نعرض آخر المنشور
+        # كل مقالات الأخبار المنشورة بنفس لغة الواجهة (سلايدر الصفحة الرئيسية)
         latest = list(
-            Post.objects.filter(is_published=True, language=lang).order_by("-created_at")[:3]
+            Post.objects.filter(is_published=True, language=lang)
+            .select_related("category")
+            .order_by("-created_at")
         )
         if not latest:
-            latest = list(Post.objects.filter(is_published=True).order_by("-created_at")[:3])
+            latest = list(
+                Post.objects.filter(is_published=True)
+                .select_related("category")
+                .order_by("-created_at")
+            )
         context["latest_posts"] = latest
         return context
 

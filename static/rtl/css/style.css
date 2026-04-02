@@ -152,7 +152,7 @@ section{padding: 80px 0;}
 .contact-info li a:hover{color: #f9a305;}
 .theme-bg .contact-info span, .dark-bg .contact-info span{color: #ffffff}
 .theme-bg .contact-info li i{color: #ffffff;}
-.theme-bg .contact-info li a{color: #ffffff;}
+.theme-bg .contact-info li a{color: #ffffff;text-align: end;}
 .theme-bg .contact-info li a:hover{color: #23244a;}
 .contact-box {position: absolute; top: 50%; z-index: 99; transform: translateY(-50%); width: 100%;}
 
