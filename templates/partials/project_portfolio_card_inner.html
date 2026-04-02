@@ -1,0 +1,30 @@
+{% load static i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% url 'project_detail' project.slug as project_detail_url %}
+<div class="portfolio-item">
+  <a href="{{ project_detail_url }}" class="project-thumb-link project-thumb-link--badged">
+    {% include "partials/project_card_badges_stack.html" %}
+    {% if project.image %}
+      <img src="{{ project.image.url }}" alt="{{ project.title }}">
+    {% else %}
+      <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}">
+    {% endif %}
+  </a>
+  <div class="portfolio-hover">
+    <div class="portfolio-title">
+      {% if project.category %}<span>{{ project.category.name }}</span>{% endif %}
+      <h4><a href="{{ project_detail_url }}">{{ project.title }}</a></h4>
+    </div>
+    <div class="portfolio-icon home-project-hover-actions">
+      <a href="{{ project_detail_url }}" class="btn btn-theme btn-sm btn-radius home-project-hover-btn home-project-hover-btn--primary">
+        {% trans "View project" %}
+      </a>
+      {% if project.image %}
+        <a class="btn btn-white btn-border btn-sm btn-radius popup popup-img home-project-hover-btn home-project-hover-btn--enlarge" href="{{ project.image.url }}">
+          <i class="flaticon-magnifier" aria-hidden="true"></i>
+          <span>{% trans "Full image" %}</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
 {% load i18n_dates %}
+{% load contact_extras %}
 
 <!--footer start-->
 <style>
@@ -8,6 +9,23 @@
     transform: scale(3.40);
     transform-origin: left center;
     margin-right: 100px;
+  }
+  /* أرقام الهاتف: اتجاه LTR داخل فوتر عربي حتى لا تنعكس الأرقام */
+  .footer .contact-info li a.footer-phone-number {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    vertical-align: bottom;
+  }
+  html[dir="rtl"] .footer .contact-info li a.footer-phone-number {
+    margin-inline-start: 0;
   }
 </style>
 <footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
@@ -85,10 +103,18 @@
               </li>
             {% endif %}
             {% if footer and footer.phone %}
-              <li class="mb-4">
+              {% with phone_href=footer.phone|phone_digits %}
+              <li class="mb-4 footer-contact-phone-row">
                 <i class="flaticon-phone-call"></i><span>{% trans "Phone" %}:</span>
-                <a href="tel:{{ footer.phone }}">{{ footer.phone }}</a>
+                <a
+                  href="tel:{% if phone_href %}{{ phone_href }}{% else %}{{ footer.phone }}{% endif %}"
+                  class="footer-phone-number"
+                  dir="ltr"
+                  translate="no"
+                  lang="en"
+                >{{ footer.phone }}</a>
               </li>
+              {% endwith %}
             {% endif %}
             {% if footer and footer.email %}
               <li>

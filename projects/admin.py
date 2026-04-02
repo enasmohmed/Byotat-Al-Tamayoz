@@ -22,8 +22,16 @@ class ProjectCategoryAdmin(TranslationAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(TranslationAdmin):
-    list_display = ("title_ar", "slug", "city", "area_key", "category", "is_active", "sold_percentage")
-    search_fields = ("title", "description", "city", "district", "area_key")
+    list_display = ("title_ar", "slug", "city", "area_key", "category", "card_badge_text_ar", "is_active", "sold_percentage")
+    search_fields = (
+        "title",
+        "description",
+        "city",
+        "district",
+        "area_key",
+        "card_badge_text",
+        "card_badge_secondary_text",
+    )
     list_filter = ("category", "is_active", "default_language")
     prepopulated_fields = {"slug": ("title",)}
     inlines = [ProjectGalleryImageInline]
@@ -38,6 +46,9 @@ class ProjectAdmin(TranslationAdmin):
                     "image",
                     "promo_video",
                     "category",
+                    "card_badge_variant",
+                    "card_badge_secondary_text",
+                    "card_badge_text",
                     "is_active",
                     "default_language",
                 ),

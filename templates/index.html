@@ -118,8 +118,10 @@
     object-fit: cover;
     display: block;
   }
-  /* إلغاء طبقة الثيم الداكنة (.portfolio-item:before) على الصفحة الرئيسية */
-  .home-projects-section .portfolio-item:before,
+  .home-projects-section .home-projects-masonry .project-thumb-link--badged img {
+    z-index: 0;
+  }
+  /* إلغاء طبقة الثيم على كروت الشركاء فقط (مش المشاريع — عشان الهافر يظهر) */
   .home-partners-section .portfolio-item:before {
     display: none !important;
     content: none !important;
@@ -212,6 +214,14 @@
   .home-projects-section .portfolio-title h4 a:hover {
     color: #fff;
     text-decoration: underline;
+  }
+
+  /* طبقة الهافر فوق الرابط والصورة (الثيم الأصلي + الأزرار) */
+  .home-projects-section .portfolio-item .portfolio-hover {
+    z-index: 120;
+  }
+  .home-projects-section .portfolio-item:before {
+    z-index: 10;
   }
 
   /* أزرار صريحة فوق البطاقة (بدل أيقونات صغيرة) */

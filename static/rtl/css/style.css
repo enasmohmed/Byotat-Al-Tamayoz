@@ -208,3 +208,153 @@ transform: translateY(-50%) rotate(90deg); -webkit-transform: translateY(-50%) r
 .img-side.img-left {right: 0;}
 .img-side {padding: 0; position: absolute!important; top: 0px; height: 100%; overflow: hidden; z-index: 9;}
 .img-side .owl-carousel, .img-side .owl-stage-outer, .img-side .owl-stage, .img-side .owl-stage, .img-side .owl-item, .img-side .owl-item .item{height: 100%}
+
+/* Project card badge (listings / home masonry) */
+.project-thumb-link--badged,
+.portfolio-item--badged {
+  position: relative;
+}
+.project-thumb-link--badged > img {
+  position: relative;
+  z-index: 0;
+  vertical-align: top;
+}
+.project-card-badges-stack {
+  position: absolute;
+  inset-inline-start: 12px;
+  top: 12px;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: min(94%, 300px);
+  pointer-events: none;
+}
+.project-card-badges-stack .project-card-badge,
+.project-card-badges-stack .project-card-badge--secondary {
+  position: relative;
+  inset: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 100%;
+  pointer-events: none;
+}
+.project-card-badge__label {
+  min-width: 0;
+  word-wrap: break-word;
+  line-height: 1.35;
+}
+.project-card-badge__icon {
+  flex-shrink: 0;
+  font-size: 1.05em;
+  line-height: 1;
+  opacity: 0.95;
+}
+/* سطر ثانوي — «مجلة» / معلومة إضافية: كبسولة فاتحة ومميزة */
+.project-card-badge--secondary {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  color: #0c1222;
+  background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 2px 14px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+.project-card-badge--secondary .project-card-badge__icon {
+  color: #c2410c;
+  font-size: 1.15em;
+  opacity: 1;
+}
+/* البادج الأساسي — افتراضي (العلامة) */
+.project-card-badge--primary:not(.project-card-badge--construction):not(.project-card-badge--available):not(.project-card-badge--sold):not(.project-card-badge--red) {
+  padding: 7px 13px 7px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(135deg, #f9a305 0%, #d97706 55%, #b45309 100%);
+  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+.project-card-badge--primary:not(.project-card-badge--construction):not(.project-card-badge--available):not(.project-card-badge--sold):not(.project-card-badge--red) .project-card-badge__icon {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+.project-card-badge--construction {
+  padding: 7px 13px 7px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 10px;
+  color: #451a03;
+  background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 45%, #f59e0b 100%);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+}
+.project-card-badge--construction .project-card-badge__icon {
+  color: #92400e;
+}
+.project-card-badge--available {
+  padding: 7px 13px 7px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+  box-shadow: 0 4px 18px rgba(13, 148, 136, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.project-card-badge--available .project-card-badge__icon {
+  opacity: 1;
+}
+/* أحمر + نص أبيض — خيار «Red» أو «Sold» */
+.project-card-badge--sold,
+.project-card-badge--red {
+  padding: 7px 13px 7px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 10px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 45%, #b91c1c 100%);
+  box-shadow: 0 4px 20px rgba(185, 28, 28, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(127, 29, 29, 0.35);
+}
+.project-card-badge--sold .project-card-badge__icon,
+.project-card-badge--red .project-card-badge__icon {
+  color: #fff;
+  opacity: 1;
+}
+.project-detail-hero .project-detail-hero__inner {
+  position: relative;
+  z-index: 2;
+}
+.project-detail-hero .project-card-badges-stack--hero {
+  position: relative;
+  inset-inline-start: auto;
+  top: auto;
+  max-width: min(100%, 480px);
+  margin-top: 1rem;
+  pointer-events: auto;
+}
+.project-detail-hero .project-card-badge--hero {
+  position: relative;
+  inset-inline-start: auto;
+  top: auto;
+  display: inline-flex;
+  max-width: min(100%, 420px);
+  font-size: 0.95rem;
+  padding: 10px 18px 10px 16px;
+  pointer-events: auto;
+}
+.project-detail-hero .project-card-badge--hero .project-card-badge__icon {
+  font-size: 1.1em;
+}
+.project-detail-hero .project-card-badge--hero-secondary {
+  font-size: 0.88rem;
+  padding: 8px 16px 8px 14px;
+}
+.project-detail-hero .project-card-badge--hero-secondary .project-card-badge__icon {
+  font-size: 1.12em;
+}

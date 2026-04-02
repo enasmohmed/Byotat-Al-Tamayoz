@@ -6,7 +6,16 @@ from .models import AllProjectsPageSettings, Project, ProjectCategory, SectionTi
 
 
 class ProjectTranslationOptions(TranslationOptions):
-    fields = ("title", "description", "city", "district", "rooms_options", "bathrooms_options")
+    fields = (
+        "title",
+        "description",
+        "city",
+        "district",
+        "rooms_options",
+        "bathrooms_options",
+        "card_badge_text",
+        "card_badge_secondary_text",
+    )
 
 translator.register(Project, ProjectTranslationOptions)
 

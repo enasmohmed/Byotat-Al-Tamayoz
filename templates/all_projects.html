@@ -31,6 +31,52 @@
     color: #fff;
     text-decoration: underline;
   }
+  .all-projects-page .portfolio-item .portfolio-hover {
+    z-index: 120;
+  }
+  .all-projects-page .portfolio-item:before {
+    z-index: 10;
+  }
+  .all-projects-page .portfolio-icon.home-project-hover-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    right: auto;
+    width: calc(100% - 1.5rem);
+    max-width: 20rem;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .all-projects-page .portfolio-item a.home-project-hover-btn {
+    flex: 1 1 auto;
+    min-width: 6.5rem;
+    margin: 0 !important;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .all-projects-page .portfolio-item a.home-project-hover-btn.popup.popup-img {
+    width: auto !important;
+    height: auto !important;
+    min-height: 2.35rem;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem !important;
+  }
+  .all-projects-page .portfolio-item a.home-project-hover-btn--primary {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  }
+  .all-projects-page .portfolio-item a.home-project-hover-btn--enlarge {
+    backdrop-filter: blur(4px);
+  }
 </style>
 {% endblock %}
 
@@ -107,29 +153,8 @@
           <div class="masonry row columns-4 g-0 popup-gallery">
             <div class="grid-sizer"></div>
             {% for project in projects %}
-              {% url 'project_detail' project.slug as project_detail_url %}
               <div class="masonry-brick{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}{% if project.filter_district_class %} {{ project.filter_district_class }}{% endif %}">
-                <div class="portfolio-item">
-                  <a href="{{ project_detail_url }}" class="project-thumb-link">
-                    {% if project.image %}
-                      <img src="{{ project.image.url }}" alt="{{ project.title }}">
-                    {% else %}
-                      <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}">
-                    {% endif %}
-                  </a>
-                  <div class="portfolio-hover">
-                    <div class="portfolio-title">
-                      {% if project.category %}<span>{{ project.category.name }}</span>{% endif %}
-                      <h4><a href="{{ project_detail_url }}">{{ project.title }}</a></h4>
-                    </div>
-                    <div class="portfolio-icon">
-                      {% if project.image %}
-                        <a class="popup popup-img" href="{{ project.image.url }}"><i class="flaticon-magnifier"></i></a>
-                      {% endif %}
-                      <a href="{{ project_detail_url }}" title="{% trans 'Project details' %}"><i class="flaticon-broken-link-1"></i></a>
-                    </div>
-                  </div>
-                </div>
+                {% include "partials/project_portfolio_card_inner.html" %}
               </div>
             {% empty %}
               <div class="col-12 text-center text-muted py-5">{% trans "No projects yet." %}</div>

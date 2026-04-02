@@ -192,6 +192,38 @@ class Project(models.Model):
         help_text=_("Google Maps «Embed» iframe src URL (long paste OK)."),
     )
 
+    class CardBadgeVariant(models.TextChoices):
+        DEFAULT = "", _("Default (brand)")
+        CONSTRUCTION = "construction", _("Under construction look (amber)")
+        AVAILABLE = "available", _("Promo / available (highlight)")
+        RED = "red", _("Red badge (white text)")
+        SOLD = "sold", _("Sold (check icon, red & white)")
+
+    card_badge_variant = models.CharField(
+        max_length=20,
+        choices=CardBadgeVariant.choices,
+        blank=True,
+        default="",
+        verbose_name=_("Card badge style"),
+        help_text=_("Look of «Card badge text» on cards and hero. Pick «Red» or «Sold» for red background and white text."),
+    )
+    card_badge_text = models.CharField(
+        max_length=220,
+        blank=True,
+        default="",
+        verbose_name=_("Card badge text"),
+        help_text=_("Short label on project cards, e.g. «Under construction» / «تم البيع». Leave empty to hide."),
+    )
+    card_badge_secondary_text = models.CharField(
+        max_length=240,
+        blank=True,
+        default="",
+        verbose_name=_("Card badge — secondary line"),
+        help_text=_(
+            "Optional. Shown above the main badge on cards & hero, e.g. «1.7 km from Al-Rahhab walkway». Leave empty to hide."
+        ),
+    )
+
     is_active = models.BooleanField(default=True)
     default_language = models.CharField(max_length=5, choices=[("en", "English"), ("ar", "Arabic")], default="en")
 
