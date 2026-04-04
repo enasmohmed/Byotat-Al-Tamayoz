@@ -1,25 +1,37 @@
-{% load static %} {% load i18n %}
+{% load static %}
+{% load i18n %}
 <!--header start-->
 
 <header id="site-header" class="header">
   <div id="header-wrap">
     <div class="container">
       <div class="row">
-        <div class="col">
-          <!-- Navbar -->
-          <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand logo" href="{% url 'home' %}">
-              <img id="logo-img" class="img-fluid" src="{{ logo_url }}" alt="{{ site_settings.site_name }}" style="transform: scale(3.25); transform-origin: {% if LANGUAGE_CODE == 'ar' %}right{% else %}left{% endif %} center; {% if LANGUAGE_CODE == 'ar' %}margin-left: 100px;{% else %}margin-right: 100px;{% endif %}">
+        <div class="col px-2 px-sm-3">
+          <nav class="navbar navbar-expand-lg position-relative align-items-center py-2 py-lg-0" id="site-header-nav">
+            <a class="navbar-brand logo me-2 me-lg-3 flex-shrink-0" href="{% url 'home' %}">
+              <img
+                id="logo-img"
+                class="img-fluid site-header-logo-img"
+                src="{{ logo_url }}"
+                alt="{{ site_settings.site_name }}"
+              />
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+            <button
+              class="navbar-toggler site-header-toggler border-0"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="{% trans 'Toggle navigation' %}"
+            >
+              <span class="site-header-toggler-bars" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-              <!-- Left nav -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
               {% include "partials/navbar.html" %}
             </div>
           </nav>
