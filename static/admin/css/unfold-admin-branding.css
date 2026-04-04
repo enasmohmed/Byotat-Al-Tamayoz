@@ -1,0 +1,180 @@
+/*
+ * Unfold admin: شعار السايدبار + نماذج أوضح + مصغّرات صور في القوائم والنماذج.
+ */
+body.antialiased.font-sans.text-sm {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+/* شعار السايدبار في ديف مستقل — سهل تكبيره بالـ scale */
+.sidebar-brand-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-brand-logo a {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.sidebar-brand-logo img {
+  height: 2.5rem !important;
+  width: auto !important;
+  max-width: 10rem;
+  object-fit: contain;
+  margin: 0 !important;
+  margin-inline-end: 0 !important;
+  transform: scale(1.5);
+  transform-origin: center center;
+}
+
+.sidebar-brand-row {
+  align-items: center;
+}
+
+#nav-sidebar-inner {
+  font-size: 0.9375rem;
+}
+
+#nav-sidebar-inner .font-semibold {
+  font-size: 0.95rem;
+}
+
+#main {
+  font-size: 1rem;
+}
+
+/* ——— مصغّرات قوائم التغيير ——— */
+.admin-list-thumb {
+  display: inline-block;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  vertical-align: middle;
+  border: 1px solid rgb(203 213 225);
+  background: rgb(248 250 252);
+}
+
+html.dark .admin-list-thumb {
+  border-color: rgb(71 85 105);
+  background: rgb(15 23 42 / 0.6);
+}
+
+.admin-thumb-empty {
+  color: rgb(148 163 184);
+  font-size: 0.875rem;
+}
+
+html.dark .admin-thumb-empty {
+  color: rgb(100 116 139);
+}
+
+/* أي صور أخرى داخل جدول النتائج (روابط ملفات، إلخ) */
+body.change-list #result_list tbody td img {
+  max-width: 3.75rem;
+  max-height: 3.75rem;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(203 213 225 / 0.9);
+  vertical-align: middle;
+}
+
+html.dark body.change-list #result_list tbody td img {
+  border-color: rgb(71 85 105 / 0.95);
+}
+
+/* معاينة صورة بجانب حقل الملف في نموذج التعديل */
+body.change-form #content-main .grow a[href*="/media/"] img {
+  max-height: 7rem;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(203 213 225);
+  margin-top: 0.35rem;
+  display: inline-block;
+}
+
+html.dark body.change-form #content-main .grow a[href*="/media/"] img {
+  border-color: rgb(71 85 105);
+  background: rgb(15 23 42 / 0.4);
+}
+
+/* ——— حقول النماذج: وضع فاتح ——— */
+html:not(.dark) body.change-form #content-main input[type="text"],
+html:not(.dark) body.change-form #content-main input[type="url"],
+html:not(.dark) body.change-form #content-main input[type="email"],
+html:not(.dark) body.change-form #content-main input[type="number"],
+html:not(.dark) body.change-form #content-main input[type="search"],
+html:not(.dark) body.change-form #content-main input[type="password"],
+html:not(.dark) body.change-form #content-main textarea,
+html:not(.dark) body.change-form #content-main select {
+  border-color: rgb(203 213 225) !important;
+  background-color: rgb(255 255 255) !important;
+  box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+html:not(.dark) body.change-form #content-main input:focus,
+html:not(.dark) body.change-form #content-main textarea:focus,
+html:not(.dark) body.change-form #content-main select:focus {
+  border-color: rgb(99 102 241) !important;
+  outline: 2px solid transparent;
+}
+
+/* ——— حقول النماذج: وضع داكن ——— */
+html.dark body.change-form #content-main input[type="text"],
+html.dark body.change-form #content-main input[type="url"],
+html.dark body.change-form #content-main input[type="email"],
+html.dark body.change-form #content-main input[type="number"],
+html.dark body.change-form #content-main input[type="search"],
+html.dark body.change-form #content-main input[type="password"],
+html.dark body.change-form #content-main textarea,
+html.dark body.change-form #content-main select {
+  border-color: rgb(100 116 139) !important;
+  background-color: rgb(15 23 42 / 0.85) !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+html.dark body.change-form #content-main input:focus,
+html.dark body.change-form #content-main textarea:focus,
+html.dark body.change-form #content-main select:focus {
+  border-color: rgb(129 140 248) !important;
+  outline: 2px solid transparent;
+}
+
+/* صفوف الحقول: تباعد أوضح + فصل بصري */
+body.change-form #content-main .field-line {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+body.change-form #content-main .field-line + .field-line {
+  border-top: 1px solid rgb(226 232 240 / 0.55);
+}
+
+html.dark body.change-form #content-main .field-line + .field-line {
+  border-top-color: rgb(51 65 85 / 0.65);
+}
+
+/* إطار خفيف حول كتلة الحقول (مثل بطاقة) */
+body.change-form #content-main .form-rows.aligned {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* شريط الأزرار السفلي */
+body.change-form .submit-row {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(226 232 240 / 0.7);
+}
+
+html.dark body.change-form .submit-row {
+  border-top-color: rgb(51 65 85 / 0.7);
+}

@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from modeltranslation.admin import TranslationAdmin
 
 import projects.translation  # noqa: F401
+
+from core.admin_display import admin_image_thumbnail
+from core.unfold_bases import UnfoldTranslationAdmin
 
 from .models import AllProjectsPageSettings, Project, ProjectCategory, ProjectGalleryImage, SectionTitle
 
@@ -14,15 +16,25 @@ class ProjectGalleryImageInline(admin.TabularInline):
 
 
 @admin.register(ProjectCategory)
-class ProjectCategoryAdmin(TranslationAdmin):
+class ProjectCategoryAdmin(UnfoldTranslationAdmin):
     list_display = ("name_ar", "slug", "default_language")
     list_filter = ("default_language",)
     prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Project)
-class ProjectAdmin(TranslationAdmin):
-    list_display = ("title_ar", "slug", "city", "area_key", "category", "card_badge_text_ar", "is_active", "sold_percentage")
+class ProjectAdmin(UnfoldTranslationAdmin):
+    list_display = (
+        "main_cover_thumb",
+        "title_ar",
+        "slug",
+        "city",
+        "area_key",
+        "category",
+        "card_badge_text_ar",
+        "is_active",
+        "sold_percentage",
+    )
     search_fields = (
         "title",
         "description",
@@ -103,9 +115,13 @@ class ProjectAdmin(TranslationAdmin):
         (_("Map"), {"fields": ("map_embed_url",)}),
     )
 
+    @admin.display(description=_("Thumbnail"))
+    def main_cover_thumb(self, obj):
+        return admin_image_thumbnail(obj.image, alt=(obj.title or "")[:120])
+
 
 @admin.register(AllProjectsPageSettings)
-class AllProjectsPageSettingsAdmin(TranslationAdmin):
+class AllProjectsPageSettingsAdmin(UnfoldTranslationAdmin):
     fieldsets = (
         (
             _("Hero (page title / parallax)"),
@@ -135,6 +151,6 @@ class AllProjectsPageSettingsAdmin(TranslationAdmin):
 
 
 @admin.register(SectionTitle)
-class SectionTitleAdmin(TranslationAdmin):
+class SectionTitleAdmin(UnfoldTranslationAdmin):
     list_display = ("title_ar", "highlight_ar", "subtitle_ar")
     search_fields = ("title_ar", "title_en", "highlight_ar", "highlight_en", "subtitle_ar", "subtitle_en")

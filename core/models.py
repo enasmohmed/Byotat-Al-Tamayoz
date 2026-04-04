@@ -93,17 +93,39 @@ class SiteSettings(models.Model):
 
 
 class HomeCTA(models.Model):
-    text_main = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Main text"))
-    text_highlight = models.CharField(max_length=255, blank=True, default="", verbose_name=_("Highlighted text"))
-    button_text = models.CharField(max_length=120, blank=True, default="", verbose_name=_("Button text"))
+    text_main = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        verbose_name=_("Main text"),
+        help_text=_("Primary headline line on the home hero."),
+    )
+    text_highlight = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        verbose_name=_("Highlighted text"),
+        help_text=_("Optional second line or accent phrase (theme color). Leave empty if not used."),
+    )
+    button_text = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Button text"),
+        help_text=_("Label shown on the call-to-action button."),
+    )
     button_url = models.CharField(
         max_length=500,
         blank=True,
         default="",
         verbose_name=_("Button URL"),
-        help_text=_("Internal path like /contact/ or full URL."),
+        help_text=_("Internal path like /contact/ or a full https:// URL."),
     )
-    is_active = models.BooleanField(default=True, verbose_name=_("Active"))
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Active"),
+        help_text=_("When unchecked, this block is hidden on the home page."),
+    )
 
     class Meta:
         verbose_name = _("Home CTA")

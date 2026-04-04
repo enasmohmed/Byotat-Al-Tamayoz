@@ -14,8 +14,8 @@ class ProjectCategory(models.Model):
     default_language = models.CharField(max_length=5, choices=[("en", "English"), ("ar", "Arabic")], default="en")
 
     class Meta:
-        verbose_name = _("Project Category")
-        verbose_name_plural = _("Project Category")
+        verbose_name = _("Project category")
+        verbose_name_plural = _("Project categories")
 
     def __str__(self):
         return self.name or "Project Category"
@@ -229,7 +229,7 @@ class Project(models.Model):
 
     class Meta:
         verbose_name = _("Project")
-        verbose_name_plural = _("Project")
+        verbose_name_plural = _("Projects")
 
     def __str__(self):
         return self.title or "Project"
@@ -289,8 +289,8 @@ class SectionTitle(models.Model):
     default_language = models.CharField(max_length=5, choices=[("en", "English"), ("ar", "Arabic")], default="ar")
 
     class Meta:
-        verbose_name = _("Section Title")
-        verbose_name_plural = _("Section Title")
+        verbose_name = _("Section title")
+        verbose_name_plural = _("Section titles")
 
     def __str__(self):
         return self.title or "Section Title"

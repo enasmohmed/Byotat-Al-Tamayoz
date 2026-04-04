@@ -1,17 +1,24 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
+from modeltranslation.admin import TranslationTabularInline
 
 import services.translation  # noqa: F401 — register before TranslationAdmin
+
+from core.admin_display import admin_image_thumbnail
+from core.unfold_bases import UnfoldSiteModelAdmin, UnfoldTranslationAdmin
 
 from .models import Service, ServicesFeature, ServicesLanding
 
 
 @admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ("title", "slug", "is_active", "language")
+class ServiceAdmin(UnfoldSiteModelAdmin):
+    list_display = ("image_thumb", "title", "slug", "is_active", "language")
     search_fields = ("title", "short_description", "description")
     list_filter = ("is_active", "language")
+
+    @admin.display(description=_("Thumbnail"))
+    def image_thumb(self, obj):
+        return admin_image_thumbnail(obj.image, alt=(obj.title or "")[:120])
 
 
 class ServicesFeatureInline(TranslationTabularInline):
@@ -22,7 +29,7 @@ class ServicesFeatureInline(TranslationTabularInline):
 
 
 @admin.register(ServicesLanding)
-class ServicesLandingAdmin(TranslationAdmin):
+class ServicesLandingAdmin(UnfoldTranslationAdmin):
     inlines = (ServicesFeatureInline,)
     fieldsets = (
         (

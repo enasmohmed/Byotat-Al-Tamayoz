@@ -3,7 +3,10 @@ import core.translation  # noqa: F401 — تسجيل حقول modeltranslation
 from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
+from modeltranslation.admin import TranslationTabularInline
+
+from core.admin_display import admin_image_thumbnail
+from core.unfold_bases import UnfoldSiteModelAdmin, UnfoldTranslationAdmin
 
 from .models import AboutPage, ContactPage, FooterLink, FooterSettings, HomeCTA, PartnerBrand, SiteSettings
 
@@ -13,7 +16,7 @@ admin.site.site_title = _unfold.get("SITE_TITLE", _("Site administration"))
 admin.site.index_title = _unfold.get("SITE_TITLE", _("Site administration"))
 
 @admin.register(AboutPage)
-class AboutPageAdmin(TranslationAdmin):
+class AboutPageAdmin(UnfoldTranslationAdmin):
     fieldsets = (
         (
             _("Hero (page title / parallax)"),
@@ -112,7 +115,7 @@ class AboutPageAdmin(TranslationAdmin):
 
 
 @admin.register(ContactPage)
-class ContactPageAdmin(TranslationAdmin):
+class ContactPageAdmin(UnfoldTranslationAdmin):
     fieldsets = (
         (
             _("Hero (page title / parallax)"),
@@ -152,7 +155,7 @@ class ContactPageAdmin(TranslationAdmin):
 
 
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(TranslationAdmin):
+class SiteSettingsAdmin(UnfoldTranslationAdmin):
     list_display = ('site_name', 'email', 'phone', 'default_language')
     fieldsets = (
         (
@@ -193,9 +196,34 @@ class SiteSettingsAdmin(TranslationAdmin):
 
 
 @admin.register(HomeCTA)
-class HomeCTAAdmin(TranslationAdmin):
-    list_display = ('__str__', 'is_active')
-    fields = ('text_main', 'text_highlight', 'button_text', 'button_url', 'is_active')
+class HomeCTAAdmin(UnfoldTranslationAdmin):
+    list_display = ("__str__", "is_active")
+    fieldsets = (
+        (
+            _("Headline (home hero)"),
+            {
+                "description": _(
+                    "Use «Main text» and «Highlighted text» for each language tab. "
+                    "They map to the large title on the home page."
+                ),
+                "fields": ("text_main", "text_highlight"),
+            },
+        ),
+        (
+            _("Button"),
+            {
+                "description": _(
+                    "«Button text» is the visible label. «Button URL» is where the user goes "
+                    "(relative path or full URL)."
+                ),
+                "fields": ("button_text", "button_url"),
+            },
+        ),
+        (
+            _("Visibility"),
+            {"fields": ("is_active",)},
+        ),
+    )
 
     def has_add_permission(self, request):
         return not HomeCTA.objects.exists()
@@ -211,7 +239,7 @@ class FooterLinkInline(TranslationTabularInline):
 
 
 @admin.register(FooterSettings)
-class FooterSettingsAdmin(TranslationAdmin):
+class FooterSettingsAdmin(UnfoldTranslationAdmin):
     list_display = ('__str__',)
     inlines = (FooterLinkInline,)
 
@@ -283,11 +311,15 @@ class FooterSettingsAdmin(TranslationAdmin):
 
 
 @admin.register(PartnerBrand)
-class PartnerBrandAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_active", "sort_order", "website_url")
+class PartnerBrandAdmin(UnfoldSiteModelAdmin):
+    list_display = ("logo_thumb", "name", "is_active", "sort_order", "website_url")
     list_filter = ("is_active",)
     search_fields = ("name", "website_url")
     ordering = ("sort_order", "id")
+
+    @admin.display(description=_("Thumbnail"))
+    def logo_thumb(self, obj):
+        return admin_image_thumbnail(obj.logo, alt=(obj.name or "")[:120])
 
 
 

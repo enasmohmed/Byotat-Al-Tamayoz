@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'blog',
     'contact',
     'pages',
-    'projects',
+    "projects.apps.ProjectsConfig",
     'services',
     'core',
 
@@ -212,13 +212,35 @@ def unfold_admin_rtl_stylesheet(request):
     return static("admin/css/unfold-rtl-overrides.css")
 
 
+def unfold_admin_branding_stylesheet(request):
+    """شعار أوضح + خط أكبر في الأدمن."""
+    from django.templatetags.static import static
+
+    return static("admin/css/unfold-admin-branding.css")
+
+
+from core.unfold_branding import unfold_admin_favicon_url, unfold_admin_logo_url
+
 UNFOLD = {
     "SITE_TITLE": _("Byotat Al Tamayoz"),
     "SITE_HEADER": _("Byotat Al Tamayoz"),
     "SITE_SUBHEADER": _("Welcome to Dashboard"),
     "SHOW_LANGUAGES": True,
-    "THEME": "dark",
-    "STYLES": [unfold_admin_rtl_stylesheet],
+    # بدون THEME ثابت — يظهر مبدّل فاتح / داكن / النظام في قائمة المستخدم بالسايدبار
+    "SITE_LOGO": {
+        "light": unfold_admin_logo_url,
+        "dark": unfold_admin_logo_url,
+    },
+    "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "href": unfold_admin_favicon_url,
+        },
+    ],
+    "STYLES": [
+        unfold_admin_rtl_stylesheet,
+        unfold_admin_branding_stylesheet,
+    ],
 }
 
 
