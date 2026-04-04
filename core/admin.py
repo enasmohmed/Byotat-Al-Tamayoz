@@ -1,11 +1,16 @@
 import core.translation  # noqa: F401 — تسجيل حقول modeltranslation
 
+from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 
 from .models import AboutPage, ContactPage, FooterLink, FooterSettings, HomeCTA, PartnerBrand, SiteSettings
 
+_unfold = getattr(settings, "UNFOLD", {})
+admin.site.site_header = _unfold.get("SITE_HEADER", _("Administration"))
+admin.site.site_title = _unfold.get("SITE_TITLE", _("Site administration"))
+admin.site.index_title = _unfold.get("SITE_TITLE", _("Site administration"))
 
 @admin.register(AboutPage)
 class AboutPageAdmin(TranslationAdmin):
@@ -283,3 +288,6 @@ class PartnerBrandAdmin(admin.ModelAdmin):
     list_filter = ("is_active",)
     search_fields = ("name", "website_url")
     ordering = ("sort_order", "id")
+
+
+

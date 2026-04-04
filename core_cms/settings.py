@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin', # [ENAS CUSTOM] 
+    'unfold', # [ENAS CUSTOM] 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,6 +69,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'core.middleware.AdminSiteLanguageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -140,6 +143,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+USE_L10N = True
+
 # Used as From: when sending contact form emails (set real SMTP in production).
 DEFAULT_FROM_EMAIL = "webmaster@localhost"
 
@@ -175,10 +180,10 @@ STATICFILES_FINDERS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-LANGUAGES = (
-    ('ar', 'Arabic'),
-    ('en', 'English'),
-)
+LANGUAGES = [
+    ('ar', _('Arabic')),
+    ('en', _('English')),
+]
 
 LOCALE_PATHS = [
     BASE_DIR / "locale",
@@ -200,14 +205,54 @@ MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'ar'
 # LOGIN_REDIRECT_URL = "/"
 
 
-JAZZMIN_SETTINGS = {
-    "site_title": "CMS Admin",
-    "site_header": "CMS Admin",
-    "welcome_sign": "Welcome to the CMS",
-    "show_sidebar": True,
-    "show_navbar": True,
+def unfold_admin_rtl_stylesheet(request):
+    """Extra admin CSS: RTL alignment for Unfold dashboard model tables."""
+    from django.templatetags.static import static
+
+    return static("admin/css/unfold-rtl-overrides.css")
+
+
+UNFOLD = {
+    "SITE_TITLE": _("Byotat Al Tamayoz"),
+    "SITE_HEADER": _("Byotat Al Tamayoz"),
+    "SITE_SUBHEADER": _("Welcome to Dashboard"),
+    "SHOW_LANGUAGES": True,
+    "THEME": "dark",
+    "STYLES": [unfold_admin_rtl_stylesheet],
 }
 
 
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "لوحة التحكم",
+    "site_header": "إدارة الموقع",
+    "site_brand": "Admin",
+
+    "welcome_sign": "أهلاً بيكي 👋",
+
+    "show_ui_builder": True,
+
+    # التحكم في السايدبار
+    "show_sidebar": True,   # خليها False لو عايزة تخفيه بالكامل
+
+    # ترتيب المودلز
+    "order_with_respect_to": ["auth", "your_app"],
+
+    # تغيير اللغة
+    "language_chooser": True,
+
+    # أيقونات
+    "icons": {
+        "auth.user": "fas fa-user",
+    },
+    
+}
+
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    "dark_mode_theme": "darkly",
+}
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"

@@ -19,7 +19,9 @@ class Service(models.Model):
     def __str__(self):
         return f"{self.title} ({self.language})"
 
-
+    class Meta:
+        verbose_name = _("Service")
+        verbose_name_plural = _("Services")
 
 
 class ServicePage(models.Model):
@@ -151,11 +153,11 @@ class ServicePage(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = _("About page")
-        verbose_name_plural = _("About page")
+        verbose_name = _("Services extended page")
+        verbose_name_plural = _("Services extended page")
 
     def __str__(self):
-        return "About page"
+        return str(_("Services extended page"))
 
 
 class ServicesLanding(models.Model):

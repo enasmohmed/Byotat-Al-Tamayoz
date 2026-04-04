@@ -1,0 +1,18 @@
+/*
+ * Unfold admin: align dashboard model list text to the right in RTL (Arabic).
+ * Template uses Tailwind text-left on captions and row headers.
+ */
+html[dir="rtl"] #content .module caption,
+html[dir="rtl"] #content .module caption a {
+  text-align: right !important;
+}
+
+html[dir="rtl"] #content .module th[scope="row"],
+html[dir="rtl"] #content .module th[scope="row"] a {
+  text-align: right !important;
+}
+
+/* Tailwind utility on those cells */
+html[dir="rtl"] #content .module .text-left {
+  text-align: right !important;
+}

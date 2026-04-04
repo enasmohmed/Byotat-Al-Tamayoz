@@ -101,6 +101,10 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.title} ({self.language})"
 
+    class Meta:
+        verbose_name = _("News article")
+        verbose_name_plural = _("News articles")
+
 
 class BlogListPageSettings(models.Model):
     """Hero + breadcrumb for /blog/ (single row in admin)."""
