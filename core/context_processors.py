@@ -86,6 +86,7 @@ def site_settings(request):
         'facebook': site.facebook if site else '',
         'linkedin': site.linkedin if site else '',
         'instagram': site.instagram if site else '',
+
         # لو مفيش إعدادات بنفترض العربي كافتراضي للموقع
         'default_language': site.default_language if site else 'ar',
         'logo_url': (

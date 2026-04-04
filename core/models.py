@@ -1,3 +1,5 @@
+import re
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -71,6 +73,23 @@ class SiteSettings(models.Model):
         if not self.whatsapp_number:
             return ""
         return "".join(c for c in str(self.whatsapp_number) if c.isdigit())
+
+    @property
+    def whatsapp_link(self):
+        """Full wa.me URL for side bar / templates (empty if no number)."""
+        d = self.whatsapp_digits
+        return f"https://wa.me/{d}" if d else ""
+
+    @property
+    def phone_call_link(self):
+        """tel: href from Site settings phone (digits only when possible)."""
+        if not self.phone:
+            return ""
+        raw = str(self.phone).strip()
+        digits = re.sub(r"\D+", "", raw)
+        if digits:
+            return f"tel:{digits}"
+        return f"tel:{raw}" if raw else ""
 
 
 class HomeCTA(models.Model):
@@ -180,6 +199,10 @@ class FooterSettings(models.Model):
         blank=True,
         default="",
         verbose_name=_("Contact — phone"),
+        help_text=_(
+            "Shown in the footer. Tap opens the dialer (tel:). You can use spaces or + for display; "
+            "digits are used for the actual call link."
+        ),
     )
     email = models.EmailField(
         blank=True,
@@ -223,7 +246,7 @@ class FooterSettings(models.Model):
     )
 
     facebook_url = models.URLField(blank=True, default="", verbose_name=_("Facebook URL"))
-    twitter_url = models.URLField(blank=True, default="", verbose_name=_("X (Twitter) URL"))
+    twitter_url = models.URLField(blank=True, default="", verbose_name=_("X URL"))
     linkedin_url = models.URLField(blank=True, default="", verbose_name=_("LinkedIn URL"))
     instagram_url = models.URLField(blank=True, default="", verbose_name=_("Instagram URL"))
     youtube_url = models.URLField(blank=True, default="", verbose_name=_("YouTube URL"))

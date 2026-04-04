@@ -166,7 +166,17 @@
             {% endif %}
           {% endif %}
 
-          {% if site.whatsapp_digits %}
+          {% if footer and footer.whatsapp_digits %}
+            <ul class="contact-info list-unstyled mt-4 mb-0">
+              <li class="mb-0">
+                <i class="fab fa-whatsapp"></i><span>{% trans "WhatsApp" %}:</span>
+                {% trans "Hello, I would like to get in touch." as wa_prefill %}
+                <a href="https://wa.me/{{ footer.whatsapp_digits }}?text={{ wa_prefill|urlencode }}" target="_blank" rel="noopener noreferrer">
+                  {% trans "Chat on WhatsApp" %}
+                </a>
+              </li>
+            </ul>
+          {% elif site.whatsapp_digits %}
             <ul class="contact-info list-unstyled mt-4 mb-0">
               <li class="mb-0">
                 <i class="fab fa-whatsapp"></i><span>{% trans "WhatsApp" %}:</span>

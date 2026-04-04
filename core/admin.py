@@ -232,7 +232,10 @@ class FooterSettingsAdmin(TranslationAdmin):
         (
             _("Contact column"),
             {
-                'fields': ('address', 'phone', 'email'),
+                "description": _(
+                    "Phone: link uses tel: (direct call). WhatsApp: digits only with country code — link opens chat in WhatsApp / web."
+                ),
+                "fields": ("address", "phone", "whatsapp_number", "email"),
             },
         ),
         (

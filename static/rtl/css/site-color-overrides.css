@@ -113,8 +113,12 @@ footer .widget .recent-post-desc span {
   outline: none;
 }
 
-/* Social Icons Sidebar Animation (CodePen-like) */
+/* Social Icons Sidebar Animation (CodePen-like)
+   نفس المتغيرات كـ LTR — الشريط direction: ltr حتى في صفحات عربية. */
 .social {
+  --social-sidebar-pill-width: 300px;
+  --social-sidebar-pull: 270px;
+  --social-sidebar-hover-shift: 110px;
   position: fixed;
   top: 30%;
   left: 11px;
@@ -127,14 +131,48 @@ footer .widget .recent-post-desc span {
 .social ul {
   list-style-type: none;
   padding: 0;
-  transform: translatex(-270px);
+  margin: 0;
+  transform: translatex(calc(-1 * var(--social-sidebar-pull)));
+}
+
+.social ul.social-main li.social-contact-item--after-social {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.social ul li.whatsapp:hover {
+  background-color: #25d366;
+}
+
+.social ul li.phone:hover {
+  background-color: #0d9488;
+}
+
+.social ul li a .social-x-icon {
+  text-align: center;
+  margin-left: 14px;
+  color: #111;
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  box-sizing: border-box;
+  transform: rotate(0deg);
+  fill: #111;
+}
+
+.social ul li:hover a .social-x-icon {
+  transform: rotate(360deg);
+  transition: all 1s;
 }
 
 .social ul li {
   display: block;
   margin: 5px;
   background-color: rgba(0, 0, 0, 0.5);
-  width: 300px;
+  width: var(--social-sidebar-pill-width);
   text-align: right;
   padding: 10px;
   border-radius: 0 30px 30px 0;
@@ -142,7 +180,7 @@ footer .widget .recent-post-desc span {
 }
 
 .social ul li:hover {
-  transform: translatex(110px);
+  transform: translatex(var(--social-sidebar-hover-shift));
 }
 
 .social ul li.twitter:hover {
@@ -168,6 +206,10 @@ footer .widget .recent-post-desc span {
 .social ul li a {
   color: white;
   text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
 
 .social ul li i {

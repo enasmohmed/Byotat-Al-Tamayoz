@@ -27,6 +27,18 @@
   html[dir="rtl"] .footer .contact-info li a.footer-phone-number {
     margin-inline-start: 0;
   }
+  .footer .contact-info li .fab.fa-whatsapp {
+    font-size: 28px;
+    line-height: 24px;
+    color: #f9a305;
+    text-align: center;
+  }
+  .footer .contact-info li a.footer-whatsapp-link {
+    color: inherit;
+  }
+  .footer .contact-info li a.footer-whatsapp-link:hover {
+    color: #f9a305;
+  }
 </style>
 <footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
   <div class="primary-footer">
@@ -115,6 +127,19 @@
                 >{{ footer.phone }}</a>
               </li>
               {% endwith %}
+            {% endif %}
+            {% if footer and footer.whatsapp_digits %}
+              <li class="mb-4 footer-contact-whatsapp-row">
+                <i class="fab fa-whatsapp" aria-hidden="true"></i><span>{% trans "WhatsApp" %}:</span>
+                <a
+                  href="{{ footer.whatsapp_chat_url }}"
+                  class="footer-whatsapp-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  dir="ltr"
+                  translate="no"
+                >{% trans "Open chat" %}</a>
+              </li>
             {% endif %}
             {% if footer and footer.email %}
               <li>

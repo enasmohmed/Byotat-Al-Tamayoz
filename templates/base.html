@@ -25,6 +25,15 @@
         --surface-color: {{ surface_color|default:'#ececec' }};
         --dark-color: {{ dark_color|default:'#1d3338' }};
       }
+      /* شعار X — الثيم يحمّل Font Awesome بدون fa-x-twitter */
+      .social-x-icon {
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        vertical-align: -0.12em;
+        margin-inline-start: 0.2em;
+        fill: currentColor;
+      }
     </style>
 
     <!-- Global Theme CSS (LTR / RTL حسب اللغة) -->
@@ -68,14 +77,14 @@
     {% include "partials/footer.html" %}
 
     {% if footer %}
-      {% if footer.twitter_url or footer.facebook_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url %}
-        {# Social Icons Sidebar Animation (CodePen-like) #}
+      {% if footer.twitter_url or footer.facebook_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url or site.whatsapp_link or site.phone_call_link %}
+        {# قائمة واحدة: سوشيال فوق، واتساب ثم اتصال تحت بعض #}
         <nav class="social" aria-label="Social links" dir="ltr">
-          <ul>
+          <ul class="social-main">
             {% if footer.twitter_url %}
               <li class="twitter">
-                <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer">
-                  Twitter<i class="fab fa-twitter" aria-hidden="true"></i>
+                <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'X' %}">
+                  {% trans "X" %}<svg class="social-x-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88.4h-42L364.4 421.8z"/></svg>
                 </a>
               </li>
             {% endif %}
@@ -106,6 +115,20 @@
                   YouTube<i class="fab fa-youtube" aria-hidden="true"></i>
                 </a>
               </li>
+            {% endif %}
+            {% if site.whatsapp_link %}
+            <li class="whatsapp social-contact-item{% if footer.twitter_url or footer.facebook_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url %} social-contact-item--after-social{% endif %}">
+              <a href="{{ site.whatsapp_link }}" target="_blank" rel="noopener noreferrer">
+                WhatsApp<i class="fab fa-whatsapp" aria-hidden="true"></i>
+              </a>
+            </li>
+            {% endif %}
+            {% if site.phone_call_link %}
+            <li class="phone social-contact-item{% if not site.whatsapp_link %}{% if footer.twitter_url or footer.facebook_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url %} social-contact-item--after-social{% endif %}{% endif %}">
+              <a href="{{ site.phone_call_link }}">
+                {% trans "Call us" %}<i class="fas fa-phone" aria-hidden="true"></i>
+              </a>
+            </li>
             {% endif %}
           </ul>
         </nav>
