@@ -1,0 +1,38 @@
+{% load static i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% url 'project_detail' project.slug as project_detail_url %}
+<article class="home-project-feed-card">
+  <a href="{{ project_detail_url }}" class="home-project-feed-card__thumb">
+    <span class="home-project-feed-card__thumb-inner">
+      {% include "partials/project_card_badges_stack.html" %}
+      {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+      {% else %}
+        <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}" loading="lazy">
+      {% endif %}
+    </span>
+  </a>
+  <div class="home-project-feed-card__body">
+    <h3 class="home-project-feed-card__title">
+      <a href="{{ project_detail_url }}">{{ project.title }}</a>
+    </h3>
+    <p class="home-project-feed-card__excerpt">
+      {% if project.description %}
+        {{ project.description|striptags|truncatewords:24 }}
+      {% else %}
+        {% trans "Open the project page for the full description and details." %}
+      {% endif %}
+    </p>
+    <div class="home-project-feed-card__meta-bar">
+      <a href="{{ project_detail_url }}" class="home-project-feed-card__read-more">
+        <span class="home-project-feed-card__read-more-arrow" aria-hidden="true">←</span>
+        {% trans "Read more" %}
+      </a>
+      <span class="home-project-feed-card__tags">
+        {% if project.category %}<span>{{ project.category.name }}</span>{% endif %}
+        {% if project.category and project.city %}<span class="home-project-feed-card__sep">|</span>{% endif %}
+        {% if project.city %}<span>{{ project.city }}</span>{% endif %}
+      </span>
+    </div>
+  </div>
+</article>

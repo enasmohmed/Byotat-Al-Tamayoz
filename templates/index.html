@@ -46,6 +46,7 @@
     height: 100% !important;
     z-index: 2;
     pointer-events: none;
+    display: none !important;
   }
   @keyframes heroVideoFadeIn {
     from {
@@ -97,93 +98,213 @@
     background-size: cover;
   }
 
-  .home-projects-section .project-thumb-link {
-    display: block;
+  /* إلغاء طبقة الثيم على كروت الشركاء فقط (مش المشاريع — عشان الهافر يظهر) */
+  .home-partners-section .portfolio-item:before {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* مشاريع الصفحة الرئيسية — 6 كروت، 3 ظاهرين فقط، بدون سكرول أفقي، تنقل بمجموعات 3 */
+  #home-projects.home-projects-section {
+    overflow-x: hidden;
+  }
+  .home-projects-section .home-projects-row-clip {
+    overflow-x: clip;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  .home-projects-carousel-wrap {
     position: relative;
-    z-index: 1;
+    margin-top: 0.35rem;
+    overflow-x: clip;
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    padding-bottom: 0.25rem;
+  }
+  .home-projects-slides-pool {
+    display: none !important;
+  }
+  .home-projects-section .home-projects-carousel {
+    width: 100% !important;
+    max-width: 100%;
     overflow: hidden;
   }
-  /* Masonry tile heights — home grid (mixed sample or full city via AJAX) */
-  .home-projects-section .home-projects-masonry .portfolio-item {
+  .home-projects-section .home-projects-carousel.owl-loaded {
+    display: block !important;
+  }
+  .home-projects-section .home-projects-carousel .owl-stage-outer {
+    overflow: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0;
+    padding-bottom: 0 !important;
+    touch-action: pan-y;
+  }
+  .home-projects-section .home-projects-carousel .owl-item {
+    box-sizing: border-box;
+  }
+  .home-projects-section .home-projects-carousel .item {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+  .home-projects-section .home-projects-carousel .owl-nav {
+    display: none !important;
+  }
+  .home-projects-section .home-projects-carousel .owl-dots {
+    position: static !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100% !important;
+    margin-top: 1.1rem;
+    padding: 0 0.25rem 0.15rem;
+    line-height: 1 !important;
+  }
+  .home-projects-section .home-projects-carousel .owl-dot span {
+    background: rgba(35, 36, 74, 0.22) !important;
+  }
+  .home-projects-section .home-projects-carousel .owl-dot.active span,
+  .home-projects-section .home-projects-carousel .owl-dot:hover span {
+    background: #f9a305 !important;
+  }
+  .home-projects-section .home-project-feed-card {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 20px rgba(22, 28, 45, 0.07);
+    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
   }
-  .home-projects-section .home-projects-masonry .project-thumb-link {
+  .home-projects-section.home-projects-visible .home-project-feed-card:hover {
+    border-color: rgba(249, 163, 5, 0.35);
+    box-shadow: 0 14px 36px rgba(22, 28, 45, 0.12);
+    transform: translateY(-3px);
+  }
+  .home-projects-section .home-project-feed-card__thumb {
+    display: block;
     position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
   }
-  .home-projects-section .home-projects-masonry .project-thumb-link img {
+  .home-projects-section .home-project-feed-card__thumb-inner {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #e8ecf1;
+  }
+  .home-projects-section .home-project-feed-card__thumb-inner img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transform: none;
+    transition: transform 0.45s ease;
   }
-  .home-projects-section .home-projects-masonry .project-thumb-link--badged img {
-    z-index: 0;
+  .home-projects-section .home-project-feed-card:hover .home-project-feed-card__thumb-inner img {
+    transform: scale(1.04);
   }
-  /* إلغاء طبقة الثيم على كروت الشركاء فقط (مش المشاريع — عشان الهافر يظهر) */
-  .home-partners-section .portfolio-item:before {
-    display: none !important;
-    content: none !important;
+  .home-projects-section .home-project-feed-card .project-card-badges-stack {
+    top: auto;
+    bottom: 12px;
   }
-  /* بطاقات مشاريع أوضح بدون الأوفرلاي */
-  .home-projects-section .home-projects-masonry .portfolio-item {
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(22, 28, 45, 0.08);
-    transition: box-shadow 0.35s ease, transform 0.35s ease;
+  .home-projects-section .home-project-feed-card__body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.15rem 1.25rem 1.1rem;
   }
-  .home-projects-section.home-projects-visible .home-projects-masonry .portfolio-item:hover {
-    box-shadow: 0 12px 32px rgba(22, 28, 45, 0.14);
-    transform: translateY(-2px);
+  .home-projects-section .home-project-feed-card__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 0.55rem;
+    color: #23244a;
   }
-
-  /* Reference proportions: 600×600 (sq), 600×450 (short / 4:3), 600×900 (tall / 2:3) */
-  .home-projects-section .home-projects-masonry .masonry-brick {
-    padding: 4px;
+  .home-projects-section .home-project-feed-card__title a {
+    color: inherit;
+    text-decoration: none;
   }
-  .home-projects-section .hp-msnry--sq .project-thumb-link {
-    min-height: 280px;
-    aspect-ratio: 1 / 1;
+  .home-projects-section .home-project-feed-card__title a:hover {
+    color: #f9a305;
   }
-  .home-projects-section .hp-msnry--short .project-thumb-link {
-    min-height: 210px;
-    aspect-ratio: 4 / 3;
+  .home-projects-section .home-project-feed-card__excerpt {
+    flex: 1 1 auto;
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #6b7280;
   }
-  .home-projects-section .hp-msnry--tall .project-thumb-link {
-    min-height: 420px;
-    aspect-ratio: 2 / 3;
+  .home-projects-section .home-project-feed-card__meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem 1rem;
+    margin-top: auto;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
   }
-  @supports not (aspect-ratio: 1 / 1) {
-    .home-projects-section .hp-msnry--sq .project-thumb-link {
-      min-height: 300px;
-    }
-    .home-projects-section .hp-msnry--short .project-thumb-link {
-      min-height: 225px;
-    }
-    .home-projects-section .hp-msnry--tall .project-thumb-link {
-      min-height: 450px;
-    }
+  .home-projects-section .home-project-feed-card__read-more {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #f9a305;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
   }
-  @media (max-width: 991.98px) {
-    .home-projects-section .hp-msnry--sq .project-thumb-link {
-      min-height: 240px;
-    }
-    .home-projects-section .hp-msnry--short .project-thumb-link {
-      min-height: 190px;
-    }
-    .home-projects-section .hp-msnry--tall .project-thumb-link {
-      min-height: 360px;
+  .home-projects-section .home-project-feed-card__read-more:hover {
+    color: #d97706;
+  }
+  .home-projects-section .home-project-feed-card__read-more-arrow {
+    font-size: 1em;
+    line-height: 1;
+  }
+  .home-projects-section[dir="rtl"] .home-project-feed-card__read-more-arrow {
+    transform: scaleX(-1);
+    display: inline-block;
+  }
+  .home-projects-section .home-project-feed-card__tags {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    text-align: end;
+  }
+  .home-projects-section .home-project-feed-card__sep {
+    margin: 0 0.35rem;
+    opacity: 0.75;
+  }
+  @supports not (aspect-ratio: 3 / 2) {
+    .home-projects-section .home-project-feed-card__thumb-inner {
+      min-height: 200px;
     }
   }
   @media (max-width: 575.98px) {
-    .home-projects-section .hp-msnry--sq .project-thumb-link,
-    .home-projects-section .hp-msnry--short .project-thumb-link,
-    .home-projects-section .hp-msnry--tall .project-thumb-link {
+    .home-projects-section .home-project-feed-card__thumb-inner {
       aspect-ratio: auto;
-      min-height: 260px;
+      min-height: 200px;
     }
   }
+
   .home-projects-filter button.home-projects-filter__btn {
     position: relative;
     cursor: pointer;
@@ -206,64 +327,6 @@
   .home-projects-filter button.home-projects-filter__btn:hover {
     color: #f9a305;
     border-color: #f9a305;
-  }
-  .home-projects-section .portfolio-title h4 a {
-    color: inherit;
-    text-decoration: none;
-  }
-  .home-projects-section .portfolio-title h4 a:hover {
-    color: #fff;
-    text-decoration: underline;
-  }
-
-  /* طبقة الهافر فوق الرابط والصورة (الثيم الأصلي + الأزرار) */
-  .home-projects-section .portfolio-item .portfolio-hover {
-    z-index: 120;
-  }
-  .home-projects-section .portfolio-item:before {
-    z-index: 10;
-  }
-
-  /* أزرار صريحة فوق البطاقة (بدل أيقونات صغيرة) */
-  .home-projects-section .portfolio-icon.home-project-hover-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    align-items: center;
-    left: 50%;
-    right: auto;
-    width: calc(100% - 1.5rem);
-    max-width: 20rem;
-    transform: translateX(-50%);
-    text-align: center;
-  }
-  .home-projects-section .portfolio-item a.home-project-hover-btn {
-    flex: 1 1 auto;
-    min-width: 6.5rem;
-    margin: 0 !important;
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .home-projects-section .portfolio-item a.home-project-hover-btn.popup.popup-img {
-    width: auto !important;
-    height: auto !important;
-    min-height: 2.35rem;
-    line-height: 1.2 !important;
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.75rem !important;
-  }
-  .home-projects-section .portfolio-item a.home-project-hover-btn--primary {
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  }
-  .home-projects-section .portfolio-item a.home-project-hover-btn--enlarge {
-    backdrop-filter: blur(4px);
   }
 
   /* قسم المشاريع — ظهور عند التمرير */
@@ -327,7 +390,7 @@
       transform: none !important;
       transition: none !important;
     }
-    .home-projects-section.home-projects-visible .home-projects-masonry .portfolio-item:hover {
+    .home-projects-section.home-projects-visible .home-project-feed-card:hover {
       transform: none !important;
     }
   }
@@ -425,6 +488,31 @@
     border-radius: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  }
+  .home-partners-section .home-partners-carousel .owl-nav button.owl-prev span,
+  .home-partners-section .home-partners-carousel .owl-nav button.owl-next span {
+    display: none !important;
+  }
+  .home-partners-section .home-partners-carousel .owl-nav button.owl-prev::before,
+  .home-partners-section .home-partners-carousel .owl-nav button.owl-next::before {
+    display: block;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 40px;
+    text-align: center;
+  }
+  .home-partners-section .home-partners-carousel .owl-nav button.owl-prev::before {
+    content: "\2039";
+  }
+  .home-partners-section .home-partners-carousel .owl-nav button.owl-next::before {
+    content: "\203A";
+  }
+  html[dir="rtl"] .home-partners-section .home-partners-carousel .owl-nav button.owl-prev::before {
+    content: "\203A";
+  }
+  html[dir="rtl"] .home-partners-section .home-partners-carousel .owl-nav button.owl-next::before {
+    content: "\2039";
   }
   .home-partners-section .home-partners-carousel .item.partner-logo-slide:hover,
   .home-partners-section .home-partners-carousel .item.partner-logo-slide:focus-within {
@@ -596,7 +684,7 @@
     #home-projects .section-title,
     #home-projects .portfolio-filter button,
     #home-projects .home-projects-filter button.home-projects-filter__btn,
-    #home-projects .masonry-brick {
+    #home-projects .home-projects-carousel .item {
       opacity: 1 !important;
       transform: none !important;
     }
@@ -645,6 +733,10 @@
       </video>
       <div class="hero-video-overlay"></div>
     </div>
+
+    {% if site and site.hero_video_caption %}
+      <div class="hero-video-caption">{{ site.hero_video_caption }}</div>
+    {% endif %}
     
   </section>
   <!-- hero section end -->
@@ -653,7 +745,7 @@
 
 <!--project start-->
 
-{# مشاريع حقيقية + فلترة بالمدينة عبر Isotope (نفس أنيميشن الثيم). «الكل» = عيّينة مختلطة (.home-in-mix). #}
+{# حتى 6 مشاريع؛ سلايدر 3 لكل شاشة؛ فلتر الحالة يحدّث الشرائح ويعيد تهيئة الكاروسيل. #}
 <section id="home-projects" class="pb-5 home-projects-section"
   {% if LANGUAGE_CODE == 'ar' %}
     dir="rtl"
@@ -676,17 +768,30 @@
         {% endif %}
       </div>
     </div>
-    <div class="row">
+    <div class="row home-projects-row-clip">
       <div class="col-md-12 text-center home-projects-filter-wrap">
-        <div class="portfolio-filter d-flex flex-wrap justify-content-center gap-2" role="toolbar" aria-label="{% trans 'Filter projects by city' %}">
+        <div class="portfolio-filter d-flex flex-wrap justify-content-center gap-2" role="toolbar" aria-label="{% trans 'Filter projects by status' %}">
           <button type="button" data-filter=".home-in-mix" class="is-checked">{% trans "All" %}</button>
-          {% for city_token, city_label in filter_cities %}
-          <button type="button" data-filter=".{{ city_token }}">{{ city_label }}</button>
+          {% for status_token, status_label in filter_statuses %}
+          <button type="button" data-filter=".{{ status_token }}">{{ status_label }}</button>
           {% endfor %}
         </div>
       </div>
-      <div class="col-lg-12 col-md-12">
-        <div id="home-projects-masonry" class="masonry row columns-4 popup-gallery home-projects-masonry">
+      <div class="col-lg-12 col-md-12 home-projects-carousel-wrap">
+        <div id="home-projects-slides-pool" class="home-projects-slides-pool" hidden aria-hidden="true"></div>
+        <div
+          id="home-projects-carousel"
+          class="owl-carousel home-projects-carousel no-pb popup-gallery"
+          data-items="3"
+          data-lg-items="3"
+          data-md-items="2"
+          data-sm-items="1"
+          data-xs-items="1"
+          data-margin="22"
+          data-nav="false"
+          data-dots="true"
+          data-loop="false"
+        >
           {% include "partials/home_projects_masonry.html" %}
         </div>
       </div>
@@ -695,6 +800,13 @@
 </section>
 
 <!--project end-->
+
+
+
+
+
+<!--project carousel end-->
+
 
 
   <!-- أخبار بيوتات التميز — نفس خلفية dark-bg وعنوان في المنتصف + كاروسيل service-item -->
@@ -910,49 +1022,103 @@ function setupSectionReveal(sectionId, visibleClass, itemSelector, baseDelay, st
   io.observe(section);
 }
 
-setupSectionReveal('home-projects', 'home-projects-visible', '.masonry-brick', 0.12, 0.04, 28);
+setupSectionReveal('home-projects', 'home-projects-visible', '.home-projects-carousel .item', 0.12, 0.04, 12);
 setupSectionReveal('home-news', 'home-news-visible', '.owl-carousel .item .service-item', 0.18, 0.07, 10);
 setupSectionReveal('home-partners', 'home-partners-visible', '.home-partners-carousel .item .portfolio-item', 0.15, 0.06, 12);
 
-/* شركاء النجاح: فتح نفس صورة اللوجو المضغوطة فقط (بدون معرض/فهرس يختلط مع نسخ Owl) */
-$(function () {
-  var $homeMasonry = $('#home-projects-masonry');
-  $('#home-projects .portfolio-filter').on('click', 'button', function () {
-    var $g = $(this).closest('.portfolio-filter');
-    $g.find('button.is-checked').removeClass('is-checked');
-    $(this).addClass('is-checked');
-  });
-
-  if ($('#home-projects').length && $homeMasonry.length) {
-    function applyHomeProjectsInitialFilter() {
-      if (!$homeMasonry.length || typeof $homeMasonry.isotope !== 'function') {
-        return false;
-      }
-      if (!$homeMasonry.data('isotope')) {
-        return false;
-      }
-      $homeMasonry.isotope({ filter: '.home-in-mix' });
-      return true;
-    }
-    function scheduleHomeProjectsInitialFilter() {
-      if (applyHomeProjectsInitialFilter()) {
-        return;
-      }
-      var n = 0;
-      var id = window.setInterval(function () {
-        n += 1;
-        if (applyHomeProjectsInitialFilter() || n > 50) {
-          window.clearInterval(id);
-        }
-      }, 40);
-    }
-    if (document.readyState === 'complete') {
-      scheduleHomeProjectsInitialFilter();
-    } else {
-      $(window).on('load', scheduleHomeProjectsInitialFilter);
-    }
+/* مشاريع الهوم: Owl (3 لكل شاشة، 6 عناصر كحد أقصى) + فلتر حالة */
+(function () {
+  function gatherHomeProjectSlides() {
+    var $c = $('#home-projects-carousel');
+    var $p = $('#home-projects-slides-pool');
+    if (!$c.length) return [];
+    return $c.children('.item').add($p.children('.item')).toArray().sort(function (a, b) {
+      var oa = parseInt(a.getAttribute('data-home-project-order'), 10) || 0;
+      var ob = parseInt(b.getAttribute('data-home-project-order'), 10) || 0;
+      return oa - ob;
+    });
   }
 
+  function initHomeProjectsCarousel() {
+    var $root = $('#home-projects-carousel');
+    if (!$root.length || typeof $.fn.owlCarousel !== 'function') return;
+    if ($root.data('owl.carousel')) {
+      try {
+        $root.owlCarousel('destroy');
+      } catch (e0) {}
+      $root.removeClass('owl-loaded');
+    }
+    var $slides = $root.children('.item');
+    if (!$slides.length) return;
+    var rtl = $('#home-projects').attr('dir') === 'rtl';
+    $root.owlCarousel({
+      items: 3,
+      margin: 22,
+      slideBy: 'page',
+      autoWidth: false,
+      loop: false,
+      rewind: true,
+      rtl: rtl,
+      nav: false,
+      dots: true,
+      responsive: {
+        0: { items: 1, margin: 16, nav: false },
+        576: { items: 1, margin: 18, nav: false },
+        768: { items: 2, margin: 20, nav: false },
+        1024: { items: 3, margin: 22, nav: false }
+      }
+    });
+    try {
+      $root.trigger('refresh.owl.carousel');
+    } catch (eR) {}
+  }
+
+  function applyHomeProjectsFilter(filterSel) {
+    var $c = $('#home-projects-carousel');
+    var $p = $('#home-projects-slides-pool');
+    if (!$c.length || !filterSel) return;
+    if ($c.data('owl.carousel')) {
+      try {
+        $c.owlCarousel('destroy');
+      } catch (e1) {}
+    }
+    var sorted = gatherHomeProjectSlides();
+    $(sorted).detach();
+    $p.append(sorted);
+    $p.children('.item').each(function () {
+      var $el = $(this);
+      if ($el.is(filterSel)) {
+        $c.append(this);
+      }
+    });
+    initHomeProjectsCarousel();
+  }
+
+  $(function () {
+    $('#home-projects .portfolio-filter').on('click', 'button', function () {
+      var $g = $(this).closest('.portfolio-filter');
+      $g.find('button.is-checked').removeClass('is-checked');
+      $(this).addClass('is-checked');
+      var fv = $(this).attr('data-filter');
+      if (fv) {
+        applyHomeProjectsFilter(fv);
+      }
+    });
+
+    /* تهيئة مبكرة: بدونها تظهر الشرائح كبلوكات عمودية (خصوصاً RTL) إلى أن يكتمل load */
+    if ($('#home-projects-carousel').length) {
+      initHomeProjectsCarousel();
+    }
+
+    $(window).on('load', function () {
+      if (!$('#home-projects-carousel').length) return;
+      initHomeProjectsCarousel();
+    });
+  });
+})();
+
+/* شركاء النجاح: فتح نفس صورة اللوجو المضغوطة فقط (بدون معرض/فهرس يختلط مع نسخ Owl) */
+$(function () {
   $('.home-partners-carousel').on('click', 'a.partner-logo-lightbox', function (e) {
     e.preventDefault();
     e.stopPropagation();

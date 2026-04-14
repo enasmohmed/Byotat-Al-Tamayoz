@@ -28,3 +28,40 @@ class AdminSiteLanguageMiddleware:
             translation.activate(lang)
             request.LANGUAGE_CODE = lang
         return self.get_response(request)
+
+
+class ForceArabicLanguageMiddleware:
+    """
+    Default to Arabic for every request unless the user explicitly chose a language.
+
+    This intentionally ignores browser Accept-Language, but respects the site's language cookie
+    (set via django.views.i18n.set_language) so the user can switch to English when desired.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        allowed = {code for code, _ in settings.LANGUAGES}
+        lang = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
+        if not lang or lang not in allowed or not check_for_language(lang):
+            lang = "ar"
+
+        translation.activate(lang)
+        request.LANGUAGE_CODE = lang
+
+        response = self.get_response(request)
+
+        # If the user hasn't chosen a language yet, persist Arabic as the default.
+        if settings.LANGUAGE_COOKIE_NAME not in request.COOKIES:
+            response.set_cookie(
+                settings.LANGUAGE_COOKIE_NAME,
+                "ar",
+                max_age=getattr(settings, "LANGUAGE_COOKIE_AGE", None),
+                path=getattr(settings, "LANGUAGE_COOKIE_PATH", "/"),
+                domain=getattr(settings, "LANGUAGE_COOKIE_DOMAIN", None),
+                secure=getattr(settings, "LANGUAGE_COOKIE_SECURE", False),
+                httponly=getattr(settings, "LANGUAGE_COOKIE_HTTPONLY", False),
+                samesite=getattr(settings, "LANGUAGE_COOKIE_SAMESITE", "Lax"),
+            )
+        return response

@@ -1,14 +1,121 @@
 {% load static %}
 {% load i18n %}
-{% load i18n_dates %}
 {% load contact_extras %}
 
 <!--footer start-->
 <style>
-  .footer-logo img{
-    transform: scale(3.40);
-    transform-origin: left center;
-    margin-right: 100px;
+  .footer-brand-logo-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
+  html[dir="ltr"] .footer-brand-logo-main {
+    margin-left: -26%;
+    margin-right: 0;
+  }
+  html[dir="rtl"] .footer-brand-logo-main {
+    margin-right: -52%;
+    margin-left: 0;
+  }
+  .footer-main-col .footer-brand-logo-main img,
+  #footer-logo-img {
+    --footer-logo-main-scale: 3.5;
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 52px;
+    max-width: 170px;
+    object-fit: contain;
+    transform: scale(var(--footer-logo-main-scale));
+    transform-origin: right;
+    margin-right: 34% !important;
+    margin-left: 33% !important;
+    margin-inline: 52% !important;
+  }
+  .footer-brand-logo-side {
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-brand-logo-side img {
+    --footer-logo-side-scale: 2.7;
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 44px;
+    max-width: 145px;
+    object-fit: contain;
+    transform: scale(var(--footer-logo-side-scale));
+    transform-origin: center center;
+    margin-inline: auto;
+  }
+  .footer-main-col .footer-brand-social {
+    margin-top: 24px;
+  }
+  html[dir="rtl"] .footer-main-col {
+    text-align: right;
+  }
+  html[dir="ltr"] .footer-main-col {
+    text-align: left;
+  }
+  .footer-main-col h5 {
+    text-align: inherit;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .footer-main-col p {
+    max-width: 95%;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: inherit;
+  }
+  .footer-logo-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-brand-social {
+    margin-top: 20px;
+  }
+  .footer-brand-social .social-icons ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  html[dir="rtl"] .footer-brand-social .social-icons ul {
+    justify-content: flex-start;
+  }
+  html[dir="ltr"] .footer-brand-social .social-icons ul {
+    justify-content: flex-start;
+  }
+  .footer-brand-social .social-icons li {
+    margin: 0;
+  }
+  @media (max-width: 991.98px) {
+    .footer-main-col .footer-brand-logo-main img,
+    #footer-logo-img {
+      --footer-logo-main-scale: 2.7;
+      max-height: 42px;
+      max-width: 130px;
+    }
+    .footer-brand-logo-side {
+      min-height: auto;
+    }
+    .footer-brand-logo-side img {
+      --footer-logo-side-scale: 2.4;
+      max-height: 40px;
+      max-width: 130px;
+    }
+    .primary-footer .row > [class*="col-"] {
+      margin-top: 2rem !important;
+    }
+    .primary-footer .row > [class*="col-"]:first-child {
+      margin-top: 0 !important;
+    }
   }
   /* أرقام الهاتف: اتجاه LTR داخل فوتر عربي حتى لا تنعكس الأرقام */
   .footer .contact-info li a.footer-phone-number {
@@ -43,8 +150,11 @@
 <footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
   <div class="primary-footer">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-6">
+      <div class="row gx-md-1 gx-lg-1">
+        <div class="col-lg-5 col-md-5 widget footer-main-col">
+          <div class="footer-brand-logo-main mb-4">
+            <img id="footer-logo-img" class="img-fluid" src="{{ footer_logo_url }}" alt="{{ site_settings.site_name|default:'' }}">
+          </div>
           {% if footer %}
             <h5>{{ footer.about_heading_main }} <span class="text-theme">{{ footer.about_heading_span }}</span></h5>
             <p class="mb-0">{{ footer.about_text|linebreaksbr }}</p>
@@ -52,8 +162,41 @@
             <h5><span class="text-theme">{% trans "About us" %}</span></h5>
             <p class="mb-0 text-muted">{% trans "Add footer content from the admin (Core → Footer settings)." %}</p>
           {% endif %}
+          {% if footer %}
+            <div class="footer-brand-social">
+              <div class="social-icons social-colored">
+                <ul class="list-inline mb-0">
+                  {% if footer.facebook_url %}
+                    <li class="social-facebook">
+                      <a href="{{ footer.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.twitter_url %}
+                    <li class="social-twitter">
+                      <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.linkedin_url %}
+                    <li class="social-linkedin">
+                      <a href="{{ footer.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.instagram_url %}
+                    <li class="social-instagram">
+                      <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.youtube_url %}
+                    <li class="social-youtube">
+                      <a href="{{ footer.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          {% endif %}
         </div>
-        <div class="col-lg-3 col-md-6 mt-5 mt-md-0 footer-list">
+        <div class="col-lg-2 col-md-2 mt-5 mt-md-0 widget footer-list">
           {% if footer %}
             <h5>{{ footer.solutions_heading_main }} <span class="text-theme">{{ footer.solutions_heading_span }}</span></h5>
           {% else %}
@@ -69,43 +212,16 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="col-lg-3 col-md-6 mt-5 mt-lg-0 widget">
+        <div class="col-lg-3 col-md-3 mt-5 mt-md-0 widget">
           {% if footer %}
-            <h5>{{ footer.recent_heading_main }} <span class="text-theme">{{ footer.recent_heading_span }}</span></h5>
+            <h5>
+              {{ footer.contact_heading_main|default:footer.contact_heading_main_ar|default:footer.contact_heading_main_en|default:_("Contact") }}
+              <span class="text-theme">
+                {{ footer.contact_heading_span|default:footer.contact_heading_span_ar|default:footer.contact_heading_span_en|default:_("Info") }}
+              </span>
+            </h5>
           {% else %}
-            <h5>{% trans "Recent" %} <span class="text-theme">{% trans "Post" %}</span></h5>
-          {% endif %}
-          <div class="recent-post mb-0">
-            <ul class="list-unstyled">
-              {% for post in footer_recent_posts %}
-                <li class="{% if not forloop.last %}mb-3{% endif %}">
-                  <div class="recent-post-thumb">
-                    {% if post.cover_image %}
-                      <img class="img-fluid" src="{{ post.cover_image.url }}" alt="{{ post.title }}">
-                    {% else %}
-                      {% if LANGUAGE_CODE == 'ar' %}
-                        <img class="img-fluid" src="{% static 'rtl/images/blog/blog-thumb/01.jpg' %}" alt="">
-                      {% else %}
-                        <img class="img-fluid" src="{% static 'ltr/images/blog/blog-thumb/01.jpg' %}" alt="">
-                      {% endif %}
-                    {% endif %}
-                  </div>
-                  <div class="recent-post-desc">
-                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
-                    <span>{% locale_date post.effective_display_date LANGUAGE_CODE "LONG_DATE" %}</span>
-                  </div>
-                </li>
-              {% empty %}
-                <li class="text-muted small">{% trans "No posts yet." %}</li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 mt-5 mt-lg-0 widget">
-          {% if footer %}
-            <h5>{{ footer.contact_heading_main }} <span class="text-theme">{{ footer.contact_heading_span }}</span></h5>
-          {% else %}
-            <h5>{% trans "Get in touch" %}</h5>
+            <h5>{% trans "Contact" %} <span class="text-theme">{% trans "Info" %}</span></h5>
           {% endif %}
           <ul class="contact-info list-unstyled mt-4">
             {% if footer and footer.address %}
@@ -149,57 +265,10 @@
             {% endif %}
           </ul>
         </div>
-      </div>
-      <div class="row mt-5 align-items-center">
-        <div class="col-md-4">
-          <div class="footer-logo">
-            <img id="footer-logo-img" class="img-fluid" src="{{ footer_logo_url }}" alt="{{ site_settings.site_name|default:'' }}">
+        <div class="col-lg-2 col-md-2 mt-5 mt-md-0 widget footer-logo-col">
+          <div class="footer-brand-logo-side">
+            <img class="img-fluid" src="{{ footer_side_logo_url }}" alt="{{ site_settings.site_name|default:'' }}">
           </div>
-        </div>
-        <div class="col-md-4 text-md-center mt-3 mt-md-0">
-          {% if footer %}
-            <ul class="list-unstyled working-hours clearfix">
-              {% if footer.hours_line1_label or footer.hours_line1_value %}
-                <li><span>{{ footer.hours_line1_label }}</span> {{ footer.hours_line1_value }}</li>
-              {% endif %}
-              {% if footer.hours_line2_label or footer.hours_line2_value %}
-                <li><span>{{ footer.hours_line2_label }}</span> {{ footer.hours_line2_value }}</li>
-              {% endif %}
-            </ul>
-          {% endif %}
-        </div>
-        <div class="col-md-4 text-md-end mt-3 mt-md-0">
-          {% if footer %}
-            <div class="social-icons social-colored">
-              <ul class="list-inline mb-0">
-                {% if footer.facebook_url %}
-                  <li class="social-facebook">
-                    <a href="{{ footer.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                  </li>
-                {% endif %}
-                {% if footer.twitter_url %}
-                  <li class="social-twitter">
-                    <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                  </li>
-                {% endif %}
-                {% if footer.linkedin_url %}
-                  <li class="social-linkedin">
-                    <a href="{{ footer.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                  </li>
-                {% endif %}
-                {% if footer.instagram_url %}
-                  <li class="social-instagram">
-                    <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                  </li>
-                {% endif %}
-                {% if footer.youtube_url %}
-                  <li class="social-youtube">
-                    <a href="{{ footer.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
-                  </li>
-                {% endif %}
-              </ul>
-            </div>
-          {% endif %}
         </div>
       </div>
     </div>

@@ -3278,7 +3278,16 @@ msgid "in the same area"
 msgstr "في نفس المنطقة"
 
 msgid "Sold"
-msgstr "مباع"
+msgstr "تم البيع"
+
+msgid "Under construction"
+msgstr "تحت الإنشاء"
+
+msgid "Current"
+msgstr "الحالية"
+
+msgid "Filter projects by status"
+msgstr "فلترة المشاريع حسب الحالة"
 
 msgid "View details"
 msgstr "عرض التفاصيل"
@@ -3311,6 +3320,17 @@ msgstr ""
 
 msgid "Back to services"
 msgstr "العودة إلى الخدمات"
+
+msgid "Highlights"
+msgstr "أبرز"
+
+msgid ""
+"Swipe through selected developments — open a project for full details."
+msgstr ""
+"تصفّحي عرضاً سريعاً للمشاريع — افتحي أي مشروع للتفاصيل الكاملة."
+
+msgid "Open the project page for the full description and details."
+msgstr "افتحي صفحة المشروع للاطلاع على الوصف والتفاصيل كاملة."
 
 #~ msgid "Project details"
 #~ msgstr "تفاصيل المشروع"

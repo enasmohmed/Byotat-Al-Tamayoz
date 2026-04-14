@@ -124,7 +124,7 @@ a, i, .btn, button, img, span, .navbar-nav .nav-link:before, .dropdown-item, .na
 #header-wrap{width: 100%; background: rgba(255,255,255,0.08);}
 #header-wrap.fixed-header {position: fixed; top:0; left:0; width: 100%; z-index: 999 !important; background: #121628 !important;}
 .logo img {height: 50px;}
-#header-wrap.fixed-header .logo img {height: 45px;}
+#header-wrap.fixed-header .logo img {height: 50px;}
 
 .top-bar .top-social-list li a{color: #ffffff;}
 

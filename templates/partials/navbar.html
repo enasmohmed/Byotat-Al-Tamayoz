@@ -18,7 +18,6 @@
     <a class="nav-link dropdown-toggle{% if request.resolver_match.url_name == 'projects_list' %} active{% endif %}" href="#" data-bs-toggle="dropdown">{% trans "Our projects" %}</a>
     <ul class="dropdown-menu">
       <li><a href="{% url 'projects_list' %}">{% trans "Projects" %}</a></li>
-      <li><a href="{% url 'home' %}#home-projects">{% trans "Visit projects" %}</a></li>
     </ul>
   </li>
 

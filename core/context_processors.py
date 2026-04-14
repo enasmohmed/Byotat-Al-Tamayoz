@@ -106,6 +106,11 @@ def site_settings(request):
         if footer and footer.footer_logo
         else data['logo_url']
     )
+    footer_side_logo_url = (
+        footer.footer_side_logo.url
+        if footer and footer.footer_side_logo
+        else data['logo_url']
+    )
 
     return {
         # الـ object نفسه لو حابة تستخدميه
@@ -114,6 +119,7 @@ def site_settings(request):
         'footer_links': footer_links,
         'footer_recent_posts': footer_recent,
         'footer_logo_url': footer_logo_url,
+        'footer_side_logo_url': footer_side_logo_url,
         "map_embed_default": getattr(settings, "DEFAULT_MAP_EMBED_URL", "") or "",
 
         # نسخة منظمة جاهزة للاستخدام

@@ -1,28 +1,61 @@
+{% load i18n %}
 {% firstof project.card_badge_secondary_text project.card_badge_secondary_text_ar project.card_badge_secondary_text_en as badge_secondary_label %}
 {% firstof project.card_badge_text project.card_badge_text_ar project.card_badge_text_en as badge_primary_label %}
-{% if badge_secondary_label or badge_primary_label %}
-  <div class="project-card-badges-stack{% if for_hero %} project-card-badges-stack--hero{% endif %}">
-    {% if badge_secondary_label %}
-      <span class="project-card-badge project-card-badge--secondary{% if for_hero %} project-card-badge--hero-secondary{% endif %}">
-        <i class="fas fa-map-marker-alt project-card-badge__icon" aria-hidden="true"></i>
-        <span class="project-card-badge__label">{{ badge_secondary_label }}</span>
-      </span>
+{% if project.status == 'sold' %}
+  {% trans "Sold" as project_status_label %}
+{% elif project.status == 'under_construction' %}
+  {% trans "Under construction" as project_status_label %}
+{% else %}
+  {% trans "Current" as project_status_label %}
+{% endif %}
+{% if badge_secondary_label or badge_primary_label or project.status %}
+<div class="project-card-badges-stack{% if for_hero %} project-card-badges-stack--hero{% endif %}">
+  {% if badge_secondary_label %}
+  <span class="project-card-badge project-card-badge--secondary{% if for_hero %} project-card-badge--hero-secondary{% endif %}">
+    <i class="fas fa-map-marker-alt project-card-badge__icon" aria-hidden="true"></i>
+    <span class="project-card-badge__label">{{ badge_secondary_label }}</span>
+  </span>
+  {% endif %}
+  {% if badge_primary_label %}
+  <span class="project-card-badge project-card-badge--primary{% if project.card_badge_variant %} project-card-badge--{{ project.card_badge_variant }}{% elif project.status == 'sold' %} project-card-badge--sold{% elif project.status == 'under_construction' %} project-card-badge--under-construction{% else %} project-card-badge--current{% endif %}{% if for_hero %} project-card-badge--hero{% endif %}{% if badge_extra_class %} {{ badge_extra_class }}{% endif %}">
+    {% if project.card_badge_variant == 'sold' or project.status == 'sold' %}
+      <i class="fas fa-check-circle project-card-badge__icon" aria-hidden="true"></i>
+    {% elif project.card_badge_variant == 'red' %}
+      <i class="fas fa-check-circle project-card-badge__icon" aria-hidden="true"></i>
+    {% elif project.card_badge_variant == 'under-construction' or project.status == 'under_construction' %}
+      <i class="fas fa-tools project-card-badge__icon" aria-hidden="true"></i>
+    {% elif project.card_badge_variant == 'construction' %}
+      <i class="fas fa-hard-hat project-card-badge__icon" aria-hidden="true"></i>
+    {% elif project.card_badge_variant == 'available' %}
+      <i class="fas fa-key project-card-badge__icon" aria-hidden="true"></i>
+    {% elif project.card_badge_variant == 'current' or project.status == 'current' %}
+      <i class="fas fa-crown project-card-badge__icon" aria-hidden="true"></i>
+    {% else %}
+      <i class="fas fa-award project-card-badge__icon" aria-hidden="true"></i>
     {% endif %}
-    {% if badge_primary_label %}
-      <span class="project-card-badge project-card-badge--primary{% if project.card_badge_variant %} project-card-badge--{{ project.card_badge_variant }}{% endif %}{% if for_hero %} project-card-badge--hero{% endif %}{% if badge_extra_class %} {{ badge_extra_class }}{% endif %}">
-        {% if project.card_badge_variant == 'sold' %}
-          <i class="fas fa-check-circle project-card-badge__icon" aria-hidden="true"></i>
-        {% elif project.card_badge_variant == 'red' %}
-          <i class="fas fa-bolt project-card-badge__icon" aria-hidden="true"></i>
-        {% elif project.card_badge_variant == 'construction' %}
-          <i class="fas fa-hard-hat project-card-badge__icon" aria-hidden="true"></i>
-        {% elif project.card_badge_variant == 'available' %}
-          <i class="fas fa-key project-card-badge__icon" aria-hidden="true"></i>
-        {% else %}
-          <i class="fas fa-award project-card-badge__icon" aria-hidden="true"></i>
+    <span class="project-card-badge__label">{{ badge_primary_label }}</span>
+  </span>
+  {% endif %}
+  {% if project.status %}
+    {% if not badge_primary_label %}
+      <span class="project-card-badge project-card-badge--status project-card-badge--status-{{ project.effective_project_status_badge_variant }}{% if for_hero %} project-card-badge--hero{% endif %}">
+        <i class="fas {{ project.effective_project_status_badge_icon }} project-card-badge__icon" aria-hidden="true"></i>
+        <span class="project-card-badge__label">
+          <span class="project-card-badge__meta-value">{{ project_status_label }}</span>
+        </span>
+      </span>
+    {% else %}
+      {% with card_badge_text_normalized=badge_primary_label|striptags|lower %}
+        {% if card_badge_text_normalized != 'sold' and card_badge_text_normalized != 'تم البيع' and card_badge_text_normalized != 'under construction' and card_badge_text_normalized != 'under_construction' and card_badge_text_normalized != 'تحت الإنشاء' and card_badge_text_normalized != 'تحت الانشاء' %}
+          <span class="project-card-badge project-card-badge--status project-card-badge--status-{{ project.effective_project_status_badge_variant }}{% if for_hero %} project-card-badge--hero{% endif %}">
+            <i class="fas {{ project.effective_project_status_badge_icon }} project-card-badge__icon" aria-hidden="true"></i>
+            <span class="project-card-badge__label">
+              <span class="project-card-badge__meta-value">{{ project_status_label }}</span>
+            </span>
+          </span>
         {% endif %}
-        <span class="project-card-badge__label">{{ badge_primary_label }}</span>
-      </span>
+      {% endwith %}
     {% endif %}
-  </div>
+  {% endif %}
+</div>
 {% endif %}

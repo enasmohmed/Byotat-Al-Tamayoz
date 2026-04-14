@@ -1,25 +1,18 @@
-import hashlib
 from collections import defaultdict
-
-from django.utils.text import slugify
 from django.views.generic import TemplateView
 from blog.models import Post
 from core.i18n_utils import interface_language
 from core.models import AboutPage, HomeCTA, PartnerBrand, SiteSettings
 from projects.models import SectionTitle, Project
 
-HOME_PROJECTS_MAX = 11
+HOME_PROJECTS_MAX = 6
 
-# Masonry tile height variants (cycle) — matches home grid layout pattern
+# Masonry tile height variants (cycle) — kept for annotate compatibility (home uses carousel now)
 HOME_MSNRY_VARIANTS = (
     "hp-msnry--sq",
-    "hp-msnry--tall",
     "hp-msnry--short",
     "hp-msnry--short",
     "hp-msnry--sq",
-    "hp-msnry--short",
-    "hp-msnry--sq",
-    "hp-msnry--tall",
     "hp-msnry--short",
     "hp-msnry--sq",
 )
@@ -43,17 +36,6 @@ def _section_display(section, lang):
     return {'title': title, 'highlight': highlight, 'subtitle': subtitle}
 
 
-def _location_filter_class(prefix: str, raw: str) -> str:
-    raw = (raw or "").strip()
-    if not raw:
-        return ""
-    s = slugify(raw)
-    if s:
-        return f"{prefix}-{s}"
-    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
-    return f"{prefix}-u{digest}"
-
-
 def _project_sort_key(p):
     return (
         0 if (p.image and getattr(p.image, "name", "")) else 1,
@@ -63,19 +45,20 @@ def _project_sort_key(p):
 
 def _pick_home_projects_mixed(all_projects: list, limit: int) -> list:
     """
-    Pick up to `limit` projects, round-robin across cities so «All» shows a mix of cities.
-    Projects without a city fill in after named cities in the rotation.
+    Pick up to `limit` projects, round-robin across statuses so «All» shows a status mix.
+    Projects without an explicit status token fill in at the end.
     """
     buckets: dict[str, list] = defaultdict(list)
     for p in all_projects:
-        city = (getattr(p, "city", None) or "").strip()
-        token = _location_filter_class("ct", city) if city else ""
+        status = getattr(p, "status_filter_class", "") or ""
+        token = status.strip()
         buckets[token].append(p)
     for token in buckets:
         buckets[token].sort(key=_project_sort_key)
 
     nonempty = [t for t in buckets if t and buckets[t]]
-    nonempty.sort(key=lambda t: (buckets[t][0].city or "").casefold())
+    status_order = {f"st-{value}": idx for idx, (value, _label) in enumerate(Project.ProjectStatus.choices)}
+    nonempty.sort(key=lambda t: status_order.get(t, 999))
     ordered_tokens = nonempty + ([""] if buckets.get("") else [])
 
     picked = []
@@ -103,23 +86,21 @@ def _pick_home_projects_mixed(all_projects: list, limit: int) -> list:
 
 def annotate_home_projects_for_home(qs_home: list):
     """
-    Mutate each project in qs_home with filter_city_class, home_msnry_variant, home_in_mix.
-    Full list is rendered; Isotope filters by .home-in-mix (All) or .ct-* (city).
+    Mutate each project in qs_home with filter_status_class, home_msnry_variant, home_in_mix.
+    Home view passes at most HOME_PROJECTS_MAX projects; the template may set home_in_mix on all for «All».
+    Status filter matches .st-* classes on carousel slides.
     """
-    city_labels = {}
-    for p in qs_home:
-        city = (getattr(p, "city", None) or "").strip()
-        if city:
-            ct = _location_filter_class("ct", city)
-            city_labels[ct] = city
+    status_order = []
+    for value, _label in Project.ProjectStatus.choices:
+        token = f"st-{value}"
+        status_order.append((token, Project.status_label_for_value(value)))
     mix_pks = {p.pk for p in _pick_home_projects_mixed(qs_home, HOME_PROJECTS_MAX)}
     n_var = len(HOME_MSNRY_VARIANTS)
     for i, p in enumerate(qs_home):
-        city = (getattr(p, "city", None) or "").strip()
-        p.filter_city_class = _location_filter_class("ct", city) if city else ""
+        p.filter_status_class = p.status_filter_class
         p.home_msnry_variant = HOME_MSNRY_VARIANTS[i % n_var]
         p.home_in_mix = p.pk in mix_pks
-    return sorted(city_labels.items(), key=lambda x: x[1].casefold())
+    return status_order
 
 
 class HomeView(TemplateView):
@@ -141,10 +122,15 @@ class HomeView(TemplateView):
         context['section_partners_display'] = _section_display(section_partners, lang)
         context['section_news_display'] = _section_display(section_news, lang)
 
-        qs_home = list(
-            Project.objects.filter(is_active=True).select_related("category").order_by("-id")
+        qs_home_all = list(
+            Project.objects.filter(is_active=True)
+            .select_related("category")
+            .order_by("-id")
         )
-        context["filter_cities"] = annotate_home_projects_for_home(qs_home)
+        qs_home = _pick_home_projects_mixed(qs_home_all, HOME_PROJECTS_MAX)
+        context["filter_statuses"] = annotate_home_projects_for_home(qs_home)
+        for p in qs_home:
+            p.home_in_mix = True
         context["projects"] = qs_home
         context["partner_brands"] = PartnerBrand.objects.filter(is_active=True).order_by("sort_order", "id")
         context["home_cta"] = HomeCTA.objects.filter(is_active=True).first()

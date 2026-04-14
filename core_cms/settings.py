@@ -70,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'core.middleware.AdminSiteLanguageMiddleware',
+    'core.middleware.ForceArabicLanguageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -243,32 +244,22 @@ UNFOLD = {
     ],
 }
 
-
-
-
 JAZZMIN_SETTINGS = {
     "site_title": "لوحة التحكم",
     "site_header": "إدارة الموقع",
     "site_brand": "Admin",
-
     "welcome_sign": "أهلاً بيكي 👋",
-
     "show_ui_builder": True,
-
     # التحكم في السايدبار
     "show_sidebar": True,   # خليها False لو عايزة تخفيه بالكامل
-
     # ترتيب المودلز
     "order_with_respect_to": ["auth", "your_app"],
-
     # تغيير اللغة
     "language_chooser": True,
-
     # أيقونات
     "icons": {
         "auth.user": "fas fa-user",
     },
-    
 }
 
 
@@ -276,5 +267,7 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": "darkly",
 }
+
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"

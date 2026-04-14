@@ -1,6 +1,5 @@
-<div class="grid-sizer"></div>
 {% for project in projects %}
-  <div class="masonry-brick{% if project.home_in_mix %} home-in-mix{% endif %}{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %} {{ project.home_msnry_variant }}">
-    {% include "partials/project_portfolio_card_inner.html" %}
+  <div class="item masonry-brick home-projects-carousel__item{% if project.home_in_mix %} home-in-mix{% endif %}{% if project.filter_status_class %} {{ project.filter_status_class }}{% endif %}" data-home-project-order="{{ forloop.counter0 }}">
+    {% include "partials/home_project_feed_card.html" %}
   </div>
 {% endfor %}

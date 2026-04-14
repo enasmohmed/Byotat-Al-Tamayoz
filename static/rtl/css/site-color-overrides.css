@@ -6,6 +6,34 @@ body {
   background-color: var(--surface-color);
 }
 
+/* Cairo as the site font (Arabic + English) */
+html, body {
+  font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6,
+p, a, button, input, textarea, select, label, li, span, small, strong, em {
+  font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+}
+
+/* Home hero video caption (bottom-right, no background) */
+.hero-video-caption{
+  position: absolute;
+  right: 5%;
+  bottom: 10%;
+  z-index: 5;
+  max-width: min(520px, 40vw);
+  padding: 0;
+  color: var(--primary-color, #cc9955);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+  font-size: clamp(20px, 2.50vw, 50px);
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: right;
+}
+
 .page-wrapper {
   background-color: transparent;
 }
@@ -24,7 +52,7 @@ body {
 }
 
 #site-header .site-header-logo-img {
-  --site-header-logo-scale: 2.1;
+  --site-header-logo-scale: 3.1;
   display: block;
   height: auto;
   width: auto;
@@ -38,7 +66,7 @@ body {
 
 @media (min-width: 992px) {
   #site-header .site-header-logo-img {
-    --site-header-logo-scale: 2.65;
+    --site-header-logo-scale: 3.65;
     max-height: 52px;
     max-width: 170px;
     margin-left: clamp(2.75rem, 13vw, 8rem);
@@ -47,7 +75,7 @@ body {
 
 @media (max-width: 991.98px) {
   #site-header .site-header-logo-img {
-    --site-header-logo-scale: 2.85;
+    --site-header-logo-scale: 3.85;
     max-height: 42px;
     max-width: 130px;
     margin-left: 0.5rem;
@@ -100,7 +128,8 @@ body {
 
 @media (min-width: 992px) {
   #site-header #header-wrap:not(.fixed-header) .navbar-nav .nav-link {
-    /* color: #1a1a1a !important; */
+    /* Intentionally keep theme default; avoid empty ruleset warning */
+    color: inherit;
   }
   #site-header #header-wrap:not(.fixed-header) .navbar-nav .nav-link:hover,
   #site-header #header-wrap:not(.fixed-header) .navbar-nav .nav-link:focus,
@@ -275,13 +304,7 @@ footer .widget .recent-post-desc span {
   border-top: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-.social ul li.whatsapp:hover {
-  background-color: #25d366;
-}
 
-.social ul li.phone:hover {
-  background-color: #0d9488;
-}
 
 .social ul li a .social-x-icon {
   text-align: center;
@@ -311,6 +334,8 @@ footer .widget .recent-post-desc span {
   padding: 10px;
   border-radius: 0 30px 30px 0;
   transition: all 1s;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .social ul li:hover {
@@ -358,6 +383,28 @@ footer .widget .recent-post-desc span {
   font-size: 20px;
   transform: rotate(0deg);
 }
+.social ul li a .fa-whatsapp{
+  color: #25D366;
+  background-color: white;
+  font-weight: bold;
+}
+.social ul li.whatsapp:hover {
+  background-color: var(--primary-color);
+}
+.social ul li a .fa-phone {
+  color: #ffffff;
+  background-color: var(--primary-color);
+  transform: scaleX(-1);
+  display: inline-block;
+}
+
+.social ul li.phone:hover,
+.social ul li.phone:hover  a{
+  background-color: var(--surface-color);
+  color: #000 !important;
+}
+
+
 
 .social ul li:hover i {
   transform: rotate(360deg);

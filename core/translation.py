@@ -4,7 +4,7 @@ from .models import AboutPage, ContactPage, FooterSettings, FooterLink, HomeCTA,
 
 
 class SiteSettingsTranslationOptions(TranslationOptions):
-    fields = ('site_name', 'address', 'phone', 'email')
+    fields = ('site_name', 'hero_video_caption', 'address', 'phone', 'email')
 
 translator.register(SiteSettings, SiteSettingsTranslationOptions)
 

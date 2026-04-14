@@ -16,6 +16,7 @@ ENV/
 *.log
 .env
 .env.*
+.envrc
 .git
 .idea
 
@@ -32,3 +33,9 @@ ENV/
 # --- IDE & OS ---
 .idea/
 .vscode/
+.DS_Store
+
+# --- Python bytecode / caches ---
+__pycache__/
+*.py[cod]
+*$py.class

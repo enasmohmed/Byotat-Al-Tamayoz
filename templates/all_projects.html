@@ -5,77 +5,161 @@
 
 {% block extra_head %}
 <style>
-  .all-projects-page .portfolio-filter {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .all-projects-page .all-projects-loc-filters .form-select {
-    max-width: 260px;
-    min-width: 200px;
+  .all-projects-page .all-projects-filters .form-select {
+    min-width: 180px;
     border-radius: 8px;
+    min-height: 34px;
+    font-size: 0.82rem;
   }
-  .all-projects-page .all-projects-loc-filters label.small {
-    font-weight: 600;
-    color: #444;
-  }
-  .all-projects-page .project-thumb-link {
-    display: block;
-    position: relative;
-    z-index: 1;
-  }
-  .all-projects-page .portfolio-title h4 a {
-    color: inherit;
-    text-decoration: none;
-  }
-  .all-projects-page .portfolio-title h4 a:hover {
-    color: #fff;
-    text-decoration: underline;
-  }
-  .all-projects-page .portfolio-item .portfolio-hover {
-    z-index: 120;
-  }
-  .all-projects-page .portfolio-item:before {
-    z-index: 10;
-  }
-  .all-projects-page .portfolio-icon.home-project-hover-actions {
+  .all-projects-page .all-projects-status-filter {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    align-items: center;
-    left: 50%;
-    right: auto;
-    width: calc(100% - 1.5rem);
-    max-width: 20rem;
-    transform: translateX(-50%);
-    text-align: center;
+    gap: 0.45rem;
+    margin-bottom: 0.9rem;
   }
-  .all-projects-page .portfolio-item a.home-project-hover-btn {
-    flex: 1 1 auto;
-    min-width: 6.5rem;
-    margin: 0 !important;
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
+  .all-projects-page .all-projects-status-filter .status-btn {
+    position: relative;
+    cursor: pointer;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #23244a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     text-decoration: none;
-    white-space: nowrap;
+    display: inline-block;
   }
-  .all-projects-page .portfolio-item a.home-project-hover-btn.popup.popup-img {
-    width: auto !important;
-    height: auto !important;
-    min-height: 2.35rem;
-    line-height: 1.2 !important;
-    display: inline-flex !important;
+  .all-projects-page .all-projects-status-filter .status-btn.is-checked,
+  .all-projects-page .all-projects-status-filter .status-btn:hover {
+    color: #f9a305;
+    border-color: #f9a305;
+  }
+  .all-projects-page .all-projects-action-btn {
+    min-height: 34px;
+    padding: 0.34rem 0.75rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border-radius: 8px;
+    text-transform: uppercase;
+  }
+  .all-projects-page .all-projects-action-btn.btn-theme {
+    box-shadow: 0 4px 14px rgba(249, 163, 5, 0.28);
+  }
+  .all-projects-page .all-projects-action-btn.btn-outline-secondary {
+    border-color: rgba(15, 23, 42, 0.25);
+    color: #374151;
+  }
+  .all-projects-page .all-projects-action-btn.btn-outline-secondary:hover {
+    background: #f8fafc;
+    color: #111827;
+  }
+  .all-projects-page .all-projects-feed {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+  .all-projects-page .home-project-feed-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(22, 28, 45, 0.07);
+    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+  }
+  .all-projects-page .home-project-feed-card:hover {
+    border-color: rgba(249, 163, 5, 0.32);
+    box-shadow: 0 14px 34px rgba(22, 28, 45, 0.13);
+    transform: translateY(-3px);
+  }
+  .all-projects-page .home-project-feed-card__thumb {
+    display: block;
+    min-height: 0;
+    text-decoration: none;
+  }
+  .all-projects-page .home-project-feed-card__thumb-inner {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #e8ecf1;
+  }
+  .all-projects-page .home-project-feed-card__thumb-inner img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .all-projects-page .home-project-feed-card__body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.1rem 1.25rem;
+  }
+  .all-projects-page .home-project-feed-card__title {
+    font-size: 1.1rem;
+    margin: 0 0 0.55rem;
+  }
+  .all-projects-page .home-project-feed-card__title a {
+    color: #23244a;
+    text-decoration: none;
+  }
+  .all-projects-page .home-project-feed-card__title a:hover {
+    color: #f59e0b;
+  }
+  .all-projects-page .home-project-feed-card__excerpt {
+    flex: 1 1 auto;
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #6b7280;
+  }
+  .all-projects-page .home-project-feed-card__meta-bar {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.75rem !important;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
   }
-  .all-projects-page .portfolio-item a.home-project-hover-btn--primary {
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  .all-projects-page .home-project-feed-card__read-more {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #f59e0b;
+    text-decoration: none;
   }
-  .all-projects-page .portfolio-item a.home-project-hover-btn--enlarge {
-    backdrop-filter: blur(4px);
+  .all-projects-page .home-project-feed-card__tags {
+    font-size: 0.7rem;
+    color: #9ca3af;
+  }
+  .all-projects-page .home-project-feed-card .project-card-badges-stack {
+    top: auto;
+    bottom: 12px;
+  }
+  @media (max-width: 1199.98px) {
+    .all-projects-page .all-projects-feed {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 767.98px) {
+    .all-projects-page .all-projects-feed {
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
   }
 </style>
 {% endblock %}
@@ -115,52 +199,84 @@
   <section class="overflow-hidden pb-5 all-projects-page"
     {% if LANGUAGE_CODE == 'ar' %}dir="rtl"{% else %}dir="ltr"{% endif %}>
     <div class="container pt-5">
-      {% if all_districts_options %}
-      <div class="row justify-content-center mb-3">
-        <div class="col-12">
-          <div class="all-projects-loc-filters d-flex flex-wrap justify-content-center align-items-end gap-3">
-            <div class="d-flex flex-column align-items-stretch">
-              <label class="small mb-1 text-start" for="all-projects-filter-district">{% trans "District" %}</label>
-              <select id="all-projects-filter-district" class="form-select form-select-sm">
-                <option value="">{% trans "All districts" %}</option>
-                {% for opt in all_districts_options %}
-                  <option value="{{ opt.v }}">{{ opt.l }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-      {% if filter_cities or all_districts_options %}
-      {{ districts_by_city|json_script:"all-projects-districts-by-city" }}
-      {{ all_districts_options|json_script:"all-projects-districts-all" }}
-      {% endif %}
-      <div class="row text-center">
-        <div class="col-md-12">
-          <div class="portfolio-filter d-flex gap-2">
-            <button type="button" data-filter="*" data-city="" class="is-checked">{% trans "All" %}</button>
-            {% for city_token, city_label in filter_cities %}
-              <button type="button" data-filter=".{{ city_token }}" data-city="{{ city_token }}">{{ city_label }}</button>
+      <form method="get" class="all-projects-filters d-flex flex-wrap justify-content-center align-items-end gap-2">
+        <input type="hidden" name="status" id="all-projects-status-input" value="{{ selected_status }}">
+        <div class="w-100">
+          <label class="small mb-2 d-block text-center">
+            {% if LANGUAGE_CODE == 'ar' %}
+              تصفية المشاريع حسب الحالة
+            {% else %}
+            Filter projects by status
+            {% endif %}
+          </label>
+          <div class="all-projects-status-filter" role="toolbar" aria-label="{% trans 'Filter projects by status' %}">
+            <button type="button" class="status-btn{% if not selected_status %} is-checked{% endif %}" data-status="">
+              {% if LANGUAGE_CODE == 'ar' %}الكل{% else %}All{% endif %}
+            </button>
+            {% for status_value, status_label in filter_statuses %}
+              <button type="button" class="status-btn{% if selected_status == status_value %} is-checked{% endif %}" data-status="{{ status_value }}">
+                {% if LANGUAGE_CODE == 'ar' %}
+                  {% if status_value == 'current' %}الحالية{% elif status_value == 'under_construction' %}تحت الإنشاء{% elif status_value == 'sold' %}تم البيع{% else %}{{ status_label }}{% endif %}
+                {% else %}
+                  {% if status_value == 'current' %}Current{% elif status_value == 'under_construction' %}Under construction{% elif status_value == 'sold' %}Sold{% else %}{{ status_label }}{% endif %}
+                {% endif %}
+              </button>
             {% endfor %}
           </div>
         </div>
-      </div>
+        <div>
+          <label class="small mb-1 d-block" for="all-projects-filter-district">
+            {% if LANGUAGE_CODE == 'ar' %}الحي{% else %}District{% endif %}
+          </label>
+          <select id="all-projects-filter-district" name="district" class="form-select form-select-sm">
+            <option value="">{% if LANGUAGE_CODE == 'ar' %}كل الأحياء{% else %}All districts{% endif %}</option>
+            {% for district in all_districts_options %}
+              <option value="{{ district }}"{% if selected_district == district %} selected{% endif %}>{{ district }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-theme btn-sm all-projects-action-btn">
+          {% if LANGUAGE_CODE == 'ar' %}تطبيق{% else %}Filter{% endif %}
+        </button>
+        <a href="{% url 'projects_list' %}" class="btn btn-outline-secondary btn-sm all-projects-action-btn">
+          {% if LANGUAGE_CODE == 'ar' %}إعادة تعيين{% else %}Reset{% endif %}
+        </a>
+      </form>
     </div>
-    <div class="container-fluid p-0 mt-4">
-      <div class="row g-0">
-        <div class="col-lg-12 col-md-12">
-          <div class="masonry row columns-4 g-0 popup-gallery">
-            <div class="grid-sizer"></div>
-            {% for project in projects %}
-              <div class="masonry-brick{% if project.filter_city_class %} {{ project.filter_city_class }}{% endif %}{% if project.filter_district_class %} {{ project.filter_district_class }}{% endif %}">
-                {% include "partials/project_portfolio_card_inner.html" %}
-              </div>
-            {% empty %}
-              <div class="col-12 text-center text-muted py-5">{% trans "No projects yet." %}</div>
-            {% endfor %}
-          </div>
+    <div class="container mt-4">
+      <div id="all-projects-results">
+        <div class="all-projects-feed">
+          {% for project in projects %}
+            {% include "partials/home_project_feed_card.html" %}
+          {% empty %}
+            <div class="text-center text-muted py-5">{% trans "No projects yet." %}</div>
+          {% endfor %}
         </div>
+        {% if is_paginated %}
+        <nav class="mt-4" aria-label="{% trans 'Projects pagination' %}">
+          <ul class="pagination justify-content-center flex-wrap gap-1">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?{% if filters_query %}{{ filters_query }}&{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+              </li>
+            {% endif %}
+            {% for pg in paginator.page_range %}
+              {% if pg == page_obj.number %}
+                <li class="page-item active" aria-current="page"><span class="page-link">{{ pg }}</span></li>
+              {% elif pg >= page_obj.number|add:-2 and pg <= page_obj.number|add:2 %}
+                <li class="page-item">
+                  <a class="page-link" href="?{% if filters_query %}{{ filters_query }}&{% endif %}page={{ pg }}">{{ pg }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?{% if filters_query %}{{ filters_query }}&{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -169,70 +285,115 @@
 {% endblock %}
 
 {% block extra_js %}
-{% if filter_cities or all_districts_options %}
-{% trans "All districts" as ap_js_all_districts %}
 <script>
-(function ($) {
-  $(window).on('load', function () {
-    var $root = $('.all-projects-page');
-    if (!$root.length) return;
-    var $masonry = $root.find('.masonry');
-    if (!$masonry.length || typeof $masonry.isotope !== 'function') return;
+(function () {
+  var form = document.querySelector('.all-projects-filters');
+  if (!form) return;
+  var resultsContainer = document.getElementById('all-projects-results');
+  if (!resultsContainer) return;
+  var statusInput = document.getElementById('all-projects-status-input');
+  var statusButtons = form.querySelectorAll('.all-projects-status-filter .status-btn');
+  var districtSelect = document.getElementById('all-projects-filter-district');
+  var resetLink = form.querySelector('a[href]');
+  var activeController = null;
 
-    var elByCity = document.getElementById('all-projects-districts-by-city');
-    var elAllDist = document.getElementById('all-projects-districts-all');
-    var districtsByCity = elByCity ? JSON.parse(elByCity.textContent) : {};
-    var allDistricts = elAllDist ? JSON.parse(elAllDist.textContent) : [];
-
-    var $district = $('#all-projects-filter-district');
-    var $cityFilter = $root.find('.portfolio-filter');
-    if (!$cityFilter.length) return;
-
-    var allDistrictsLabel = "{{ ap_js_all_districts|escapejs }}";
-
-    function selectedCityToken() {
-      var $btn = $cityFilter.find('button.is-checked');
-      return ($btn.length && $btn.data('city') !== undefined) ? String($btn.data('city') || '') : '';
-    }
-
-    function fillDistrictOptions(cityToken) {
-      if (!$district.length) return;
-      $district.empty().append($('<option>').val('').text(allDistrictsLabel));
-      var list = cityToken && districtsByCity[cityToken] ? districtsByCity[cityToken] : allDistricts;
-      list.forEach(function (row) {
-        $district.append($('<option>').val(row.v).text(row.l));
-      });
-    }
-
-    function applyFilter() {
-      var cityVal = selectedCityToken();
-      var distVal = ($district.length && $district.val()) ? $district.val() : '';
-      var cityClassFilter = $cityFilter.find('button.is-checked').attr('data-filter') || '*';
-      $masonry.isotope({
-        filter: function () {
-          var $el = $(this);
-          var okCity = cityClassFilter === '*' || $el.is(cityClassFilter);
-          var okDist = !distVal || $el.hasClass(distVal);
-          return okCity && okDist;
-        }
-      });
-    }
-
-    $cityFilter.off('click', 'button');
-    $cityFilter.on('click', 'button', function () {
-      $cityFilter.find('button').removeClass('is-checked');
-      $(this).addClass('is-checked');
-      fillDistrictOptions(selectedCityToken());
-      applyFilter();
+  function setStatusButtons(activeStatus) {
+    statusButtons.forEach(function (b) {
+      b.classList.toggle('is-checked', (b.getAttribute('data-status') || '') === activeStatus);
     });
+  }
 
-    if ($district.length) {
-      $district.on('change', applyFilter);
-      fillDistrictOptions(selectedCityToken());
+  function buildUrl(pageValue) {
+    var actionUrl = form.getAttribute('action') || window.location.pathname;
+    var params = new URLSearchParams(new FormData(form));
+    if (!params.get('status')) params.delete('status');
+    if (!params.get('district')) params.delete('district');
+    if (pageValue) {
+      params.set('page', pageValue);
+    } else {
+      params.delete('page');
     }
-    applyFilter();
+    var query = params.toString();
+    return query ? (actionUrl + '?' + query) : actionUrl;
+  }
+
+  function replaceResultsFromHtml(htmlText) {
+    var doc = new DOMParser().parseFromString(htmlText, 'text/html');
+    var newResults = doc.getElementById('all-projects-results');
+    if (!newResults) return false;
+    resultsContainer.innerHTML = newResults.innerHTML;
+    return true;
+  }
+
+  function loadFilteredProjects(url, shouldPushState) {
+    if (activeController) activeController.abort();
+    activeController = new AbortController();
+    resultsContainer.style.opacity = '0.6';
+    fetch(url, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      signal: activeController.signal
+    })
+      .then(function (response) { return response.text(); })
+      .then(function (htmlText) {
+        if (!replaceResultsFromHtml(htmlText)) {
+          window.location.href = url;
+          return;
+        }
+        if (shouldPushState) {
+          window.history.pushState({}, '', url);
+        }
+      })
+      .catch(function (err) {
+        if (err && err.name === 'AbortError') return;
+        window.location.href = url;
+      })
+      .finally(function () {
+        resultsContainer.style.opacity = '';
+      });
+  }
+
+  function submitFilters() {
+    loadFilteredProjects(buildUrl(''), true);
+  }
+
+  statusButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var selectedStatus = btn.getAttribute('data-status') || '';
+      if (statusInput) statusInput.value = selectedStatus;
+      setStatusButtons(selectedStatus);
+      submitFilters();
+    });
   });
-})(jQuery);
+
+  if (districtSelect) {
+    districtSelect.addEventListener('change', submitFilters);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitFilters();
+  });
+
+  if (resetLink) {
+    resetLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (statusInput) statusInput.value = '';
+      if (districtSelect) districtSelect.value = '';
+      setStatusButtons('');
+      loadFilteredProjects(resetLink.getAttribute('href') || window.location.pathname, true);
+    });
+  }
+
+  resultsContainer.addEventListener('click', function (e) {
+    var pageLink = e.target.closest('a.page-link');
+    if (!pageLink) return;
+    e.preventDefault();
+    loadFilteredProjects(pageLink.href, true);
+  });
+
+  window.addEventListener('popstate', function () {
+    loadFilteredProjects(window.location.href, false);
+  });
+})();
 </script>
-{% endif %}
 {% endblock %}

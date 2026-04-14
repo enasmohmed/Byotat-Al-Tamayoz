@@ -9,6 +9,30 @@
   .contact-phone-display {
     unicode-bidi: isolate;
     direction: ltr;
+    
+  }
+  .contact-interest-panel {
+    background-color: #1d3338;
+  }
+  .contact-interest-panel .title {
+    color: #ffffff;
+  }
+  .contact-interest-panel .title .contact-title-main {
+    color: #f9a305;
+  }
+  .contact-interest-panel .title .contact-title-tail {
+    color: #ffffff;
+  }
+  .contact-interest-panel .contact-info li span,
+  .contact-interest-panel .contact-info li p,
+  .contact-interest-panel .contact-info li a {
+    color: #ffffff;
+  }
+  .contact-interest-panel .contact-info li i {
+    color: #f9a305;
+  }
+  .contact-interest-panel .contact-info li a:hover {
+    color: #f9a305;
   }
 </style>
 {% endblock %}
@@ -72,16 +96,16 @@
   <div class="container">
     <div class="row align-items-center g-0">
       <div class="col-lg-5">
-        <div class="p-5 theme-bg text-white z-index-1">
+        <div class="p-5 text-white z-index-1 contact-interest-panel">
           <h2 class="title">
             {% if contact_page %}
               {% if contact_page.sidebar_title_main or contact_page.sidebar_title_span %}
-                {{ contact_page.sidebar_title_main }}{% if contact_page.sidebar_title_span %} <span>{{ contact_page.sidebar_title_span }}</span>{% endif %}
+                <span class="contact-title-main">{{ contact_page.sidebar_title_main }}</span>{% if contact_page.sidebar_title_span %} <span class="contact-title-tail">{{ contact_page.sidebar_title_span }}</span>{% endif %}
               {% else %}
-                {% trans "Get in" %} <span>{% trans "touch" %}</span>
+                <span class="contact-title-main">{% trans "Get in" %}</span> <span class="contact-title-tail">{% trans "touch" %}</span>
               {% endif %}
             {% else %}
-              {% trans "Get in" %} <span>{% trans "touch" %}</span>
+              <span class="contact-title-main">{% trans "Get in" %}</span> <span class="contact-title-tail">{% trans "touch" %}</span>
             {% endif %}
           </h2>
           {% if contact_page.sidebar_intro %}
@@ -214,49 +238,98 @@
               {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }} <span class="text-danger">*</span></label>
-              {{ form.email }}
-              {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
-            </div>
-            <div class="form-group mb-3">
               <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }} <span class="text-danger">*</span></label>
               {{ form.phone }}
               {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.subject.id_for_label }}">{{ form.subject.label }} <span class="text-danger">*</span></label>
-              {{ form.subject }}
-              {% if form.subject.errors %}<div class="text-danger small">{{ form.subject.errors }}</div>{% endif %}
+              <label class="form-label" for="{{ form.project.id_for_label }}">
+                {% if LANGUAGE_BIDI %}المشروع{% else %}{{ form.project.label }}{% endif %} <span class="text-danger">*</span>
+              </label>
+              {{ form.project }}
+              {% if form.project.errors %}<div class="text-danger small">{{ form.project.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mb-3">
+              <span class="form-label d-block mb-2">{% if LANGUAGE_BIDI %}نوع المشروع{% else %}{% trans "Project type" %}{% endif %} <span class="text-danger">*</span></span>
+              <div class="form-check mb-2">
+                {{ form.project_status_current }}
+                <label class="form-check-label" for="{{ form.project_status_current.id_for_label }}">
+                  {% if LANGUAGE_BIDI %}المشاريع الحالية{% else %}{{ form.project_status_current.label }}{% endif %}
+                </label>
+              </div>
+              <div class="form-check">
+                {{ form.project_status_under_construction }}
+                <label class="form-check-label" for="{{ form.project_status_under_construction.id_for_label }}">
+                  {% if LANGUAGE_BIDI %}مشاريع تحت الإنشاء{% else %}{{ form.project_status_under_construction.label }}{% endif %}
+                </label>
+              </div>
+              {% if form.project_status_current.errors or form.project_status_under_construction.errors %}
+                <div class="text-danger small mt-2">{{ form.project_status_current.errors }}{{ form.project_status_under_construction.errors }}</div>
+              {% endif %}
             </div>
             <div class="form-group mb-3">
               <label class="form-label" for="{{ form.message.id_for_label }}">{{ form.message.label }} <span class="text-danger">*</span></label>
               {{ form.message }}
               {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors }}</div>{% endif %}
             </div>
-            <div class="form-group mb-3">
-              <span class="form-label d-block mb-2">{% trans "Send message via" %} <span class="text-danger">*</span></span>
-              {% if form.send_via_email.errors or form.send_via_whatsapp.errors %}
-                <div class="text-danger small mb-2">{{ form.send_via_email.errors }}{{ form.send_via_whatsapp.errors }}</div>
-              {% endif %}
-              {% if form.send_via_email.field.widget.is_hidden %}
-                {{ form.send_via_email }}
-              {% else %}
-                <div class="form-check mb-2">
-                  {{ form.send_via_email }}
-                  <label class="form-check-label" for="{{ form.send_via_email.id_for_label }}">{{ form.send_via_email.label }}</label>
-                </div>
-              {% endif %}
-              {% if form.send_via_whatsapp.field.widget.is_hidden %}
-                {{ form.send_via_whatsapp }}
-              {% else %}
-                <div class="form-check mb-2">
-                  {{ form.send_via_whatsapp }}
-                  <label class="form-check-label" for="{{ form.send_via_whatsapp.id_for_label }}">{{ form.send_via_whatsapp.label }}</label>
-                </div>
-              {% endif %}
-            </div>
-            <button type="submit" class="btn btn-border btn-radius"><span>{% trans "Submit" %}</span></button>
+            {{ form.send_via_whatsapp }}
+            <button type="submit" class="btn btn-border btn-radius"><span>{% if LANGUAGE_BIDI %}إرسال عبر واتساب{% else %}{% trans "Send via WhatsApp" %}{% endif %}</span></button>
           </form>
+          {{ project_options|json_script:"contact-project-options" }}
+          <script>
+            (function () {
+              const projectSelect = document.getElementById("{{ form.project.id_for_label }}");
+              const currentCheckbox = document.getElementById("{{ form.project_status_current.id_for_label }}");
+              const underConstructionCheckbox = document.getElementById("{{ form.project_status_under_construction.id_for_label }}");
+              const dataNode = document.getElementById("contact-project-options");
+              if (!projectSelect || !currentCheckbox || !underConstructionCheckbox || !dataNode) return;
+
+              let allProjects = [];
+              try {
+                allProjects = JSON.parse(dataNode.textContent || "[]");
+              } catch (err) {
+                allProjects = [];
+              }
+
+              const placeholderLabel = "{{ LANGUAGE_BIDI|yesno:'اختر المشروع,Select a project' }}";
+
+              function selectedStatuses() {
+                const statuses = [];
+                if (currentCheckbox.checked) statuses.push("current");
+                if (underConstructionCheckbox.checked) statuses.push("under_construction");
+                return statuses;
+              }
+
+              function refillProjects() {
+                const previousValue = projectSelect.value;
+                const statuses = selectedStatuses();
+                const filtered = allProjects.filter((p) => statuses.includes(p.status));
+
+                projectSelect.innerHTML = "";
+                const placeholder = document.createElement("option");
+                placeholder.value = "";
+                placeholder.textContent = placeholderLabel;
+                projectSelect.appendChild(placeholder);
+
+                filtered.forEach((project) => {
+                  const option = document.createElement("option");
+                  option.value = project.id;
+                  option.textContent = `${project.title} (${project.status_label})`;
+                  projectSelect.appendChild(option);
+                });
+
+                if (filtered.some((project) => project.id === previousValue)) {
+                  projectSelect.value = previousValue;
+                } else {
+                  projectSelect.value = "";
+                }
+              }
+
+              currentCheckbox.addEventListener("change", refillProjects);
+              underConstructionCheckbox.addEventListener("change", refillProjects);
+              refillProjects();
+            })();
+          </script>
         </div>
       </div>
     </div>

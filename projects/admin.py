@@ -28,6 +28,7 @@ class ProjectAdmin(UnfoldTranslationAdmin):
         "main_cover_thumb",
         "title_ar",
         "slug",
+        "status",
         "city",
         "area_key",
         "category",
@@ -44,7 +45,7 @@ class ProjectAdmin(UnfoldTranslationAdmin):
         "card_badge_text",
         "card_badge_secondary_text",
     )
-    list_filter = ("category", "is_active", "default_language")
+    list_filter = ("status", "category", "is_active", "default_language")
     prepopulated_fields = {"slug": ("title",)}
     inlines = [ProjectGalleryImageInline]
     fieldsets = (
@@ -58,6 +59,9 @@ class ProjectAdmin(UnfoldTranslationAdmin):
                     "image",
                     "promo_video",
                     "category",
+                    "status",
+                    "project_status_badge_variant",
+                    "project_status_badge_icon",
                     "card_badge_variant",
                     "card_badge_secondary_text",
                     "card_badge_text",

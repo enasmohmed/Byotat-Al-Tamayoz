@@ -157,6 +157,58 @@ class Project(models.Model):
         help_text=_("Optional MP4 or WebM. A “Video” tab appears only when a file is uploaded."),
     )
 
+    class ProjectStatus(models.TextChoices):
+        CURRENT = "current", _("Current (الحالية)")
+        UNDER_CONSTRUCTION = "under_construction", _("Under construction (تحت الإنشاء)")
+        SOLD = "sold", _("Sold (تم البيع)")
+
+    status = models.CharField(
+        max_length=24,
+        choices=ProjectStatus.choices,
+        default=ProjectStatus.CURRENT,
+        verbose_name=_("Project status"),
+        help_text=_("Used for project filters and default status badge style."),
+        db_index=True,
+    )
+
+    class ProjectStatusBadgeVariant(models.TextChoices):
+        AUTO = "", _("Auto (from project status)")
+        CURRENT = "current", _("Current style (gold)")
+        UNDER_CONSTRUCTION = "under-construction", _("Under construction style (green)")
+        SOLD = "sold", _("Sold style (red)")
+        CONSTRUCTION = "construction", _("Construction style (amber)")
+        AVAILABLE = "available", _("Available style (teal)")
+        RED = "red", _("Red style")
+
+    project_status_badge_variant = models.CharField(
+        max_length=24,
+        choices=ProjectStatusBadgeVariant.choices,
+        blank=True,
+        default="",
+        verbose_name=_("Project status badge style"),
+        help_text=_("Background style of the «Project status» badge. Leave empty to auto-match the selected status."),
+    )
+
+    class ProjectStatusBadgeIcon(models.TextChoices):
+        AUTO = "", _("Auto (from project status)")
+        CROWN = "fa-crown", _("Crown")
+        TOOLS = "fa-tools", _("Tools")
+        CHECK = "fa-check-circle", _("Check circle")
+        HARD_HAT = "fa-hard-hat", _("Hard hat")
+        KEY = "fa-key", _("Key")
+        BOLT = "fa-bolt", _("Bolt")
+        AWARD = "fa-award", _("Award")
+        LAYERS = "fa-layer-group", _("Layer group")
+
+    project_status_badge_icon = models.CharField(
+        max_length=40,
+        choices=ProjectStatusBadgeIcon.choices,
+        blank=True,
+        default="",
+        verbose_name=_("Project status badge icon"),
+        help_text=_("Icon of the «Project status» badge. Leave empty to auto-match the selected status."),
+    )
+
     sold_percentage = models.DecimalField(
         max_digits=5,
         decimal_places=2,
@@ -260,6 +312,107 @@ class Project(models.Model):
             title_for_slug = self._get_title_for_slug()
             self.slug = self._make_unique_slug(title_for_slug) if title_for_slug else ""
         super().save(*args, **kwargs)
+
+    @staticmethod
+    def _normalize_status_hint(raw: str) -> str:
+        return (raw or "").strip().lower().replace("-", " ").replace("_", " ")
+
+    @property
+    def effective_status_for_filters(self) -> str:
+        status = (self.status or "").strip()
+        if status in {self.ProjectStatus.SOLD, self.ProjectStatus.UNDER_CONSTRUCTION}:
+            return status
+
+        variant = (self.card_badge_variant or "").strip()
+        if variant in {"sold", "red"}:
+            return self.ProjectStatus.SOLD
+        if variant in {"construction", "under-construction"}:
+            return self.ProjectStatus.UNDER_CONSTRUCTION
+
+        labels = [
+            self._normalize_status_hint(self.card_badge_text),
+            self._normalize_status_hint(getattr(self, "card_badge_text_ar", "")),
+            self._normalize_status_hint(getattr(self, "card_badge_text_en", "")),
+        ]
+        sold_hints = {"sold", "تم البيع"}
+        under_construction_hints = {"under construction", "تحت الانشاء", "تحت الإنشاء"}
+
+        if any(lbl in sold_hints for lbl in labels if lbl):
+            return self.ProjectStatus.SOLD
+        if any(lbl in under_construction_hints for lbl in labels if lbl):
+            return self.ProjectStatus.UNDER_CONSTRUCTION
+        return status if status in {c[0] for c in self.ProjectStatus.choices} else self.ProjectStatus.CURRENT
+
+    @property
+    def status_filter_class(self) -> str:
+        return f"st-{self.effective_status_for_filters}"
+
+    @property
+    def status_badge_variant(self) -> str:
+        if self.status == self.ProjectStatus.SOLD:
+            return "sold"
+        if self.status == self.ProjectStatus.UNDER_CONSTRUCTION:
+            return "under-construction"
+        return "current"
+
+    @property
+    def effective_project_status_badge_variant(self) -> str:
+        custom_variant = (self.project_status_badge_variant or "").strip()
+        return custom_variant or self.status_badge_variant
+
+    @property
+    def status_badge_icon(self) -> str:
+        if self.status == self.ProjectStatus.SOLD:
+            return "fa-check-circle"
+        if self.status == self.ProjectStatus.UNDER_CONSTRUCTION:
+            return "fa-tools"
+        return "fa-crown"
+
+    @property
+    def effective_project_status_badge_icon(self) -> str:
+        custom_icon = (self.project_status_badge_icon or "").strip()
+        return custom_icon or self.status_badge_icon
+
+    @property
+    def effective_card_badge_variant(self) -> str:
+        custom_variant = (self.card_badge_variant or "").strip()
+        return custom_variant or self.status_badge_variant
+
+    @classmethod
+    def status_label_for_value(cls, value: str) -> str:
+        if value == cls.ProjectStatus.SOLD:
+            return _("Sold")
+        if value == cls.ProjectStatus.UNDER_CONSTRUCTION:
+            return _("Under construction")
+        return _("Current")
+
+    @property
+    def status_label(self) -> str:
+        return self.status_label_for_value(self.status)
+
+    @property
+    def effective_card_badge_label(self) -> str:
+        custom_labels = [
+            (self.card_badge_text or "").strip(),
+            (getattr(self, "card_badge_text_ar", "") or "").strip(),
+            (getattr(self, "card_badge_text_en", "") or "").strip(),
+        ]
+        for label in custom_labels:
+            if label:
+                return label
+        return self.status_label
+
+    @property
+    def effective_card_badge_secondary_label(self) -> str:
+        custom_labels = [
+            (self.card_badge_secondary_text or "").strip(),
+            (getattr(self, "card_badge_secondary_text_ar", "") or "").strip(),
+            (getattr(self, "card_badge_secondary_text_en", "") or "").strip(),
+        ]
+        for label in custom_labels:
+            if label:
+                return label
+        return ""
 
     @property
     def location_line(self):

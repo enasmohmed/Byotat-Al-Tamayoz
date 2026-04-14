@@ -1,7 +1,3 @@
-import hashlib
-from collections import defaultdict
-
-from django.utils.text import slugify
 from django.views.generic import ListView, DetailView
 
 from core.i18n_utils import interface_language
@@ -9,58 +5,49 @@ from core.i18n_utils import interface_language
 from .models import AllProjectsPageSettings, Project
 
 
-def _location_filter_class(prefix: str, raw: str) -> str:
-    raw = (raw or "").strip()
-    if not raw:
-        return ""
-    slug = slugify(raw)
-    if slug:
-        return f"{prefix}-{slug}"
-    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
-    return f"{prefix}-u{digest}"
-
-
 class ProjectListView(ListView):
     model = Project
     template_name = "all_projects.html"
     context_object_name = "projects"
+    paginate_by = 6
 
     def get_queryset(self):
-        return Project.objects.filter(is_active=True).select_related("category")
+        selected_status = (self.request.GET.get("status") or "").strip()
+        selected_district = (self.request.GET.get("district") or "").strip()
+        status_values = {value for value, _label in Project.ProjectStatus.choices}
+
+        projects = list(
+            Project.objects.filter(is_active=True)
+            .select_related("category")
+            .order_by("-id")
+        )
+        if selected_status in status_values:
+            projects = [p for p in projects if p.effective_status_for_filters == selected_status]
+        if selected_district:
+            projects = [p for p in projects if (getattr(p, "district", "") or "").strip() == selected_district]
+        return projects
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         lang = interface_language(self.request)
         context["all_projects_page"] = AllProjectsPageSettings.objects.first()
         context["interface_lang"] = lang
+        context["selected_status"] = (self.request.GET.get("status") or "").strip()
+        context["selected_district"] = (self.request.GET.get("district") or "").strip()
 
-        plist = list(context["projects"])
-        city_labels = {}
-        dist_labels = {}
-        by_city = defaultdict(dict)
+        status_order = [(value, Project.status_label_for_value(value)) for value, _label in Project.ProjectStatus.choices]
+        context["filter_statuses"] = status_order
 
-        for p in plist:
-            city = (getattr(p, "city", None) or "").strip()
-            district = (getattr(p, "district", None) or "").strip()
-            p.filter_city_class = _location_filter_class("ct", city) if city else ""
-            p.filter_district_class = _location_filter_class("dt", district) if district else ""
-            if p.filter_city_class:
-                city_labels[p.filter_city_class] = city
-            if p.filter_district_class:
-                dist_labels[p.filter_district_class] = district
-            if p.filter_city_class and p.filter_district_class:
-                by_city[p.filter_city_class][p.filter_district_class] = district
+        all_projects = Project.objects.filter(is_active=True).only("district")
+        districts = sorted(
+            {(p.district or "").strip() for p in all_projects if (p.district or "").strip()},
+            key=str.casefold,
+        )
+        context["all_districts_options"] = districts
 
-        context["projects"] = plist
-        context["filter_cities"] = sorted(city_labels.items(), key=lambda x: x[1].casefold())
-        districts_by_city = {
-            ct: [{"v": dt, "l": lab} for dt, lab in sorted(dmap.items(), key=lambda x: x[1].casefold())]
-            for ct, dmap in by_city.items()
-        }
-        context["districts_by_city"] = districts_by_city
-        context["all_districts_options"] = [
-            {"v": dt, "l": lab} for dt, lab in sorted(dist_labels.items(), key=lambda x: x[1].casefold())
-        ]
+        query = self.request.GET.copy()
+        query.pop("page", None)
+        context["filters_query"] = query.urlencode()
         return context
 
 

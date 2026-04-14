@@ -163,6 +163,7 @@ class SiteSettingsAdmin(UnfoldTranslationAdmin):
             {
                 'fields': (
                     'site_name',
+                    'hero_video_caption',
                     'logo',
                     'favicon',
                     'phone',
@@ -268,7 +269,13 @@ class FooterSettingsAdmin(UnfoldTranslationAdmin):
                 "description": _(
                     "Phone: link uses tel: (direct call). WhatsApp: digits only with country code — link opens chat in WhatsApp / web."
                 ),
-                "fields": ("address", "phone", "whatsapp_number", "email"),
+                "fields": (
+                    "contact_heading_main",
+                    "contact_heading_span",
+                    "address",
+                    "phone",
+                    "email",
+                ),
             },
         ),
         (
@@ -281,6 +288,13 @@ class FooterSettingsAdmin(UnfoldTranslationAdmin):
                     'hours_line2_label',
                     'hours_line2_value',
                 ),
+            },
+        ),
+        (
+            _("Last footer logo"),
+            {
+                "description": _("Logo shown in the last column of the footer."),
+                "fields": ("footer_side_logo",),
             },
         ),
         (

@@ -6,6 +6,13 @@ from django.utils.translation import gettext_lazy as _
 
 class SiteSettings(models.Model):
     site_name = models.CharField(max_length=255, blank=True, null=True)
+    hero_video_caption = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_("Home hero video caption"),
+        help_text=_("Short phrase displayed over the hero background video (bottom-right)."),
+    )
     logo = models.ImageField(upload_to='settings/', blank=True, null=True)
     favicon = models.ImageField(upload_to='settings/', blank=True, null=True)
     primary_color = models.CharField(
@@ -238,6 +245,13 @@ class FooterSettings(models.Model):
         null=True,
         verbose_name=_("Footer logo"),
         help_text=_("If empty, the main site logo is used."),
+    )
+    footer_side_logo = models.ImageField(
+        upload_to="footer/",
+        blank=True,
+        null=True,
+        verbose_name=_("Footer side logo"),
+        help_text=_("Logo used in the last footer column. If empty, the main site logo is used."),
     )
 
     hours_line1_label = models.CharField(
