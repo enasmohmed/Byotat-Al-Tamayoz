@@ -14,11 +14,8 @@
     <a class="nav-link{% if request.resolver_match.url_name == 'services_list' %} active{% endif %}" href="{% url 'services_list' %}">{% trans "Our Services" %}</a>
   </li>
 
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle{% if request.resolver_match.url_name == 'projects_list' %} active{% endif %}" href="#" data-bs-toggle="dropdown">{% trans "Our projects" %}</a>
-    <ul class="dropdown-menu">
-      <li><a href="{% url 'projects_list' %}">{% trans "Projects" %}</a></li>
-    </ul>
+  <li class="nav-item">
+    <a class="nav-link{% if request.resolver_match.url_name == 'projects_list' %} active{% endif %}" href="{% url 'projects_list' %}">{% trans "Our projects" %}</a>
   </li>
 
   <li class="nav-item">

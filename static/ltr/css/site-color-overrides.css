@@ -478,3 +478,32 @@ body.page-project-detail .project-detail-main {
     width: auto !important;
   }
 }
+
+/* Full-page preloader — يغلب أبيض base.css إن لزم */
+#ht-preloader.ht-preloader-screen {
+  z-index: 2147483000;
+  background-color: var(--dark-color, #1d3338) !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Full-page preloader: company logo (replaces generic spinner gif) */
+#ht-preloader .ht-preloader-logo {
+  display: block;
+  max-width: min(440px, 85vw);
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  animation: ht-preloader-logo-pulse 1.15s ease-in-out infinite;
+}
+@keyframes ht-preloader-logo-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}

@@ -78,6 +78,25 @@
     {% block extra_head %}{% endblock %}
   </head>
   <body class="{% block body_class %}{% endblock %}">
+    {# وقت بدء الصفحة — يُستخدم لحد أدنى لظهور اللودر قبل الإخفاء #}
+    <script>
+      window.__htPreloaderShownAt = Date.now();
+    </script>
+    {# flex + لون خلفية من إعدادات الموقع — يظهر الشعار حتى لو أبيض ويتفادى قصّ .clear-loader مع overflow #}
+    <div
+      id="ht-preloader"
+      class="ht-preloader-screen"
+      style="position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background-color:{{ dark_color|default:'#1d3338' }};opacity:1;"
+      aria-busy="true"
+    >
+      <img
+        class="ht-preloader-logo"
+        src="{{ logo_url }}"
+        alt="{{ site_settings.site_name|default:'' }}"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
     {% include "partials/header.html" %}
 
     {% block content %}{% endblock %}
@@ -114,6 +133,41 @@
     <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="fas fa-chevron-up"></i></a></div>
 
     <!--back-to-top end-->
+
+    {# يُسجّل إخفاء اللودر قبل تحميل jQuery والثيم — لو حصل خطأ في سكربت لاحق ما يعلقش الشاشة #}
+    <script>
+      (function () {
+        var minVisibleMs = 700;
+        function hidePreloader() {
+          var el = document.getElementById('ht-preloader');
+          if (!el) return;
+          var start =
+            typeof window.__htPreloaderShownAt === 'number'
+              ? window.__htPreloaderShownAt
+              : Date.now();
+          var delay = Math.max(0, minVisibleMs - (Date.now() - start));
+          setTimeout(function () {
+            el.setAttribute('aria-busy', 'false');
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            setTimeout(function () {
+              el.style.display = 'none';
+            }, 500);
+          }, delay);
+        }
+        function scheduleHide() {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(hidePreloader);
+          });
+        }
+        if (document.readyState === 'complete') {
+          scheduleHide();
+        } else {
+          window.addEventListener('load', scheduleHide, { once: true });
+        }
+      })();
+    </script>
 
     <!-- Global Theme JS (LTR / RTL حسب اللغة) -->
     {% if LANGUAGE_BIDI %}

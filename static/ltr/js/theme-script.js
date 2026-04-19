@@ -45,11 +45,8 @@ $.fn.exists = function () {
 };
 
 /*------------------------------------
-  HT PreLoader
+  HT PreLoader — الإخفاء من base.html (vanilla JS)
 --------------------------------------*/
-function preloader() {
-  $('#ht-preloader').fadeOut();
-};
 
 /*------------------------------------
   HT FullScreen
@@ -420,8 +417,15 @@ $(document).ready(function () {
 $window.resize(function() {
 });
 
-$(window).on('load', function () {
-  preloader(),
-  isotope(),
+function onWindowFullyLoaded(fn) {
+  if (document.readyState === 'complete') {
+    fn();
+  } else {
+    $(window).on('load', fn);
+  }
+}
+
+onWindowFullyLoaded(function () {
+  isotope();
   masonry();
 });
