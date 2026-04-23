@@ -18,29 +18,18 @@ class ContactForm(forms.Form):
         max_length=50,
         widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "tel", "required": True}),
     )
-    project = forms.ChoiceField(
-        label=_("Project"),
+    project = forms.MultipleChoiceField(
+        label=_("Projects"),
         choices=(),
-        widget=forms.Select(attrs={"class": "form-control", "required": True}),
-    )
-    project_status_current = forms.BooleanField(
-        label=_("Current projects"),
-        required=False,
-        initial=True,
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
-    )
-    project_status_under_construction = forms.BooleanField(
-        label=_("Under-construction projects"),
-        required=False,
-        initial=True,
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
     )
     message = forms.CharField(
         label=_("Message"),
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5, "required": True}),
+        required=False,
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}),
     )
     send_via_whatsapp = forms.BooleanField(
-        label=_("Via company WhatsApp"),
+        label=_("Send"),
         required=False,
         initial=True,
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
@@ -53,50 +42,24 @@ class ContactForm(forms.Form):
         has_wa = bool(self.site and getattr(self.site, "whatsapp_digits", ""))
 
         if self.is_arabic:
-            self.fields["project"].label = "المشروع"
+            self.fields["project"].label = "المشاريع"
             self.fields["phone"].label = "رقم الجوال"
-            self.fields["project_status_current"].label = "المشاريع الحالية"
-            self.fields["project_status_under_construction"].label = "مشاريع تحت الإنشاء"
-            self.fields["send_via_whatsapp"].label = "عبر واتساب الشركة"
+            self.fields["send_via_whatsapp"].label = "إرسال"
 
         self.fields["send_via_whatsapp"].initial = True
         if has_wa:
             self.fields["send_via_whatsapp"].widget = forms.HiddenInput()
 
-        status_values = self._selected_status_values()
-        self.fields["project"].choices = self._project_choices(status_values)
+        self.fields["project"].choices = self._project_choices()
 
-    def _selected_status_values(self):
-        current_selected = True
-        under_construction_selected = True
-        if self.is_bound:
-            current_selected = bool(self.data.get("project_status_current"))
-            under_construction_selected = bool(self.data.get("project_status_under_construction"))
-
-        statuses = []
-        if current_selected:
-            statuses.append(Project.ProjectStatus.CURRENT)
-        if under_construction_selected:
-            statuses.append(Project.ProjectStatus.UNDER_CONSTRUCTION)
-        return statuses
-
-    def _project_choices(self, statuses):
-        choices = [("", "اختر المشروع" if self.is_arabic else _("Select a project"))]
-        if not statuses:
-            return choices
-
-        projects = Project.objects.filter(is_active=True, status__in=statuses).order_by("-id")
+    def _project_choices(self):
+        choices = []
+        projects = Project.objects.filter(
+            is_active=True,
+            status=Project.ProjectStatus.CURRENT,
+        ).order_by("-id")
         for project in projects:
-            if self.is_arabic:
-                if project.status == Project.ProjectStatus.CURRENT:
-                    status_label = "الحالية"
-                elif project.status == Project.ProjectStatus.UNDER_CONSTRUCTION:
-                    status_label = "تحت الإنشاء"
-                else:
-                    status_label = "تم البيع"
-            else:
-                status_label = project.status_label_for_value(project.status)
-            choices.append((str(project.pk), f"{project.title} ({status_label})"))
+            choices.append((str(project.pk), project.title))
         return choices
 
     def clean(self):
@@ -105,20 +68,27 @@ class ContactForm(forms.Form):
             raise ValidationError(_("Site settings are missing. Please contact the administrator."))
 
         has_wa = bool(getattr(self.site, "whatsapp_digits", ""))
-        selected_statuses = []
-        if cleaned.get("project_status_current"):
-            selected_statuses.append(Project.ProjectStatus.CURRENT)
-        if cleaned.get("project_status_under_construction"):
-            selected_statuses.append(Project.ProjectStatus.UNDER_CONSTRUCTION)
-
-        if not selected_statuses:
-            raise ValidationError(_("Please choose at least one project category: current or under construction."))
-
-        project_id = cleaned.get("project")
-        if not project_id:
-            self.add_error("project", _("Please choose a project."))
-        elif not Project.objects.filter(pk=project_id, is_active=True, status__in=selected_statuses).exists():
-            self.add_error("project", _("Please choose a project that matches the selected categories."))
+        selected_projects = cleaned.get("project") or []
+        if not selected_projects:
+            self.add_error(
+                "project",
+                "يرجى اختيار مشروع واحد على الأقل."
+                if self.is_arabic
+                else _("Please choose at least one project."),
+            )
+        else:
+            valid_count = Project.objects.filter(
+                pk__in=selected_projects,
+                is_active=True,
+                status=Project.ProjectStatus.CURRENT,
+            ).count()
+            if valid_count != len(set(selected_projects)):
+                self.add_error(
+                    "project",
+                    "يرجى اختيار مشاريع حالية صالحة فقط."
+                    if self.is_arabic
+                    else _("Please choose valid current projects only."),
+                )
 
         if not has_wa:
             raise ValidationError(

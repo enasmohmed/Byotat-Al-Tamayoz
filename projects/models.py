@@ -159,8 +159,7 @@ class Project(models.Model):
 
     class ProjectStatus(models.TextChoices):
         CURRENT = "current", _("Current (الحالية)")
-        UNDER_CONSTRUCTION = "under_construction", _("Under construction (تحت الإنشاء)")
-        SOLD = "sold", _("Sold (تم البيع)")
+        SOLD = "sold", _("Sold (المباعة)")
 
     status = models.CharField(
         max_length=24,
@@ -264,7 +263,7 @@ class Project(models.Model):
         blank=True,
         default="",
         verbose_name=_("Card badge text"),
-        help_text=_("Short label on project cards, e.g. «Under construction» / «تم البيع». Leave empty to hide."),
+        help_text=_("Short label on project cards, e.g. «Under construction» / «المباعة». Leave empty to hide."),
     )
     card_badge_secondary_text = models.CharField(
         max_length=240,
@@ -320,27 +319,22 @@ class Project(models.Model):
     @property
     def effective_status_for_filters(self) -> str:
         status = (self.status or "").strip()
-        if status in {self.ProjectStatus.SOLD, self.ProjectStatus.UNDER_CONSTRUCTION}:
+        if status == self.ProjectStatus.SOLD:
             return status
 
         variant = (self.card_badge_variant or "").strip()
         if variant in {"sold", "red"}:
             return self.ProjectStatus.SOLD
-        if variant in {"construction", "under-construction"}:
-            return self.ProjectStatus.UNDER_CONSTRUCTION
 
         labels = [
             self._normalize_status_hint(self.card_badge_text),
             self._normalize_status_hint(getattr(self, "card_badge_text_ar", "")),
             self._normalize_status_hint(getattr(self, "card_badge_text_en", "")),
         ]
-        sold_hints = {"sold", "تم البيع"}
-        under_construction_hints = {"under construction", "تحت الانشاء", "تحت الإنشاء"}
+        sold_hints = {"sold", "تم البيع", "المباعة"}
 
         if any(lbl in sold_hints for lbl in labels if lbl):
             return self.ProjectStatus.SOLD
-        if any(lbl in under_construction_hints for lbl in labels if lbl):
-            return self.ProjectStatus.UNDER_CONSTRUCTION
         return status if status in {c[0] for c in self.ProjectStatus.choices} else self.ProjectStatus.CURRENT
 
     @property
@@ -351,8 +345,6 @@ class Project(models.Model):
     def status_badge_variant(self) -> str:
         if self.status == self.ProjectStatus.SOLD:
             return "sold"
-        if self.status == self.ProjectStatus.UNDER_CONSTRUCTION:
-            return "under-construction"
         return "current"
 
     @property
@@ -364,8 +356,6 @@ class Project(models.Model):
     def status_badge_icon(self) -> str:
         if self.status == self.ProjectStatus.SOLD:
             return "fa-check-circle"
-        if self.status == self.ProjectStatus.UNDER_CONSTRUCTION:
-            return "fa-tools"
         return "fa-crown"
 
     @property
@@ -382,8 +372,6 @@ class Project(models.Model):
     def status_label_for_value(cls, value: str) -> str:
         if value == cls.ProjectStatus.SOLD:
             return _("Sold")
-        if value == cls.ProjectStatus.UNDER_CONSTRUCTION:
-            return _("Under construction")
         return _("Current")
 
     @property

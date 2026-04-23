@@ -34,6 +34,9 @@
   .contact-interest-panel .contact-info li a:hover {
     color: #f9a305;
   }
+  .contact-projects-grid .form-check {
+    margin-bottom: 0.65rem;
+  }
 </style>
 {% endblock %}
 
@@ -244,92 +247,34 @@
             </div>
             <div class="form-group mb-3">
               <label class="form-label" for="{{ form.project.id_for_label }}">
-                {% if LANGUAGE_BIDI %}المشروع{% else %}{{ form.project.label }}{% endif %} <span class="text-danger">*</span>
+                {{ form.project.label }} <span class="text-danger">*</span>
               </label>
-              {{ form.project }}
+              <div class="row contact-projects-grid">
+                {% for project_option in form.project %}
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      {{ project_option.tag }}
+                      <label class="form-check-label" for="{{ project_option.id_for_label }}">
+                        {{ project_option.choice_label }}
+                      </label>
+                    </div>
+                  </div>
+                {% empty %}
+                  <div class="col-12">
+                    <p class="text-muted mb-0">{% if LANGUAGE_BIDI %}لا توجد مشاريع متاحة حالياً.{% else %}{% trans "No projects are available right now." %}{% endif %}</p>
+                  </div>
+                {% endfor %}
+              </div>
               {% if form.project.errors %}<div class="text-danger small">{{ form.project.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">
-              <span class="form-label d-block mb-2">{% if LANGUAGE_BIDI %}نوع المشروع{% else %}{% trans "Project type" %}{% endif %} <span class="text-danger">*</span></span>
-              <div class="form-check mb-2">
-                {{ form.project_status_current }}
-                <label class="form-check-label" for="{{ form.project_status_current.id_for_label }}">
-                  {% if LANGUAGE_BIDI %}المشاريع الحالية{% else %}{{ form.project_status_current.label }}{% endif %}
-                </label>
-              </div>
-              <div class="form-check">
-                {{ form.project_status_under_construction }}
-                <label class="form-check-label" for="{{ form.project_status_under_construction.id_for_label }}">
-                  {% if LANGUAGE_BIDI %}مشاريع تحت الإنشاء{% else %}{{ form.project_status_under_construction.label }}{% endif %}
-                </label>
-              </div>
-              {% if form.project_status_current.errors or form.project_status_under_construction.errors %}
-                <div class="text-danger small mt-2">{{ form.project_status_current.errors }}{{ form.project_status_under_construction.errors }}</div>
-              {% endif %}
-            </div>
-            <div class="form-group mb-3">
-              <label class="form-label" for="{{ form.message.id_for_label }}">{{ form.message.label }} <span class="text-danger">*</span></label>
+              <label class="form-label" for="{{ form.message.id_for_label }}">{{ form.message.label }} <small class="text-muted">({% if LANGUAGE_BIDI %}اختياري{% else %}{% trans "Optional" %}{% endif %})</small></label>
               {{ form.message }}
               {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors }}</div>{% endif %}
             </div>
             {{ form.send_via_whatsapp }}
-            <button type="submit" class="btn btn-border btn-radius"><span>{% if LANGUAGE_BIDI %}إرسال عبر واتساب{% else %}{% trans "Send via WhatsApp" %}{% endif %}</span></button>
+            <button type="submit" class="btn btn-border btn-radius"><span>{% if LANGUAGE_BIDI %}إرسال{% else %}{% trans "Send" %}{% endif %}</span></button>
           </form>
-          {{ project_options|json_script:"contact-project-options" }}
-          <script>
-            (function () {
-              const projectSelect = document.getElementById("{{ form.project.id_for_label }}");
-              const currentCheckbox = document.getElementById("{{ form.project_status_current.id_for_label }}");
-              const underConstructionCheckbox = document.getElementById("{{ form.project_status_under_construction.id_for_label }}");
-              const dataNode = document.getElementById("contact-project-options");
-              if (!projectSelect || !currentCheckbox || !underConstructionCheckbox || !dataNode) return;
-
-              let allProjects = [];
-              try {
-                allProjects = JSON.parse(dataNode.textContent || "[]");
-              } catch (err) {
-                allProjects = [];
-              }
-
-              const placeholderLabel = "{{ LANGUAGE_BIDI|yesno:'اختر المشروع,Select a project' }}";
-
-              function selectedStatuses() {
-                const statuses = [];
-                if (currentCheckbox.checked) statuses.push("current");
-                if (underConstructionCheckbox.checked) statuses.push("under_construction");
-                return statuses;
-              }
-
-              function refillProjects() {
-                const previousValue = projectSelect.value;
-                const statuses = selectedStatuses();
-                const filtered = allProjects.filter((p) => statuses.includes(p.status));
-
-                projectSelect.innerHTML = "";
-                const placeholder = document.createElement("option");
-                placeholder.value = "";
-                placeholder.textContent = placeholderLabel;
-                projectSelect.appendChild(placeholder);
-
-                filtered.forEach((project) => {
-                  const option = document.createElement("option");
-                  option.value = project.id;
-                  option.textContent = `${project.title} (${project.status_label})`;
-                  projectSelect.appendChild(option);
-                });
-
-                if (filtered.some((project) => project.id === previousValue)) {
-                  projectSelect.value = previousValue;
-                } else {
-                  projectSelect.value = "";
-                }
-              }
-
-              currentCheckbox.addEventListener("change", refillProjects);
-              underConstructionCheckbox.addEventListener("change", refillProjects);
-              refillProjects();
-            })();
-          </script>
         </div>
       </div>
     </div>

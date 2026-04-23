@@ -3199,7 +3199,7 @@ msgid "Sales progress"
 msgstr "تقدم المبيعات"
 
 msgid "sold"
-msgstr "مُباع"
+msgstr "المباعة"
 
 msgid "Share of units sold for this project."
 msgstr "نسبة الوحدات المباعة في هذا المشروع."
@@ -3278,7 +3278,7 @@ msgid "in the same area"
 msgstr "في نفس المنطقة"
 
 msgid "Sold"
-msgstr "تم البيع"
+msgstr "المباعة"
 
 msgid "Under construction"
 msgstr "تحت الإنشاء"

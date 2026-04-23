@@ -86,6 +86,14 @@
     min-height: 0;
     text-decoration: none;
   }
+  .all-projects-page {
+    --project-card-overlay-opacity: 0.45;
+    --project-card-overlay-gradient: linear-gradient(
+      180deg,
+      rgba(12, 19, 34, 0.12) 0%,
+      rgba(12, 19, 34, 0.78) 100%
+    );
+  }
   .all-projects-page .home-project-feed-card__thumb-inner {
     position: relative;
     display: block;
@@ -94,12 +102,21 @@
     overflow: hidden;
     background: #e8ecf1;
   }
+  .all-projects-page .home-project-feed-card__image-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--project-card-overlay-gradient);
+    opacity: var(--project-card-overlay-opacity);
+    pointer-events: none;
+    z-index: 2;
+  }
   .all-projects-page .home-project-feed-card__thumb-inner img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
   }
   .all-projects-page .home-project-feed-card__body {
     flex: 1 1 auto;
@@ -149,6 +166,7 @@
   .all-projects-page .home-project-feed-card .project-card-badges-stack {
     top: auto;
     bottom: 12px;
+    z-index: 3;
   }
   @media (max-width: 1199.98px) {
     .all-projects-page .all-projects-feed {
@@ -216,9 +234,9 @@
             {% for status_value, status_label in filter_statuses %}
               <button type="button" class="status-btn{% if selected_status == status_value %} is-checked{% endif %}" data-status="{{ status_value }}">
                 {% if LANGUAGE_CODE == 'ar' %}
-                  {% if status_value == 'current' %}الحالية{% elif status_value == 'under_construction' %}تحت الإنشاء{% elif status_value == 'sold' %}تم البيع{% else %}{{ status_label }}{% endif %}
+                  {% if status_value == 'current' %}الحالية{% elif status_value == 'sold' %}المباعة{% else %}{{ status_label }}{% endif %}
                 {% else %}
-                  {% if status_value == 'current' %}Current{% elif status_value == 'under_construction' %}Under construction{% elif status_value == 'sold' %}Sold{% else %}{{ status_label }}{% endif %}
+                  {% if status_value == 'current' %}Current{% elif status_value == 'sold' %}Sold{% else %}{{ status_label }}{% endif %}
                 {% endif %}
               </button>
             {% endfor %}

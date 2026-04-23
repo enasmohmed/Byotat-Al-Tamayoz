@@ -3,13 +3,14 @@
 {% url 'project_detail' project.slug as project_detail_url %}
 <article class="home-project-feed-card">
   <a href="{{ project_detail_url }}" class="home-project-feed-card__thumb">
-    <span class="home-project-feed-card__thumb-inner">
-      {% include "partials/project_card_badges_stack.html" %}
+    <span class="home-project-feed-card__thumb-inner" style="position: relative; display: block; overflow: hidden;">
       {% if project.image %}
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
       {% else %}
-        <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}" loading="lazy">
+        <img src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/portfolio/01.jpg' %}{% else %}{% static 'ltr/images/portfolio/01.jpg' %}{% endif %}" alt="{{ project.title }}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
       {% endif %}
+      <span class="home-project-feed-card__image-overlay" aria-hidden="true" style="position: absolute; inset: 0;background: #000000ad;opacity: 0.65; pointer-events: none; z-index: 2;"></span>
+      {% include "partials/project_card_badges_stack.html" %}
     </span>
   </a>
   <div class="home-project-feed-card__body">
