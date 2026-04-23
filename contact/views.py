@@ -33,11 +33,11 @@ class ContactFormView(FormView):
         is_arabic = (get_language() or "").startswith("ar")
         phone = (form.cleaned_data.get("phone") or "").strip()
         project_ids = form.cleaned_data.get("project") or []
-        selected_projects = list(
-            Project.objects.filter(pk__in=project_ids, is_active=True, status=Project.ProjectStatus.CURRENT).only(
-                "title"
-            )
-        )
+        selected_projects = [
+            project
+            for project in Project.objects.filter(pk__in=project_ids, is_active=True).only("title", "status")
+            if project.effective_status_for_filters == Project.ProjectStatus.CURRENT
+        ]
         project_titles = [p.title for p in selected_projects]
         projects_text = ", ".join(project_titles) if project_titles else (_("Unknown project"))
         message_text = (form.cleaned_data.get("message") or "").strip()

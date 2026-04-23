@@ -32,15 +32,30 @@
         --secondary-color: {{ secondary_color|default:'#cc9955' }};
         --surface-color: {{ surface_color|default:'#ececec' }};
         --dark-color: {{ dark_color|default:'#1d3338' }};
+        --x-twitter-icon-url: url("{% if LANGUAGE_BIDI %}{% static 'rtl/images/icons/x-twitter.svg' %}{% else %}{% static 'ltr/images/icons/x-twitter.svg' %}{% endif %}");
       }
-      /* شعار X — الثيم يحمّل Font Awesome بدون fa-x-twitter */
-      .social-x-icon {
+      /* Fallback لشعار X لو نسخة Font Awesome لا تدعم fa-x-twitter */
+      .fa-x-twitter {
+        display: inline-block;
         width: 1em;
         height: 1em;
-        display: inline-block;
-        vertical-align: -0.12em;
-        margin-inline-start: 0.2em;
-        fill: currentColor;
+        line-height: 1;
+        vertical-align: -0.125em;
+      }
+      .fa-x-twitter::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: currentColor;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        -webkit-mask-size: contain;
+        -webkit-mask-image: var(--x-twitter-icon-url);
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: contain;
+        mask-image: var(--x-twitter-icon-url);
       }
     </style>
 

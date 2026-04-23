@@ -146,6 +146,19 @@
   .footer .contact-info li a.footer-whatsapp-link:hover {
     color: #f9a305;
   }
+  .footer .x-twitter-inline-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: -0.125em;
+    color: inherit;
+  }
+  .footer .x-twitter-inline-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: currentColor;
+  }
 </style>
 <footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
   <div class="primary-footer">
@@ -173,7 +186,13 @@
                   {% endif %}
                   {% if footer.twitter_url %}
                     <li class="social-twitter">
-                      <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                      <a href="{{ footer.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="X">
+                        <span class="x-twitter-inline-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                            <path d="M18.244 2H21.5l-7.117 8.132L22.75 22h-6.555l-5.13-6.708L5.2 22H1.94l7.61-8.697L1.5 2h6.722l4.636 6.117L18.244 2Zm-1.15 18h1.802L7.21 3.896H5.274L17.094 20Z"/>
+                          </svg>
+                        </span>
+                      </a>
                     </li>
                   {% endif %}
                   {% if footer.linkedin_url %}

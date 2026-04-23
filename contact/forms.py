@@ -54,12 +54,10 @@ class ContactForm(forms.Form):
 
     def _project_choices(self):
         choices = []
-        projects = Project.objects.filter(
-            is_active=True,
-            status=Project.ProjectStatus.CURRENT,
-        ).order_by("-id")
+        projects = Project.objects.filter(is_active=True).order_by("-id")
         for project in projects:
-            choices.append((str(project.pk), project.title))
+            if project.effective_status_for_filters == Project.ProjectStatus.CURRENT:
+                choices.append((str(project.pk), project.title))
         return choices
 
     def clean(self):
@@ -77,12 +75,12 @@ class ContactForm(forms.Form):
                 else _("Please choose at least one project."),
             )
         else:
-            valid_count = Project.objects.filter(
-                pk__in=selected_projects,
-                is_active=True,
-                status=Project.ProjectStatus.CURRENT,
-            ).count()
-            if valid_count != len(set(selected_projects)):
+            valid_ids = {
+                str(project.pk)
+                for project in Project.objects.filter(pk__in=selected_projects, is_active=True)
+                if project.effective_status_for_filters == Project.ProjectStatus.CURRENT
+            }
+            if len(valid_ids) != len(set(selected_projects)):
                 self.add_error(
                     "project",
                     "يرجى اختيار مشاريع حالية صالحة فقط."
