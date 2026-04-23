@@ -242,23 +242,8 @@
             {% endfor %}
           </div>
         </div>
-        <div>
-          <label class="small mb-1 d-block" for="all-projects-filter-district">
-            {% if LANGUAGE_CODE == 'ar' %}الحي{% else %}District{% endif %}
-          </label>
-          <select id="all-projects-filter-district" name="district" class="form-select form-select-sm">
-            <option value="">{% if LANGUAGE_CODE == 'ar' %}كل الأحياء{% else %}All districts{% endif %}</option>
-            {% for district in all_districts_options %}
-              <option value="{{ district }}"{% if selected_district == district %} selected{% endif %}>{{ district }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <button type="submit" class="btn btn-theme btn-sm all-projects-action-btn">
-          {% if LANGUAGE_CODE == 'ar' %}تطبيق{% else %}Filter{% endif %}
-        </button>
-        <a href="{% url 'projects_list' %}" class="btn btn-outline-secondary btn-sm all-projects-action-btn">
-          {% if LANGUAGE_CODE == 'ar' %}إعادة تعيين{% else %}Reset{% endif %}
-        </a>
+       
+      
       </form>
     </div>
     <div class="container mt-4">

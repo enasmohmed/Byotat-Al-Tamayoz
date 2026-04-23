@@ -194,7 +194,7 @@ a, i, .btn, button, img, span, .navbar-nav .nav-link:before, .dropdown-item, .na
 .footer-media a, .footer-media p{color: #ffffff;}
 .footer-media a:hover{color: #23244a;}
 
-footer.dark-bg .social-icons li a{color: rgba(255,255,255,0.6);}
+footer.dark-bg .social-icons li a{color: #fff;}
 .footer-list li{margin-bottom: 15px; text-transform: capitalize;}
 .footer-list li:last-child{margin-bottom: 0;}
 .footer-list li a{position: relative; z-index: 99;}
