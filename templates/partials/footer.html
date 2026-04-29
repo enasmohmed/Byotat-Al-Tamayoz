@@ -38,6 +38,8 @@
     min-height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 22px;
     align-items: center;
     justify-content: center;
   }
@@ -52,6 +54,36 @@
     transform: scale(var(--footer-logo-side-scale));
     transform-origin: center center;
     margin-inline: auto;
+  }
+  .footer-license-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 16px 9px;
+    margin-top: 26px;
+    border-radius: 16px;
+    border: 1px solid rgba(249, 163, 5, 0.48);
+    background: linear-gradient(135deg, rgba(249, 163, 5, 0.18), rgba(249, 163, 5, 0.05));
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    color: #f5f8ff;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .footer-license-badge__label {
+    color: #f9a305;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    text-align: center;
+  }
+  .footer-license-badge__value {
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-weight: 700;
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
   }
   .footer-main-col .footer-brand-social {
     margin-top: 24px;
@@ -110,6 +142,18 @@
       max-height: 40px;
       max-width: 130px;
     }
+    .footer-license-badge {
+      margin-top: 20px;
+      padding: 9px 14px 8px;
+      border-radius: 14px;
+      gap: 4px;
+    }
+    .footer-license-badge__label {
+      font-size: 11px;
+    }
+    .footer-license-badge__value {
+      font-size: 16px;
+    }
     .primary-footer .row > [class*="col-"] {
       margin-top: 2rem !important;
     }
@@ -159,6 +203,17 @@
     display: block;
     fill: currentColor;
   }
+  .footer-brand-social .social-icons li.social-snapchat a {
+    background: #fffc00;
+    color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+  }
+  .footer-brand-social .social-icons li.social-snapchat a:hover,
+  .footer-brand-social .social-icons li.social-snapchat a:focus {
+    background: #f4ef00;
+    color: #000000;
+    border-color: rgba(0, 0, 0, 0.25);
+  }
 </style>
 <footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
   <div class="primary-footer">
@@ -203,6 +258,11 @@
                   {% if footer.instagram_url %}
                     <li class="social-instagram">
                       <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.snapchat_url %}
+                    <li class="social-snapchat">
+                      <a href="{{ footer.snapchat_url }}" target="_blank" rel="noopener noreferrer" aria-label="Snapchat"><i class="fab fa-snapchat-ghost" aria-hidden="true"></i></a>
                     </li>
                   {% endif %}
                   {% if footer.youtube_url %}
@@ -287,6 +347,14 @@
         <div class="col-lg-2 col-md-2 mt-5 mt-md-0 widget footer-logo-col">
           <div class="footer-brand-logo-side">
             <img class="img-fluid" src="{{ footer_side_logo_url }}" alt="{{ site_settings.site_name|default:'' }}">
+            {% if footer and footer.fal_license_number %}
+              <div class="footer-license-badge" aria-label="{% trans 'Business license number' %}">
+                <span class="footer-license-badge__label">
+                  {{ footer.fal_license_label|default:_("Fal License No.") }}
+                </span>
+                <span class="footer-license-badge__value">{{ footer.fal_license_number }}</span>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>

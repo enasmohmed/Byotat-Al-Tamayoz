@@ -129,6 +129,16 @@ class HomeView(TemplateView):
         )
         qs_home = _pick_home_projects_mixed(qs_home_all, HOME_PROJECTS_MAX)
         context["filter_statuses"] = annotate_home_projects_for_home(qs_home)
+        status_tokens = {token for token, _label in context["filter_statuses"]}
+        selected_status = (self.request.GET.get("status") or "").strip()
+        if selected_status not in status_tokens:
+            selected_status = ""
+            for token, label in context["filter_statuses"]:
+                normalized_label = (label or "").strip().lower()
+                if "الحالية" in normalized_label or "current" in normalized_label:
+                    selected_status = token
+                    break
+        context["selected_status"] = selected_status
         for p in qs_home:
             p.home_in_mix = True
         context["projects"] = qs_home

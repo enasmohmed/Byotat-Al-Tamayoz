@@ -23,6 +23,7 @@ class FooterSettingsTranslationOptions(TranslationOptions):
         'address',
         'phone',
         'email',
+        'fal_license_label',
         'hours_line1_label',
         'hours_line1_value',
         'hours_line2_label',

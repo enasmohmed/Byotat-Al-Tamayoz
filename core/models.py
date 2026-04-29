@@ -6,6 +6,20 @@ from django.utils.translation import gettext_lazy as _
 
 class SiteSettings(models.Model):
     site_name = models.CharField(max_length=255, blank=True, null=True)
+    hero_video_file = models.FileField(
+        upload_to="settings/hero/",
+        blank=True,
+        null=True,
+        verbose_name=_("Home hero video file"),
+        help_text=_("Upload MP4 video for the home hero background. If empty, the default theme video is used."),
+    )
+    hero_background_image = models.ImageField(
+        upload_to="settings/hero/",
+        blank=True,
+        null=True,
+        verbose_name=_("Home hero background image"),
+        help_text=_("Used when no hero video is uploaded. If empty, the default theme image is used."),
+    )
     hero_video_caption = models.CharField(
         max_length=255,
         blank=True,
@@ -253,6 +267,20 @@ class FooterSettings(models.Model):
         verbose_name=_("Footer side logo"),
         help_text=_("Logo used in the last footer column. If empty, the main site logo is used."),
     )
+    fal_license_label = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Fal license label"),
+        help_text=_('Example: "Fal License No." / "رقم رخصة فال"'),
+    )
+    fal_license_number = models.CharField(
+        max_length=40,
+        blank=True,
+        default="",
+        verbose_name=_("Fal license number"),
+        help_text=_("Displayed below the side logo in the footer."),
+    )
 
     hours_line1_label = models.CharField(
         max_length=120,
@@ -285,6 +313,7 @@ class FooterSettings(models.Model):
     twitter_url = models.URLField(blank=True, default="", verbose_name=_("X URL"))
     linkedin_url = models.URLField(blank=True, default="", verbose_name=_("LinkedIn URL"))
     instagram_url = models.URLField(blank=True, default="", verbose_name=_("Instagram URL"))
+    snapchat_url = models.URLField(blank=True, default="", verbose_name=_("Snapchat URL"))
     youtube_url = models.URLField(blank=True, default="", verbose_name=_("YouTube URL"))
 
     copyright_suffix = models.CharField(

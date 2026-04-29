@@ -37,6 +37,17 @@
   .contact-projects-grid .form-check {
     margin-bottom: 0.65rem;
   }
+  .contact-interest-panel .social-icons li.social-snapchat a {
+    background: #fffc00;
+    color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+  }
+  .contact-interest-panel .social-icons li.social-snapchat a:hover,
+  .contact-interest-panel .social-icons li.social-snapchat a:focus {
+    background: #f4ef00;
+    color: #000000;
+    border-color: rgba(0, 0, 0, 0.25);
+  }
 </style>
 {% endblock %}
 
@@ -159,7 +170,7 @@
           </ul>
 
           {% if footer %}
-            {% if footer.facebook_url or footer.twitter_url or footer.linkedin_url or footer.instagram_url or footer.youtube_url %}
+            {% if footer.facebook_url or footer.twitter_url or footer.linkedin_url or footer.instagram_url or footer.snapchat_url or footer.youtube_url %}
               <p class="small mb-2 mt-4 opacity-75">{% trans "Social media" %}</p>
               <div class="social-icons social-colored">
                 <ul class="list-inline mb-0">
@@ -181,6 +192,11 @@
                   {% if footer.instagram_url %}
                     <li class="social-instagram">
                       <a href="{{ footer.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                  {% endif %}
+                  {% if footer.snapchat_url %}
+                    <li class="social-snapchat">
+                      <a href="{{ footer.snapchat_url }}" target="_blank" rel="noopener noreferrer" aria-label="Snapchat"><i class="fab fa-snapchat-ghost" aria-hidden="true"></i></a>
                     </li>
                   {% endif %}
                   {% if footer.youtube_url %}

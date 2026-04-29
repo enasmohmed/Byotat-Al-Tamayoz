@@ -16,7 +16,7 @@
     overflow: hidden;
     animation: heroVideoWrapDrift 22s ease-in-out infinite alternate;
   }
-  .hero-video-bg-wrap video {
+  .hero-video-bg-wrap .hero-video-bg {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -728,6 +728,7 @@
   <!-- hero section start: فيديو خلفية صامت + لوب -->
   <section id="particles" class="fullscreen-banner hero-video-banner p-0 overflow-hidden position-relative">
     <div class="hero-video-bg-wrap" aria-hidden="true">
+      {% if site and site.hero_video_file %}
       <video
         class="hero-video-bg"
         autoplay
@@ -738,9 +739,15 @@
         poster="{% if LANGUAGE_BIDI %}{% static 'rtl/images/bg/bg-header.jpg' %}{% else %}{% static 'ltr/images/bg/bg-header.jpg' %}{% endif %}"
       >
         <source
-          src="{% if LANGUAGE_BIDI %}{% static 'rtl/images/background-hero.mp4' %}{% else %}{% static 'ltr/images/background-hero.mp4' %}{% endif %}"
+          src="{{ site.hero_video_file.url }}"
           type="video/mp4">
       </video>
+      {% else %}
+      <img
+        class="hero-video-bg"
+        src="{% if site and site.hero_background_image %}{{ site.hero_background_image.url }}{% elif LANGUAGE_BIDI %}{% static 'rtl/images/bg/bg-header.jpg' %}{% else %}{% static 'ltr/images/bg/bg-header.jpg' %}{% endif %}"
+        alt="">
+      {% endif %}
       <div class="hero-video-overlay"></div>
     </div>
 
@@ -781,9 +788,9 @@
     <div class="row home-projects-row-clip">
       <div class="col-md-12 text-center home-projects-filter-wrap">
         <div class="portfolio-filter d-flex flex-wrap justify-content-center gap-2" role="toolbar" aria-label="{% trans 'Filter projects by status' %}">
-          <button type="button" data-filter=".home-in-mix" class="is-checked">{% trans "All" %}</button>
+          <button type="button" data-filter=".home-in-mix" class="{% if not selected_status %}is-checked{% endif %}">{% trans "All" %}</button>
           {% for status_token, status_label in filter_statuses %}
-          <button type="button" data-filter=".{{ status_token }}">{{ status_label }}</button>
+          <button type="button" data-filter=".{{ status_token }}" class="{% if selected_status == status_token %}is-checked{% endif %}">{{ status_label }}</button>
           {% endfor %}
         </div>
       </div>
@@ -1105,6 +1112,7 @@ setupSectionReveal('home-partners', 'home-partners-visible', '.home-partners-car
   }
 
   $(function () {
+    var initialFilterSel = '#home-projects .portfolio-filter button.is-checked:first'.trim();
     $('#home-projects .portfolio-filter').on('click', 'button', function () {
       var $g = $(this).closest('.portfolio-filter');
       $g.find('button.is-checked').removeClass('is-checked');
@@ -1117,7 +1125,11 @@ setupSectionReveal('home-partners', 'home-partners-visible', '.home-partners-car
 
     /* تهيئة مبكرة: بدونها تظهر الشرائح كبلوكات عمودية (خصوصاً RTL) إلى أن يكتمل load */
     if ($('#home-projects-carousel').length) {
-      initHomeProjectsCarousel();
+      if ($(initialFilterSel).length) {
+        applyHomeProjectsFilter($(initialFilterSel).attr('data-filter'));
+      } else {
+        initHomeProjectsCarousel();
+      }
     }
 
     $(window).on('load', function () {

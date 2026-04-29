@@ -163,6 +163,8 @@ class SiteSettingsAdmin(UnfoldTranslationAdmin):
             {
                 'fields': (
                     'site_name',
+                    'hero_video_file',
+                    'hero_background_image',
                     'hero_video_caption',
                     'logo',
                     'favicon',
@@ -294,7 +296,7 @@ class FooterSettingsAdmin(UnfoldTranslationAdmin):
             _("Last footer logo"),
             {
                 "description": _("Logo shown in the last column of the footer."),
-                "fields": ("footer_side_logo",),
+                "fields": ("footer_side_logo", "fal_license_label", "fal_license_number"),
             },
         ),
         (
@@ -305,6 +307,7 @@ class FooterSettingsAdmin(UnfoldTranslationAdmin):
                     'twitter_url',
                     'linkedin_url',
                     'instagram_url',
+                    'snapchat_url',
                     'youtube_url',
                 ),
             },
