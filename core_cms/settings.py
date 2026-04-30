@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
@@ -156,6 +157,17 @@ SITE_TITLE_FALLBACK = "بيوتات التميز"
 DEFAULT_MAP_EMBED_URL = (
     "https://maps.google.com/maps?q=Jeddah%2C+Saudi+Arabia&z=11&hl=ar&ie=UTF8&output=embed"
 )
+
+# Contact integrations (server-side form submit targets)
+# 1) External CRM/webhook integration URL (from your integration provider).
+CONTACT_EXTERNAL_WEBHOOK_URL = os.environ.get("CONTACT_EXTERNAL_WEBHOOK_URL", "").strip()
+
+# 2) WhatsApp provider API endpoint that accepts JSON payload.
+#    Example: https://api.example.com/whatsapp/send
+CONTACT_WHATSAPP_API_URL = os.environ.get("CONTACT_WHATSAPP_API_URL", "").strip()
+
+# Optional auth token sent as Authorization: Bearer <token>
+CONTACT_WHATSAPP_API_TOKEN = os.environ.get("CONTACT_WHATSAPP_API_TOKEN", "").strip()
 
 
 # Static files (CSS, JavaScript, Images)

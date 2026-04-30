@@ -79,6 +79,50 @@ class SiteSettings(models.Model):
             "If empty, the contact page uses the default map from settings (e.g. Jeddah)."
         ),
     )
+    contact_external_webhook_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name=_("Contact external webhook URL"),
+        help_text=_("Receives contact form data as JSON (CRM/webhook integration)."),
+    )
+    contact_external_name_key = models.CharField(
+        max_length=120,
+        blank=True,
+        default="full_name",
+        verbose_name=_("External key for name"),
+        help_text=_("JSON key name used for contact name in external webhook payload."),
+    )
+    contact_external_mobile_key = models.CharField(
+        max_length=120,
+        blank=True,
+        default="mobile",
+        verbose_name=_("External key for mobile"),
+        help_text=_("JSON key name used for contact phone in external webhook payload."),
+    )
+    contact_external_project_key = models.CharField(
+        max_length=120,
+        blank=True,
+        default="client_17774678038301",
+        verbose_name=_("External key for project"),
+        help_text=_("JSON key name used for selected project title(s) in external webhook payload."),
+    )
+    contact_external_extra_json = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("External extra JSON fields"),
+        help_text=_('Optional JSON object merged into payload. Example: {"source":"website","lang":"ar"}'),
+    )
+    contact_whatsapp_api_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name=_("Contact WhatsApp API URL"),
+        help_text=_("Server-to-server endpoint used to send WhatsApp messages automatically."),
+    )
+    contact_open_whatsapp_after_submit = models.BooleanField(
+        default=False,
+        verbose_name=_("Open WhatsApp after submit"),
+        help_text=_("If enabled, after API send succeeds the browser opens WhatsApp with the same prefilled message."),
+    )
     default_language = models.CharField(max_length=5, choices=[('en','English'), ('ar','Arabic')], default='en')
 
     class Meta:

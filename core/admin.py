@@ -181,6 +181,24 @@ class SiteSettingsAdmin(UnfoldTranslationAdmin):
             },
         ),
         (
+            _('Contact form integrations'),
+            {
+                'description': _(
+                    'API token stays in server environment. '
+                    'Set endpoint URLs here from admin.'
+                ),
+                'fields': (
+                    'contact_external_webhook_url',
+                    'contact_external_name_key',
+                    'contact_external_mobile_key',
+                    'contact_external_project_key',
+                    'contact_external_extra_json',
+                    'contact_whatsapp_api_url',
+                    'contact_open_whatsapp_after_submit',
+                ),
+            },
+        ),
+        (
             _('Theme colors (HEX, e.g. #1d3338)'),
             {
                 'description': _(
