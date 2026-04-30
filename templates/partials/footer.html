@@ -43,7 +43,7 @@
     align-items: center;
     justify-content: center;
   }
-  .footer-brand-logo-side img {
+  .footer-brand-logo-side > img {
     --footer-logo-side-scale: 2.7;
     display: block;
     width: auto;
@@ -56,11 +56,11 @@
     margin-inline: auto;
   }
   .footer-license-badge {
+    --fal-license-logo-size: 55px;
     display: inline-flex;
-    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 10px 16px 9px;
+    gap: 12px;
+    padding: 10px 14px;
     margin-top: 26px;
     border-radius: 16px;
     border: 1px solid rgba(249, 163, 5, 0.48);
@@ -70,12 +70,26 @@
     line-height: 1;
     white-space: nowrap;
   }
+  .footer-license-badge__logo {
+    width: var(--fal-license-logo-size);
+    height: var(--fal-license-logo-size);
+    max-width: var(--fal-license-logo-size);
+    max-height: var(--fal-license-logo-size);
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+  .footer-license-badge__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
   .footer-license-badge__label {
     color: #f9a305;
     font-weight: 700;
     font-size: 12px;
     letter-spacing: 0.01em;
-    text-align: center;
+    text-align: start;
   }
   .footer-license-badge__value {
     direction: ltr;
@@ -137,16 +151,17 @@
     .footer-brand-logo-side {
       min-height: auto;
     }
-    .footer-brand-logo-side img {
+    .footer-brand-logo-side > img {
       --footer-logo-side-scale: 2.4;
       max-height: 40px;
       max-width: 130px;
     }
     .footer-license-badge {
       margin-top: 20px;
-      padding: 9px 14px 8px;
+      padding: 8px 12px;
       border-radius: 14px;
-      gap: 4px;
+      gap: 10px;
+      --fal-license-logo-size: 50px;
     }
     .footer-license-badge__label {
       font-size: 11px;
@@ -205,14 +220,23 @@
   }
   .footer-brand-social .social-icons li.social-snapchat a {
     background: #fffc00;
-    color: #111111;
+    color: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.16);
   }
   .footer-brand-social .social-icons li.social-snapchat a:hover,
   .footer-brand-social .social-icons li.social-snapchat a:focus {
     background: #f4ef00;
-    color: #000000;
+    color: #ffffff;
     border-color: rgba(0, 0, 0, 0.25);
+  }
+  .footer-brand-social .social-icons li.social-snapchat a .fa-snapchat-ghost {
+    color: #ffffff;
+    -webkit-text-stroke: 1px #000000;
+    text-shadow:
+      -1px -1px 0 #000000,
+      1px -1px 0 #000000,
+      -1px 1px 0 #000000,
+      1px 1px 0 #000000;
   }
 </style>
 <footer class="footer footer-2 pt-5 mt-0 dark-bg position-relative">
@@ -349,10 +373,15 @@
             <img class="img-fluid" src="{{ footer_side_logo_url }}" alt="{{ site_settings.site_name|default:'' }}">
             {% if footer and footer.fal_license_number %}
               <div class="footer-license-badge" aria-label="{% trans 'Business license number' %}">
-                <span class="footer-license-badge__label">
-                  {{ footer.fal_license_label|default:_("Fal License No.") }}
+                {% if footer.fal_license_logo %}
+                  <img class="footer-license-badge__logo" src="{{ footer.fal_license_logo.url }}" alt="{{ footer.fal_license_label|default:_('Fal License') }}">
+                {% endif %}
+                <span class="footer-license-badge__meta">
+                  <span class="footer-license-badge__label">
+                    {{ footer.fal_license_label|default:_("Fal License No.") }}
+                  </span>
+                  <span class="footer-license-badge__value">{{ footer.fal_license_number }}</span>
                 </span>
-                <span class="footer-license-badge__value">{{ footer.fal_license_number }}</span>
               </div>
             {% endif %}
           </div>

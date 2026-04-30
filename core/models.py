@@ -281,6 +281,13 @@ class FooterSettings(models.Model):
         verbose_name=_("Fal license number"),
         help_text=_("Displayed below the side logo in the footer."),
     )
+    fal_license_logo = models.ImageField(
+        upload_to="footer/",
+        blank=True,
+        null=True,
+        verbose_name=_("Fal license logo"),
+        help_text=_("Optional logo shown next to the Fal license number in the footer."),
+    )
 
     hours_line1_label = models.CharField(
         max_length=120,

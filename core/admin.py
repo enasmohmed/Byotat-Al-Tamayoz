@@ -296,7 +296,7 @@ class FooterSettingsAdmin(UnfoldTranslationAdmin):
             _("Last footer logo"),
             {
                 "description": _("Logo shown in the last column of the footer."),
-                "fields": ("footer_side_logo", "fal_license_label", "fal_license_number"),
+                "fields": ("footer_side_logo", "fal_license_logo", "fal_license_label", "fal_license_number"),
             },
         ),
         (
