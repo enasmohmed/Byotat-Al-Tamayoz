@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import hashlib
 import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
@@ -159,15 +160,49 @@ DEFAULT_MAP_EMBED_URL = (
 )
 
 # Contact integrations (server-side form submit targets)
-# 1) External CRM/webhook integration URL (from your integration provider).
-CONTACT_EXTERNAL_WEBHOOK_URL = os.environ.get("CONTACT_EXTERNAL_WEBHOOK_URL", "").strip()
+# 1) Engaz CRM webhook (Byoutat Al-Tamayouz). Override via CONTACT_EXTERNAL_WEBHOOK_URL or Site settings.
+_DEFAULT_ENGAZ_CRM_WEBHOOK = (
+    "https://api.engazcrm.net/webhook/integration/byotataltamayoz/13/10/5"
+)
+CONTACT_EXTERNAL_WEBHOOK_URL = os.environ.get(
+    "CONTACT_EXTERNAL_WEBHOOK_URL", _DEFAULT_ENGAZ_CRM_WEBHOOK
+).strip()
 
-# 2) WhatsApp provider API endpoint that accepts JSON payload.
-#    Example: https://api.example.com/whatsapp/send
+# 2) WhatsApp provider API endpoint (optional if you rely on same-site default in ContactFormView).
 CONTACT_WHATSAPP_API_URL = os.environ.get("CONTACT_WHATSAPP_API_URL", "").strip()
 
-# Optional auth token sent as Authorization: Bearer <token>
+# Bearer token for POST /contact/api/whatsapp/ (outgoing from ContactFormView + incoming auth).
+# If unset, a stable value is derived from SECRET_KEY so server-to-server calls work without extra env.
 CONTACT_WHATSAPP_API_TOKEN = os.environ.get("CONTACT_WHATSAPP_API_TOKEN", "").strip()
+if not CONTACT_WHATSAPP_API_TOKEN:
+    CONTACT_WHATSAPP_API_TOKEN = hashlib.sha256(
+        (SECRET_KEY + "contact-whatsapp-webhook-v1").encode()
+    ).hexdigest()[:48]
+
+# Meta WhatsApp Cloud API — used only by ``contact/whatsapp_receiver.py`` when forwarding
+# is enabled (both token and phone number id must be set). Create app + token:
+# https://developers.facebook.com/docs/whatsapp/cloud-api/get-started
+WHATSAPP_CLOUD_ACCESS_TOKEN = os.environ.get("WHATSAPP_CLOUD_ACCESS_TOKEN", "").strip()
+WHATSAPP_CLOUD_PHONE_NUMBER_ID = os.environ.get("WHATSAPP_CLOUD_PHONE_NUMBER_ID", "").strip()
+WHATSAPP_CLOUD_API_VERSION = os.environ.get("WHATSAPP_CLOUD_API_VERSION", "v21.0").strip()
+
+# عرض سجلات إرسال نموذج الاتصال (CRM / واتساب) في الطرفية عند التشغيل بـ runserver
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "contact.views": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
 
 
 # Static files (CSS, JavaScript, Images)

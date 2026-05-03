@@ -65,6 +65,7 @@ class ContactForm(forms.Form):
         if not self.site:
             raise ValidationError(_("Site settings are missing. Please contact the administrator."))
 
+        send_wa_api = bool(getattr(self.site, "contact_send_whatsapp_api", True))
         has_wa = bool(getattr(self.site, "whatsapp_digits", ""))
         selected_projects = cleaned.get("project") or []
         if not selected_projects:
@@ -88,7 +89,7 @@ class ContactForm(forms.Form):
                     else _("Please choose valid current projects only."),
                 )
 
-        if not has_wa:
+        if send_wa_api and not has_wa:
             raise ValidationError(
                 _("Company WhatsApp is not configured. Please ask the administrator to set it in Site settings.")
             )

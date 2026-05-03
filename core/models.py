@@ -118,6 +118,14 @@ class SiteSettings(models.Model):
         verbose_name=_("Contact WhatsApp API URL"),
         help_text=_("Server-to-server endpoint used to send WhatsApp messages automatically."),
     )
+    contact_send_whatsapp_api = models.BooleanField(
+        default=True,
+        verbose_name=_("Send contact form to WhatsApp API"),
+        help_text=_(
+            "Uncheck to send the form only to the CRM/webhook. WhatsApp API calls are skipped; "
+            "the WhatsApp number field below is then optional (still used for footer/chat links if filled)."
+        ),
+    )
     contact_open_whatsapp_after_submit = models.BooleanField(
         default=False,
         verbose_name=_("Open WhatsApp after submit"),

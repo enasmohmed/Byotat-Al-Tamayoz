@@ -3332,6 +3332,15 @@ msgstr ""
 msgid "Open the project page for the full description and details."
 msgstr "افتحي صفحة المشروع للاطلاع على الوصف والتفاصيل كاملة."
 
+msgid "Your request has been sent successfully."
+msgstr "تم إرسال طلبك بنجاح."
+
+msgid "Your request was sent partially. Please check integration settings."
+msgstr "تم إرسال الطلب جزئياً. يُرجى مراجعة إعدادات الربط."
+
+msgid "Request could not be delivered. Please contact support."
+msgstr "تعذّر إرسال الطلب. يُرجى التواصل مع الدعم."
+
 #~ msgid "Project details"
 #~ msgstr "تفاصيل المشروع"
 

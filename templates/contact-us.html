@@ -57,22 +57,26 @@
       -1px 1px 0 #000000,
       1px 1px 0 #000000;
   }
+  /* رسائل النجاح / التحذير بعد الإرسال — فوق الفورم، نص عربي في المنتصف */
+  .contact-form-feedback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    direction: rtl;
+    text-align: center;
+  }
+  .contact-form-feedback .contact-flash-alert {
+    max-width: 36rem;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-
-{% if messages %}
-<div class="container pt-4">
-  {% for message in messages %}
-    <div
-      class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %}"
-      role="alert">
-      {{ message }}
-    </div>
-  {% endfor %}
-</div>
-{% endif %}
 
 <section class="page-title overflow-hidden text-center parallaxie"
   data-overlay="{% if contact_page %}{{ contact_page.hero_overlay }}{% else %}7{% endif %}"
@@ -254,6 +258,18 @@
               {% trans "Send us a" %} <span>{% trans "message" %}</span>
             {% endif %}
           </h2>
+
+          {% if messages %}
+            <div class="contact-form-feedback mb-4">
+              {% for message in messages %}
+                <div
+                  class="contact-flash-alert alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %}"
+                  role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
 
           <form id="site-contact-form" method="post" action="{% url 'contact_form' %}">
             {% csrf_token %}

@@ -193,6 +193,7 @@ class SiteSettingsAdmin(UnfoldTranslationAdmin):
                     'contact_external_mobile_key',
                     'contact_external_project_key',
                     'contact_external_extra_json',
+                    'contact_send_whatsapp_api',
                     'contact_whatsapp_api_url',
                     'contact_open_whatsapp_after_submit',
                 ),

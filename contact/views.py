@@ -4,7 +4,7 @@ from urllib.parse import quote
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import get_language, gettext as _
 from django.views.generic import FormView
 from django.conf import settings
@@ -49,13 +49,19 @@ class ContactFormView(FormView):
         projects_text = ", ".join(project_titles) if project_titles else (_("Unknown project"))
         message_text = (form.cleaned_data.get("message") or "").strip()
 
+        send_wa_api = bool(getattr(site, "contact_send_whatsapp_api", True))
+
         ContactMessage.objects.create(
             name=form.cleaned_data["name"],
             email="whatsapp-only@local.invalid",
             phone=phone,
             subject=projects_text[:255],
             message=message_text,
-            send_via=ContactMessage.SendVia.WHATSAPP,
+            send_via=(
+                ContactMessage.SendVia.WHATSAPP
+                if send_wa_api
+                else ContactMessage.SendVia.EMAIL
+            ),
         )
 
         lines_body = [
@@ -94,6 +100,38 @@ class ContactFormView(FormView):
         whatsapp_api_url = (
             getattr(site, "contact_whatsapp_api_url", "") if site else ""
         ) or settings.CONTACT_WHATSAPP_API_URL
+        whatsapp_api_url = (whatsapp_api_url or "").strip()
+        if not whatsapp_api_url:
+            whatsapp_api_url = self.request.build_absolute_uri(
+                reverse("contact_whatsapp_webhook")
+            )
+
+        wa_to = (whatsapp_payload.get("to") or "").strip()
+        logger.info(
+            "========== contact form outbound ==========\n"
+            "[CRM] POST %s\n"
+            "[CRM] payload:\n%s",
+            external_url,
+            json.dumps(external_payload, ensure_ascii=False, indent=2),
+        )
+        if send_wa_api:
+            logger.info(
+                "[WhatsApp] POST %s\n"
+                "[WhatsApp] destination number (to): %s\n"
+                "[WhatsApp] message body (body field):\n%s\n"
+                "[WhatsApp] full JSON payload:\n%s\n"
+                "===========================================",
+                whatsapp_api_url,
+                wa_to or "(not set — add WhatsApp number in Site settings)",
+                body,
+                json.dumps(whatsapp_payload, ensure_ascii=False, indent=2),
+            )
+        else:
+            logger.info(
+                "[WhatsApp] skipped — «Send contact form to WhatsApp API» is disabled "
+                "(CRM-only mode in Site settings).\n"
+                "==========================================="
+            )
 
         external_ok = self._post_json(
             external_url,
@@ -102,15 +140,18 @@ class ContactFormView(FormView):
             label="external webhook",
         )
 
-        wa_headers = {}
-        if settings.CONTACT_WHATSAPP_API_TOKEN:
-            wa_headers["Authorization"] = f"Bearer {settings.CONTACT_WHATSAPP_API_TOKEN}"
-        whatsapp_ok = self._post_json(
-            whatsapp_api_url,
-            whatsapp_payload,
-            headers=wa_headers or None,
-            label="whatsapp api",
-        )
+        if send_wa_api:
+            wa_headers = {
+                "Authorization": f"Bearer {settings.CONTACT_WHATSAPP_API_TOKEN}",
+            }
+            whatsapp_ok = self._post_json(
+                whatsapp_api_url,
+                whatsapp_payload,
+                headers=wa_headers or None,
+                label="whatsapp api",
+            )
+        else:
+            whatsapp_ok = True
 
         if external_ok and whatsapp_ok:
             messages.success(
@@ -128,7 +169,7 @@ class ContactFormView(FormView):
                 _("Request could not be delivered. Please contact support."),
             )
 
-        open_wa = bool(getattr(site, "contact_open_whatsapp_after_submit", False))
+        open_wa = bool(getattr(site, "contact_open_whatsapp_after_submit", False)) and send_wa_api
         if open_wa and site and site.whatsapp_digits and (external_ok or whatsapp_ok):
             wa_url = f"https://wa.me/{site.whatsapp_digits}?text={quote(body, safe='')}"
             return HttpResponseRedirect(wa_url)
