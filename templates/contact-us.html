@@ -11,6 +11,14 @@
     direction: ltr;
     
   }
+  /* حقل الجوال نفسه داخل الفورم: اكتب من اليسار لليمين حتى في RTL */
+  #id_phone,
+  input#id_phone.form-control {
+    direction: ltr;
+    unicode-bidi: isolate;
+    /* في صفحات عربية: خليه يبدأ من اليمين لكن الأرقام تفضل LTR */
+    text-align: right;
+  }
   .contact-interest-panel {
     background-color: #1d3338;
   }
@@ -74,6 +82,93 @@
     text-align: center;
   }
 </style>
+<script>
+  // Auto-prefix Saudi country code while typing in phone field.
+  // Server-side validation/normalization still applies.
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("id_phone");
+    if (!input) return;
+    const duplicateHint = document.getElementById("phone-duplicate-hint");
+
+    // Display format requested: +966 59 081 3276 (note: server still normalizes to +966...).
+    try {
+      input.setAttribute("placeholder", "+966 xx xxx xxxx");
+    } catch (_) {}
+
+    const formatSaudiDisplay = (nationalDigits) => {
+      // nationalDigits: 9 digits like 5XXXXXXXX
+      const d = String(nationalDigits || "").replace(/\D+/g, "").slice(0, 9);
+      if (!d) return "+966 ";
+      const p1 = d.slice(0, 2);
+      const p2 = d.slice(2, 5);
+      const p3 = d.slice(5, 9);
+      return ["+966", p1, p2, p3].filter(Boolean).join(" ").trimEnd();
+    };
+
+    const normalizeForTyping = (value) => {
+      let v = String(value || "").trim();
+      if (!v) return v;
+
+      const digits = v.replace(/\D+/g, "");
+      if (!digits) return "";
+
+      let national = "";
+      if (digits.startsWith("966")) {
+        national = digits.slice(3);
+      } else if (digits.startsWith("05")) {
+        national = digits.slice(1); // drop leading 0
+      } else if (digits.startsWith("5")) {
+        national = digits;
+      } else {
+        national = digits.replace(/^0+/, "");
+      }
+
+      national = national.slice(0, 9);
+      return formatSaudiDisplay(national);
+    };
+
+    const apply = () => {
+      const before = input.value;
+      const after = normalizeForTyping(before);
+      if (after !== before) {
+        input.value = after;
+        // keep UX simple: move caret to end after normalization
+        try {
+          input.setSelectionRange(after.length, after.length);
+        } catch (_) {}
+      }
+    };
+
+    let checkTimer = null;
+    const checkDuplicate = async () => {
+      if (!duplicateHint) return;
+      const v = (input.value || "").trim();
+      if (!v) {
+        duplicateHint.classList.add("d-none");
+        return;
+      }
+      try {
+        const url = "{% url 'contact_phone_exists' %}" + "?phone=" + encodeURIComponent(v);
+        const res = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+        const data = await res.json();
+        if (data && data.valid && data.exists) duplicateHint.classList.remove("d-none");
+        else duplicateHint.classList.add("d-none");
+      } catch (_) {
+        duplicateHint.classList.add("d-none");
+      }
+    };
+
+    const scheduleCheck = () => {
+      if (checkTimer) window.clearTimeout(checkTimer);
+      checkTimer = window.setTimeout(checkDuplicate, 450);
+    };
+
+    input.addEventListener("input", apply);
+    input.addEventListener("input", scheduleCheck);
+    input.addEventListener("blur", apply);
+    input.addEventListener("blur", checkDuplicate);
+  });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -284,6 +379,9 @@
             <div class="form-group mb-3">
               <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }} <span class="text-danger">*</span></label>
               {{ form.phone }}
+              <div id="phone-duplicate-hint" class="small text-warning mt-1 d-none">
+                {% if LANGUAGE_BIDI %}تنبيه: رقم الجوال ده اتسجل بيه قبل كده.{% else %}{% trans "Warning: this mobile number was used before." %}{% endif %}
+              </div>
               {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors }}</div>{% endif %}
             </div>
             <div class="form-group mb-3">

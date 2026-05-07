@@ -225,8 +225,14 @@ STATICFILES_FINDERS = [
 ]
 
 # Media files (uploaded via ImageField/FileField)
+# Production: set DJANGO_MEDIA_ROOT to the same path as nginx `alias` for /media/
+# (e.g. /var/www/Byotat-Al-Tamayoz/media).
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = (
+    Path(os.environ["DJANGO_MEDIA_ROOT"])
+    if os.environ.get("DJANGO_MEDIA_ROOT")
+    else BASE_DIR / "media"
+)
 
 LANGUAGES = [
     ('ar', _('Arabic')),

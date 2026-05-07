@@ -3,11 +3,12 @@ import json
 from urllib.parse import quote
 
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import get_language, gettext as _
 from django.views.generic import FormView
 from django.conf import settings
+from django.views.decorators.http import require_GET
 
 import requests
 
@@ -18,6 +19,44 @@ from .forms import ContactForm
 from .models import ContactMessage
 
 logger = logging.getLogger(__name__)
+
+
+def _normalize_saudi_mobile(raw: str) -> str | None:
+    """
+    Normalize common inputs to Saudi mobile E.164: +9665XXXXXXXX.
+    Returns None if cannot be normalized.
+    """
+    s = (raw or "").strip()
+    if not s:
+        return None
+    digits = "".join(c for c in s if c.isdigit())
+    if not digits:
+        return None
+
+    national = ""
+    if digits.startswith("966"):
+        national = digits[3:]
+    elif digits.startswith("05"):
+        national = digits[1:]  # drop leading 0
+    elif digits.startswith("5") and len(digits) >= 9:
+        national = digits
+    else:
+        national = digits.lstrip("0")
+
+    national = national[:9]
+    if not (len(national) == 9 and national.startswith("5")):
+        return None
+    return f"+966{national}"
+
+
+@require_GET
+def contact_phone_exists(request):
+    phone_raw = (request.GET.get("phone") or "").strip()
+    normalized = _normalize_saudi_mobile(phone_raw)
+    if not normalized:
+        return JsonResponse({"valid": False, "exists": False})
+    exists = ContactMessage.objects.filter(phone=normalized).exists()
+    return JsonResponse({"valid": True, "exists": exists, "phone": normalized})
 
 
 class ContactFormView(FormView):
@@ -39,6 +78,8 @@ class ContactFormView(FormView):
         site = SiteSettings.objects.first()
         is_arabic = (get_language() or "").startswith("ar")
         phone = (form.cleaned_data.get("phone") or "").strip()
+        # CRM webhooks commonly expect digits-only mobile numbers (no +, spaces, dashes).
+        phone_digits = "".join(c for c in phone if c.isdigit())
         project_ids = form.cleaned_data.get("project") or []
         selected_projects = [
             project
@@ -78,7 +119,7 @@ class ContactFormView(FormView):
         project_key = (getattr(site, "contact_external_project_key", "") or "client_17774678038301").strip()
         external_payload = {
             name_key: form.cleaned_data["name"],
-            mobile_key: phone,
+            mobile_key: phone_digits or phone,
             project_key: projects_text,
             "message": message_text,
         }
@@ -86,7 +127,7 @@ class ContactFormView(FormView):
 
         whatsapp_payload = {
             "name": form.cleaned_data["name"],
-            "phone": phone,
+            "phone": phone_digits or phone,
             "projects": project_titles,
             "projects_text": projects_text,
             "message": message_text,
@@ -184,16 +225,33 @@ class ContactFormView(FormView):
         req_headers = {"Content-Type": "application/json"}
         if headers:
             req_headers.update(headers)
+        # Helps some gateways/CRMs identify the client and reduces silent blocking.
+        req_headers.setdefault("User-Agent", "byotat-site-contact-form/1.0")
         try:
             response = requests.post(
                 target,
                 json=payload,
                 headers=req_headers,
-                timeout=12,
+                timeout=20,
+            )
+            # Log response details to debug CRM classification / throttling issues in production.
+            logger.info(
+                "Contact form %s response: %s %s",
+                label,
+                response.status_code,
+                (response.text or "").strip()[:800],
             )
             response.raise_for_status()
             return True
         except Exception as exc:  # noqa: BLE001
+            # If this was an HTTP error, try to include CRM response body in logs.
+            resp = getattr(getattr(exc, "response", None), "text", None)
+            if resp:
+                logger.error(
+                    "Contact form %s send failed response body: %s",
+                    label,
+                    (resp or "").strip()[:1200],
+                )
             logger.exception("Contact form %s send failed: %s", label, exc)
             return False
 

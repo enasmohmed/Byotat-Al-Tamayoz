@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
+import re
+
 from core.models import SiteSettings
 from projects.models import Project
 
@@ -16,7 +18,16 @@ class ContactForm(forms.Form):
     phone = forms.CharField(
         label=_("Phone"),
         max_length=50,
-        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "tel", "required": True}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "autocomplete": "tel",
+                "required": True,
+                "inputmode": "tel",
+                "dir": "ltr",
+                "placeholder": "+9665XXXXXXXX",
+            }
+        ),
     )
     project = forms.MultipleChoiceField(
         label=_("Projects"),
@@ -95,3 +106,44 @@ class ContactForm(forms.Form):
             )
         cleaned["send_via_whatsapp"] = True
         return cleaned
+
+    def clean_phone(self):
+        """
+        Normalize mobile numbers to Saudi E.164: +9665XXXXXXXX.
+        Accepts common user inputs: +9665XXXXXXXX, 9665XXXXXXXX, 05XXXXXXXX, 5XXXXXXXX.
+        """
+        raw = (self.cleaned_data.get("phone") or "").strip()
+        if not raw:
+            raise ValidationError(_("This field is required."))
+
+        # Keep digits and a single leading '+' (also accept 00 prefix).
+        s = raw.strip()
+        s = re.sub(r"[\s\-\(\)\.]+", "", s)
+        if s.startswith("00"):
+            s = "+" + s[2:]
+        if s.startswith("+"):
+            s = "+" + "".join(c for c in s[1:] if c.isdigit())
+        else:
+            s = "".join(c for c in s if c.isdigit())
+
+        digits = "".join(c for c in s if c.isdigit())
+
+        national = ""
+        if s.startswith("+966") and digits.startswith("966"):
+            national = digits[3:]
+        elif digits.startswith("966"):
+            national = digits[3:]
+        elif digits.startswith("05"):
+            national = digits[1:]  # drop the leading 0
+        elif digits.startswith("5") and len(digits) == 9:
+            national = digits
+
+        # Saudi mobile numbers are 9 digits and start with 5.
+        if not (len(national) == 9 and national.startswith("5")):
+            raise ValidationError(
+                "يرجى إدخال رقم جوال سعودي صحيح مثل +9665XXXXXXXX أو 05XXXXXXXX."
+                if self.is_arabic
+                else _("Please enter a valid Saudi mobile number like +9665XXXXXXXX or 05XXXXXXXX.")
+            )
+
+        return f"+966{national}"
