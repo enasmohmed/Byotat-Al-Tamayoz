@@ -1,11 +1,11 @@
 asgiref==3.11.0
-Django==6.0.1
+Django
 django-ckeditor==6.7.3
 django-jazzmin==3.0.1
 django-js-asset==3.1.2
 django-modeltranslation==0.19.19
 django-sass-processor==1.4.2
-django-unfold==0.87.0
+django-unfold
 pillow==12.1.0
 requests==2.32.5
 sqlparse==0.5.5
